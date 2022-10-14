@@ -11,8 +11,6 @@ public interface ICoupanRepository {
 	Coupan editCoupans(Coupan coupan)throws InvalidCoupanOperationException ;
 
 	Coupan deleteCoupans(int coupanId)throws CoupanIdNotFoundException;
-	
-	//******Hello*Its*Me*Tapesh******
 
 	List<Coupan> viewCoupans();
 }
