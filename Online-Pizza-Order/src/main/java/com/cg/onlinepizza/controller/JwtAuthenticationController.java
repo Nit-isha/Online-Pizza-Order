@@ -2,6 +2,7 @@ package com.cg.onlinepizza.controller;
 
 import com.cg.onlinepizza.*;
 import com.cg.onlinepizza.config.JwtTokenUtil;
+import com.cg.onlinepizza.customer.dto.*;
 import com.cg.onlinepizza.secure.model.JwtRequest;
 import com.cg.onlinepizza.secure.model.JwtResponse;
 import com.cg.onlinepizza.secure.model.UserDto;
@@ -42,8 +43,8 @@ public class JwtAuthenticationController {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
-		return ResponseEntity.ok(userDetailsService.save(user));
+	public ResponseEntity<?> saveUser(@RequestBody CustomerDto customerDto) throws Exception {
+		return ResponseEntity.ok(userDetailsService.save(customerDto));
 	}
 
 	private void authenticate(String username, String password) throws Exception {

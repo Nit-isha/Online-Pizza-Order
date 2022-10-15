@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "userlogin")
 public class User {
     @Id
-    @GeneratedValue//(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long id;
     @Column
     private String username;
@@ -15,8 +16,17 @@ public class User {
     @JsonIgnore
     private String password;
     private String role;
-  
-    public String getRole() {
+
+    public User() {
+    	
+    }
+    public User(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
+
+	public String getRole() {
 		return role;
 	}
 

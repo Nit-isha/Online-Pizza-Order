@@ -2,17 +2,17 @@ package com.cg.onlinepizza.customer.service;
 
 import java.util.List;
 
-import com.cg.onlinepizza.customer.dto.Customer;
+import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 
 public interface ICustomerService {
-	Customer addCustomer(Customer customer);
+	CustomerDto addCustomer(CustomerDto customer);
 
-	Customer updateCustomer(Customer customer);
+	CustomerDto updateCustomer(CustomerDto customer);
 
-	Customer deleteCustomer(int customerId) throws CustomerIdNotFoundException;
+	CustomerDto deleteCustomer(int customerId) throws CustomerIdNotFoundException;
 
-	List<Customer> viewCustomers();
+	List<CustomerDto> viewCustomers();
 
-	Customer viewCustomer(int customerId) throws CustomerIdNotFoundException;
+	CustomerDto viewCustomer(int customerId) throws CustomerIdNotFoundException;
 }

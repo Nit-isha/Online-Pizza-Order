@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import org.springframework.stereotype.Component;
+
+import com.cg.onlinepizza.secure.model.User;
+
 @Entity
 public class Customer extends User{
 
@@ -15,16 +19,17 @@ public class Customer extends User{
 	private String customerAddress;
 	@OneToMany(mappedBy = "customer")
 	private List<PizzaOrder> pizzaOrder;
-	
-	
-	public Customer(String customerName, long customerMobile,
-			String customerEmail, String customerAddress, String userName, String password,String role) {
-		super(userName,password,role);
-		this.customerName = customerName;
-		this.customerMobile = customerMobile;
-		this.customerEmail = customerEmail;
-		this.customerAddress = customerAddress;
-	}
+//	public Customer(String userName, String password) {
+//		super(userName,password);
+//	}
+//	public Customer(String customerName, long customerMobile,
+//			String customerEmail, String customerAddress, String userName, String password) {
+//		super(userName,password);
+//		this.customerName = customerName;
+//		this.customerMobile = customerMobile;
+//		this.customerEmail = customerEmail;
+//		this.customerAddress = customerAddress;
+//	}
 
 	public List<PizzaOrder> getPizzaOrder() {
 		return pizzaOrder;

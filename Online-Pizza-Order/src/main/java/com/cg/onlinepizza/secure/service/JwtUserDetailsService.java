@@ -7,7 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import com.cg.onlinepizza.customer.dto.CustomerDto;
+import com.cg.onlinepizza.entity.Customer;
 import com.cg.onlinepizza.secure.model.User;
 import com.cg.onlinepizza.secure.model.UserDto;
 import com.cg.onlinepizza.secure.repository.UserRepository;
@@ -40,11 +41,16 @@ public class JwtUserDetailsService implements UserDetailsService {
 	}
 	
 
-	public User save(UserDto user) {
-		User newUser = new User();
-		newUser.setUsername(user.getUsername());
-		newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
-		newUser.setRole(user.getRole());
-		return userDao.save(newUser);
+	public Customer save(CustomerDto customerDto) {
+		Customer newCust = new Customer();
+		newCust.setCustomerName(customerDto.getCustomerName());
+		newCust.setCustomerMobile(customerDto.getCustomerMobile());
+		newCust.setCustomerEmail(customerDto.getCustomerEmail());
+		newCust.setCustomerAddress(customerDto.getCustomerAddress());
+		newCust.setUsername(customerDto.getCustomerName());
+		newCust.setPassword(customerDto.getPassword());
+		newCust.setRole("user");
+
+		return userDao.save(newCust);
 	}
 }
