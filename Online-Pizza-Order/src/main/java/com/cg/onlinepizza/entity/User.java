@@ -1,29 +1,36 @@
 package com.cg.onlinepizza.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "UserTable")
 public class User {
 	@Id
 	@GeneratedValue
 	private int userId;
 	private String userName;
 	private String password;
-	public User() {
-		
-	}
-	public User(int userId, String userName, String password) {
-		super();
-		this.userId = userId;
+	private String role;
+	public User(String userName, String password, String role) {
 		this.userName = userName;
 		this.password = password;
+		this.role = role;
 	}
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	public int getUserId() {
 		return userId;
 	}
@@ -42,5 +49,4 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 }

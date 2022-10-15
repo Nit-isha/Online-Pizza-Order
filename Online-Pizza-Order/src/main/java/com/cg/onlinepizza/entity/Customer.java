@@ -1,20 +1,37 @@
 package com.cg.onlinepizza.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Customer extends User{
 
 	private String customerName;
-	private String customerMobile;
+	private long customerMobile;
 	private String customerEmail;
 	private String customerAddress;
-	public Customer(String customerName, String customerMobile, String customerEmail, String customerAddress) {
-		super();
+	@OneToMany(mappedBy = "customer")
+	private List<PizzaOrder> pizzaOrder;
+	
+	
+	public Customer(String customerName, long customerMobile,
+			String customerEmail, String customerAddress, String userName, String password,String role) {
+		super(userName,password,role);
 		this.customerName = customerName;
 		this.customerMobile = customerMobile;
 		this.customerEmail = customerEmail;
 		this.customerAddress = customerAddress;
+	}
+
+	public List<PizzaOrder> getPizzaOrder() {
+		return pizzaOrder;
+	}
+
+	public void setPizzaOrder(List<PizzaOrder> pizzaOrder) {
+		this.pizzaOrder = pizzaOrder;
 	}
 	public String getCustomerName() {
 		return customerName;
@@ -22,10 +39,10 @@ public class Customer extends User{
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-	public String getCustomerMobile() {
+	public long getCustomerMobile() {
 		return customerMobile;
 	}
-	public void setCustomerMobile(String customerMobile) {
+	public void setCustomerMobile(long customerMobile) {
 		this.customerMobile = customerMobile;
 	}
 	public String getCustomerEmail() {
@@ -40,6 +57,4 @@ public class Customer extends User{
 	public void setCustomerAddress(String customerAddress) {
 		this.customerAddress = customerAddress;
 	}
-	
-	
 }

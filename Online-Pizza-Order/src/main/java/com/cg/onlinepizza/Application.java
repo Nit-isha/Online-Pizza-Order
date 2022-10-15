@@ -1,13 +1,12 @@
-package com.cg.onlinepizza.OnlinePizzaOrder;
+package com.cg.onlinepizza;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OnlinePizzaOrderApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OnlinePizzaOrderApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
-
 }
