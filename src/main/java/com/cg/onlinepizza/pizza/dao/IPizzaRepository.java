@@ -2,21 +2,16 @@ package com.cg.onlinepizza.pizza.dao;
 
 import java.util.List;
 
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import com.cg.onlinepizza.entity.Pizza;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
-import com.cg.onlinepizza.pizza.dto.Pizza;
+import com.cg.onlinepizza.pizza.dto.PizzaDto;
 
-public interface IPizzaRepository {
-	Pizza addPizza(Pizza pizza);
-
-	Pizza updatePizza(Pizza pizza);
-
-	Pizza deletePizza(int pizzaId) throws PizzaIdNotFoundException;
-
-	Pizza viewPizza(int pizzaId) throws PizzaIdNotFoundException;
-
-	List<Pizza> viewPizzaList();
-
-	List<Pizza> viewPizzaList(double minCost, double maxCost)throws InvalidMinCostException;
+@Repository
+public interface IPizzaRepository extends CrudRepository<Pizza, Integer>{
+	
 
 }
