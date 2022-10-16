@@ -16,7 +16,7 @@ public interface IPizzaService {
 
 	PizzaDto viewPizza(int pizzaId) throws PizzaIdNotFoundException;
 
-	List<Pizza> viewPizzaList();
+	List<PizzaDto> viewPizzaList();
 
 	List<PizzaDto> viewPizzaList(double minCost, double maxCost)throws InvalidMinCostException;
 }

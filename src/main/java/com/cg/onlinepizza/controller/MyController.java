@@ -5,11 +5,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.onlinepizza.entity.Pizza;
+import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
 import com.cg.onlinepizza.pizza.service.IPizzaService;
 
@@ -17,10 +23,28 @@ import com.cg.onlinepizza.pizza.service.IPizzaService;
 public class MyController {
 	@Autowired
 	private IPizzaService pizzaService;
-	
+	// admin user both can access
 	@GetMapping(path = "/menu", produces = {"application/json","application/xml"})
-	public ResponseEntity<List<Pizza>> getPizzaList() {
-		List<Pizza> pizzaList = pizzaService.viewPizzaList();
-		return new ResponseEntity<List<Pizza>>(pizzaList, HttpStatus.OK);
+	public ResponseEntity<List<PizzaDto>> getPizzaList() {
+		List<PizzaDto> pizzaList = pizzaService.viewPizzaList();
+		return new ResponseEntity<List<PizzaDto>>(pizzaList, HttpStatus.OK);
+	}
+	
+	// only admin can access
+	@PostMapping(path = "/addpizza",produces = {"application/json","application/xml"},
+			consumes = {"application/json","application/xml"})
+	public ResponseEntity<PizzaDto> addPizza(@RequestBody PizzaDto pizzaDto){
+		return new ResponseEntity<PizzaDto>(pizzaService.addPizza(pizzaDto), HttpStatus.OK);
+	}
+	
+	// admin user both can access
+	@GetMapping(path = "/menu/{pizzaId}", produces = {"application/json","application/xml"})
+	public ResponseEntity<PizzaDto> viewPizzaById(@PathVariable int pizzaId) throws PizzaIdNotFoundException{
+		return new ResponseEntity<PizzaDto>(pizzaService.viewPizza(pizzaId), HttpStatus.OK);
+	}
+	// only admin can access
+	@DeleteMapping(path = "/menu/{pizzaId}", produces = {"application/json","application/xml"})
+	public ResponseEntity<PizzaDto> deletePizzaById(@PathVariable int pizzaId) throws PizzaIdNotFoundException{
+		return new ResponseEntity<PizzaDto>(pizzaService.deletePizza(pizzaId), HttpStatus.OK);
 	}
 }
