@@ -19,9 +19,9 @@ import com.cg.onlinepizza.secure.model.User;
 public class Customer extends User{
 	@NotBlank
 	private String customerName;
-	//@Pattern(regexp="^[6-9][0-9]{9}",message="length must be 10")
-	private long customerMobile;
-	@Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
+	@Pattern(regexp="^[6-9][0-9]{9}",message="length must be 10")
+	private String customerMobile;
+	@Email(regexp = "[a-z0-9]+@[a-z0-9.-]+\\.[a-z]{2,3}")
 	private String customerEmail;
 	@NotBlank
 	private String customerAddress;
@@ -52,10 +52,10 @@ public class Customer extends User{
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-	public long getCustomerMobile() {
+	public String getCustomerMobile() {
 		return customerMobile;
 	}
-	public void setCustomerMobile(long customerMobile) {
+	public void setCustomerMobile(String customerMobile) {
 		this.customerMobile = customerMobile;
 	}
 	public String getCustomerEmail() {

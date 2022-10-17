@@ -2,6 +2,8 @@ package com.cg.onlinepizza.secure.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -11,9 +13,11 @@ public class User {
     private long id;
     @Id
     @Column
+    @NotBlank
     private String username;
     @Column
     @JsonIgnore
+    @NotBlank
     private String password;
     private String role;
 

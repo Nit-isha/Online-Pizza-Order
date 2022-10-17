@@ -3,7 +3,7 @@ package com.cg.onlinepizza.customer.dto;
 public class CustomerDto {
 
 	private String customerName;
-	private Long customerMobile;
+	private String customerMobile;
 	private String customerEmail;
 	private String customerAddress;
 	private String username;
@@ -17,11 +17,11 @@ public class CustomerDto {
 		this.customerName = customerName;
 	}
 
-	public Long getCustomerMobile() {
+	public String getCustomerMobile() {
 		return customerMobile;
 	}
 
-	public void setCustomerMobile(Long customerMobile) {
+	public void setCustomerMobile(String customerMobile) {
 		this.customerMobile = customerMobile;
 	}
 

@@ -38,6 +38,7 @@ public class MyController {
 	/*Add Pizza to DB [Only Admin can access]*/
 	@PostMapping(path = "/addpizza",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<PizzaDto> addPizza(@RequestBody PizzaDto pizzaDto) throws PizzaAlreadyExistException{
 		return new ResponseEntity<PizzaDto>(pizzaService.addPizza(pizzaDto), HttpStatus.OK);
 	}
@@ -67,6 +68,5 @@ public class MyController {
 	double minCost,@RequestParam("max") double maxCost) throws InvalidMinCostException {
 		List<PizzaDto> pizzaList = pizzaService.viewPizzaList(minCost,maxCost);
 		return new ResponseEntity<List<PizzaDto>>(pizzaList, HttpStatus.OK);
-	}
-	
+	}	
 }
