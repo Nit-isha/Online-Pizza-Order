@@ -43,7 +43,7 @@ public class MyController {
 	/*Add Pizza to DB [Only Admin can access]*/
 	@PostMapping(path = "/addpizza",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
-	@PreAuthorize("hasAuthority('admin')")
+//	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<PizzaDto> addPizza(@RequestBody PizzaDto pizzaDto) throws PizzaAlreadyExistException{
 		return new ResponseEntity<PizzaDto>(pizzaService.addPizza(pizzaDto), HttpStatus.OK);
 	}
@@ -56,6 +56,7 @@ public class MyController {
 	
 	/*Delete Pizza from DB [Only Admin can access]*/
 	@DeleteMapping(path = "/menu/{pizzaId}", produces = {"application/json","application/xml"})
+//	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<PizzaDto> deletePizzaById(@PathVariable int pizzaId) throws PizzaIdNotFoundException{
 		return new ResponseEntity<PizzaDto>(pizzaService.deletePizza(pizzaId), HttpStatus.OK);
 	}
@@ -63,6 +64,7 @@ public class MyController {
 	/*Update Pizza [Only Admin can access]*/
 	@PutMapping(path = "/menu/{pizzaId}",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
+//	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<PizzaDto> updatePizza(@PathVariable int pizzaId,@RequestBody PizzaDto pizzaDto) throws PizzaIdNotFoundException{
 		return new ResponseEntity<PizzaDto>(pizzaService.updatePizza(pizzaId,pizzaDto), HttpStatus.OK);
 	}
