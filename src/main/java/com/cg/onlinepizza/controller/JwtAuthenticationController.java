@@ -1,15 +1,12 @@
 package com.cg.onlinepizza.controller;
 
-import com.cg.onlinepizza.*;
+
 import com.cg.onlinepizza.config.JwtTokenUtil;
 import com.cg.onlinepizza.customer.dto.*;
 import com.cg.onlinepizza.secure.model.JwtRequest;
 import com.cg.onlinepizza.secure.model.JwtResponse;
-import com.cg.onlinepizza.secure.model.UserDto;
 import com.cg.onlinepizza.secure.service.JwtUserDetailsService;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
