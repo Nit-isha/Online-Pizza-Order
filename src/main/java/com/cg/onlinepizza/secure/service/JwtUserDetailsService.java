@@ -40,7 +40,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 			//	new ArrayList<>());
 	}
 	
-
 	public Customer save(CustomerDto customerDto) {
 		Customer newCust = new Customer();
 		newCust.setCustomerName(customerDto.getCustomerName());
