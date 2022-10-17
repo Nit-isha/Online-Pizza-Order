@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.cg.onlinepizza.entity.Pizza;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
+import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 import com.cg.onlinepizza.pizza.dao.IPizzaRepository;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
@@ -19,15 +20,26 @@ public class IPizzaServiceImpl implements IPizzaService{
 	
 	
 	@Override
-	public PizzaDto addPizza(PizzaDto pizza) {
+	public PizzaDto addPizza(PizzaDto pizza) throws PizzaAlreadyExistException {
+		Optional<Pizza> optional = iPizzaRepository.findById(pizza.getPizzaId());
+		if(optional.isPresent()) {
+			throw new PizzaAlreadyExistException();
+		}
 		iPizzaRepository.save(dtoToEntity(pizza));
 		return pizza;
 	}
 
 	@Override
-	public PizzaDto updatePizza(PizzaDto pizza) {
-		// TODO Auto-generated method stub
-		return null;
+	public PizzaDto updatePizza(int pizzaId,PizzaDto pizza)throws PizzaIdNotFoundException {
+		Optional<Pizza> optional = iPizzaRepository.findById(pizzaId);
+		if(optional.isPresent()) {
+			Pizza pi = dtoToEntity(pizza);
+			pi.setPizzaId(optional.get().getPizzaId());
+			iPizzaRepository.save(pi);
+			return pizza;
+		}else {
+			throw new PizzaIdNotFoundException();
+		}
 	}
 
 	@Override
@@ -66,8 +78,15 @@ public class IPizzaServiceImpl implements IPizzaService{
 
 	@Override
 	public List<PizzaDto> viewPizzaList(double minCost, double maxCost) throws InvalidMinCostException {
-		// TODO Auto-generated method stub
-		return null;
+		if(minCost<0 || minCost>maxCost) {
+			throw new InvalidMinCostException();
+		}
+		List<Pizza> listPizza = iPizzaRepository.filterPizzaByPrice(minCost, maxCost);
+		List<PizzaDto> pizzaDtoList = new ArrayList<>();
+		for(Pizza pizza: listPizza) {
+			pizzaDtoList.add(entityToDto(pizza));
+		}
+		return pizzaDtoList;
 	}
 	public Pizza dtoToEntity(PizzaDto pizza) {
 		Pizza p = new Pizza();

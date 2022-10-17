@@ -7,9 +7,9 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "userlogin")
 public class User {
-    @Id
     @GeneratedValue
     private long id;
+    @Id
     @Column
     private String username;
     @Column
