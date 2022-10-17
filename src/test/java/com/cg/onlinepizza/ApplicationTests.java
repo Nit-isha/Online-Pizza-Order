@@ -1,4 +1,4 @@
-package com.cg.onlinepizza.OnlinePizzaOrder;
+package com.cg.onlinepizza;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -20,7 +20,7 @@ import com.cg.onlinepizza.pizza.dto.PizzaDto;
 import com.cg.onlinepizza.pizza.service.IPizzaServiceImpl;
 
 @SpringBootTest
-class OnlinePizzaOrderApplicationTests {
+class ApplicationTests {
 
 	// Testing Pizza Service Implementation
 	@Autowired
