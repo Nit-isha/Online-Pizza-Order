@@ -1,12 +1,12 @@
 package com.cg.onlinepizza.pizza.dto;
 
-public class Pizza {
+public class PizzaDto {
 	private int pizzaId;
 	private String pizzaType;
 	private String pizzaName;
 	private String pizzaDescription;
 	private double pizzaCost;
-	private double pizzaCostAfterCoupan;
+	
 	public int getPizzaId() {
 		return pizzaId;
 	}
@@ -37,11 +37,4 @@ public class Pizza {
 	public void setPizzaCost(double pizzaCost) {
 		this.pizzaCost = pizzaCost;
 	}
-	public double getPizzaCostAfterCoupan() {
-		return pizzaCostAfterCoupan;
-	}
-	public void setPizzaCostAfterCoupan(double pizzaCostAfterCoupan) {
-		this.pizzaCostAfterCoupan = pizzaCostAfterCoupan;
-	}
-	
 }

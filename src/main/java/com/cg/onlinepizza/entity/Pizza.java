@@ -13,18 +13,18 @@ public class Pizza {
 	private String pizzaName;
 	private String pizzaDescription;
 	private double pizzaCost;
-	private double pizzaCostAfterCoupon;
 
-	
-	public Pizza(int pizzaId, String pizzaType, String pizzaName, String pizzaDescription, double pizzaCost,
-			double pizzaCostAfterCoupon) {
+	public Pizza() {
+		
+	}
+	public Pizza(int pizzaId, String pizzaType, String pizzaName, String pizzaDescription, double pizzaCost
+		) {
 		super();
 		this.pizzaId = pizzaId;
 		this.pizzaType = pizzaType;
 		this.pizzaName = pizzaName;
 		this.pizzaDescription = pizzaDescription;
 		this.pizzaCost = pizzaCost;
-		this.pizzaCostAfterCoupon = pizzaCostAfterCoupon;
 	}
 	public int getPizzaId() {
 		return pizzaId;
@@ -56,11 +56,4 @@ public class Pizza {
 	public void setPizzaCost(double pizzaCost) {
 		this.pizzaCost = pizzaCost;
 	}
-	public double getPizzaCostAfterCoupon() {
-		return pizzaCostAfterCoupon;
-	}
-	public void setPizzaCostAfterCoupon(double pizzaCostAfterCoupon) {
-		this.pizzaCostAfterCoupon = pizzaCostAfterCoupon;
-	}
-	
 }

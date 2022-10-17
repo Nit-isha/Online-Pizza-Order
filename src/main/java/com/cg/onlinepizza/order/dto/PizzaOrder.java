@@ -3,7 +3,7 @@ package com.cg.onlinepizza.order.dto;
 import java.time.LocalDate;
 
 import com.cg.onlinepizza.coupan.dto.Coupan;
-import com.cg.onlinepizza.pizza.dto.Pizza;
+import com.cg.onlinepizza.pizza.dto.PizzaDto;
 
 public class PizzaOrder {
 
@@ -13,7 +13,7 @@ public class PizzaOrder {
 	private int quantity;
 	private String size;//medium,regular,large
 	private double totalCost;
-	private Pizza pizza;
+	private PizzaDto pizza;
 	private Order order;
 	private Coupan coupan;
 	public int getBookingOrderId() {
@@ -52,10 +52,10 @@ public class PizzaOrder {
 	public void setTotalCost(double totalCost) {
 		this.totalCost = totalCost;
 	}
-	public Pizza getPizza() {
+	public PizzaDto getPizza() {
 		return pizza;
 	}
-	public void setPizza(Pizza pizza) {
+	public void setPizza(PizzaDto pizza) {
 		this.pizza = pizza;
 	}
 	public Order getOrder() {
