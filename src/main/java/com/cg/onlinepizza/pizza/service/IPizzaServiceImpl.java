@@ -3,22 +3,21 @@ package com.cg.onlinepizza.pizza.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.cg.onlinepizza.entity.Pizza;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 import com.cg.onlinepizza.pizza.dao.IPizzaRepository;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
+
 @Component
 public class IPizzaServiceImpl implements IPizzaService{
 	@Autowired
 	private IPizzaRepository iPizzaRepository;
 	
-	
+	/*Add Pizza Method*/
 	@Override
 	public PizzaDto addPizza(PizzaDto pizza) throws PizzaAlreadyExistException {
 		Optional<Pizza> optional = iPizzaRepository.findById(pizza.getPizzaId());
@@ -28,20 +27,22 @@ public class IPizzaServiceImpl implements IPizzaService{
 		iPizzaRepository.save(dtoToEntity(pizza));
 		return pizza;
 	}
-
+	
+	/*Update Pizza Method*/
 	@Override
-	public PizzaDto updatePizza(int pizzaId,PizzaDto pizza)throws PizzaIdNotFoundException {
+	public PizzaDto updatePizza(int pizzaId,PizzaDto pizza) throws PizzaIdNotFoundException {
 		Optional<Pizza> optional = iPizzaRepository.findById(pizzaId);
 		if(optional.isPresent()) {
-			Pizza pi = dtoToEntity(pizza);
-			pi.setPizzaId(optional.get().getPizzaId());
-			iPizzaRepository.save(pi);
+			Pizza pizzaEntity = dtoToEntity(pizza);
+			pizzaEntity.setPizzaId(optional.get().getPizzaId());
+			iPizzaRepository.save(pizzaEntity);
 			return pizza;
 		}else {
 			throw new PizzaIdNotFoundException();
 		}
 	}
-
+	
+	/*Delete Pizza Method*/
 	@Override
 	public PizzaDto deletePizza(int pizzaId) throws PizzaIdNotFoundException {
 		Optional<Pizza> optional = iPizzaRepository.findById(pizzaId);
@@ -50,10 +51,10 @@ public class IPizzaServiceImpl implements IPizzaService{
 			return entityToDto(optional.get());
 		}else {
 			throw new PizzaIdNotFoundException();
-		}
-		
+		}	
 	}
 
+	/*Find Pizza By ID Method*/
 	@Override
 	public PizzaDto viewPizza(int pizzaId) throws PizzaIdNotFoundException {
 		Optional<Pizza> optional = iPizzaRepository.findById(pizzaId);
@@ -63,19 +64,23 @@ public class IPizzaServiceImpl implements IPizzaService{
 			throw new PizzaIdNotFoundException();
 		}
 	}
-
+	
+	/*View All Pizza Method*/
 	@Override
 	public List<PizzaDto> viewPizzaList() {
 		List<Pizza> pizzaList = new ArrayList<>();
+		
 		Iterable<Pizza> list =  iPizzaRepository.findAll();
-		list.forEach(p->pizzaList.add(p));
+		list.forEach(p -> pizzaList.add(p));
+		
 		List<PizzaDto> pizzaDtoList = new ArrayList<>();
 		for(Pizza pizza: pizzaList) {
 			pizzaDtoList.add(entityToDto(pizza));
 		}
 		return pizzaDtoList;
 	}
-
+	
+	/*Filter Pizza by Cost Range Method*/
 	@Override
 	public List<PizzaDto> viewPizzaList(double minCost, double maxCost) throws InvalidMinCostException {
 		if(minCost<0 || minCost>maxCost) {
@@ -88,6 +93,8 @@ public class IPizzaServiceImpl implements IPizzaService{
 		}
 		return pizzaDtoList;
 	}
+	
+	/*PizzaDto to Pizza Entity Class Conversion*/
 	public Pizza dtoToEntity(PizzaDto pizza) {
 		Pizza p = new Pizza();
 		p.setPizzaId(pizza.getPizzaId());
@@ -97,6 +104,8 @@ public class IPizzaServiceImpl implements IPizzaService{
 		p.setPizzaCost(pizza.getPizzaCost());
 		return p;
 	}
+	
+	/*Pizza Entity to PizzaDto Class Conversion*/
 	public PizzaDto entityToDto(Pizza pizza) {
 		PizzaDto p = new PizzaDto();
 		p.setPizzaId(pizza.getPizzaId());

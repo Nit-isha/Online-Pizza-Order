@@ -27,37 +27,41 @@ import com.cg.onlinepizza.pizza.service.IPizzaService;
 public class MyController {
 	@Autowired
 	private IPizzaService pizzaService;
-	// admin user both can access
+	
+	/*Get Pizza List [Both Admin and User can access]*/
 	@GetMapping(path = "/menu", produces = {"application/json","application/xml"})
 	public ResponseEntity<List<PizzaDto>> getPizzaList() {
 		List<PizzaDto> pizzaList = pizzaService.viewPizzaList();
 		return new ResponseEntity<List<PizzaDto>>(pizzaList, HttpStatus.OK);
 	}
 
-	// only admin can access
+	/*Add Pizza to DB [Only Admin can access]*/
 	@PostMapping(path = "/addpizza",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	public ResponseEntity<PizzaDto> addPizza(@RequestBody PizzaDto pizzaDto) throws PizzaAlreadyExistException{
 		return new ResponseEntity<PizzaDto>(pizzaService.addPizza(pizzaDto), HttpStatus.OK);
 	}
 
-	// admin user both can access
+	/*Get Pizza By ID [Both Admin and User can access]*/
 	@GetMapping(path = "/menu/{pizzaId}", produces = {"application/json","application/xml"})
 	public ResponseEntity<PizzaDto> viewPizzaById(@PathVariable int pizzaId) throws PizzaIdNotFoundException{
 		return new ResponseEntity<PizzaDto>(pizzaService.viewPizza(pizzaId), HttpStatus.OK);
 	}
-	// only admin can access
+	
+	/*Delete Pizza from DB [Only Admin can access]*/
 	@DeleteMapping(path = "/menu/{pizzaId}", produces = {"application/json","application/xml"})
 	public ResponseEntity<PizzaDto> deletePizzaById(@PathVariable int pizzaId) throws PizzaIdNotFoundException{
 		return new ResponseEntity<PizzaDto>(pizzaService.deletePizza(pizzaId), HttpStatus.OK);
 	}
-	// only admin can access
+	
+	/*Update Pizza [Only Admin can access]*/
 	@PutMapping(path = "/menu/{pizzaId}",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	public ResponseEntity<PizzaDto> updatePizza(@PathVariable int pizzaId,@RequestBody PizzaDto pizzaDto) throws PizzaIdNotFoundException{
 		return new ResponseEntity<PizzaDto>(pizzaService.updatePizza(pizzaId,pizzaDto), HttpStatus.OK);
 	}
-	// admin and user both can access
+	
+	/*Filter Pizza by Cost Range [Both Admin and User can access]*/
 	@GetMapping( value = "/menu/search", produces = {"application/json","application/xml"})
 	public ResponseEntity<List<PizzaDto>> filterPizzaListByRange(@RequestParam("min") 
 	double minCost,@RequestParam("max") double maxCost) throws InvalidMinCostException {

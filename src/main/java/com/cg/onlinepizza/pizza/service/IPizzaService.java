@@ -9,9 +9,10 @@ import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
 
 public interface IPizzaService {
-	PizzaDto addPizza(PizzaDto pizza)throws PizzaAlreadyExistException ;
+    
+	PizzaDto addPizza(PizzaDto pizza) throws PizzaAlreadyExistException ;
 
-	PizzaDto updatePizza(int pizzaId, PizzaDto pizza)throws PizzaIdNotFoundException;
+	PizzaDto updatePizza(int pizzaId, PizzaDto pizza) throws PizzaIdNotFoundException;
 
 	PizzaDto deletePizza(int pizzaId) throws PizzaIdNotFoundException;
 
@@ -19,5 +20,5 @@ public interface IPizzaService {
 
 	List<PizzaDto> viewPizzaList();
 
-	List<PizzaDto> viewPizzaList(double minCost, double maxCost)throws InvalidMinCostException;
+	List<PizzaDto> viewPizzaList(double minCost, double maxCost) throws InvalidMinCostException;
 }
