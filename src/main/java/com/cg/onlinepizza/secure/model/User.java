@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import org.checkerframework.common.aliasing.qual.Unique;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "userlogin")
@@ -13,6 +15,7 @@ public class User {
     private int id;
     @Column
     @NotBlank
+    @Unique
     private String username;
     @Column
     @JsonIgnore

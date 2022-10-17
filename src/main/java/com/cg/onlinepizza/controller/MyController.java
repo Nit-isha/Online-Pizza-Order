@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.customer.service.ICustomerService;
+import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
@@ -74,17 +77,28 @@ public class MyController {
 	
 	/*-----------------  Customer Service Controllers  -----------------*/
 	
-//	/*Update Customer [Only Admin can access]*/
-//    @PutMapping(path = "/customer/{custId}",produces = {"application/json","application/xml"},
-//            consumes = {"application/json","application/xml"})
-//    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable int custId,@RequestBody CustomerDto customerDto) throws CustomerIdNotFoundException{
-//        return new ResponseEntity<CustomerDto>(customerService.updateCustomer(custId,customerDto), HttpStatus.OK);
-//    }
-    /*
-    @GetMapping(path="/about",produces = {"application/json","application/xml"},
-            consumes = {"application/json","application/xml"})
-    public ResponseEntity<CustomerDto> getCustomerDetails(Principal p){
-        p.get
-    }\
-    */
+	/*Update Customer [user and admin can access]*/
+   @PutMapping(path = "/customer/{custId}",produces = {"application/json","application/xml"},consumes = {"application/json","application/xml"})
+  public ResponseEntity<CustomerDto> updateCustomer(@PathVariable int custId,@RequestBody CustomerDto customerDto) throws CustomerIdNotFoundException{
+      return new ResponseEntity<CustomerDto>(customerService.updateCustomer(custId,customerDto), HttpStatus.OK);
+    }
+    
+   // View customer list.. only admin can have access
+   @GetMapping(path = "/customer", produces = {"application/json","application/xml"})
+	public ResponseEntity<List<CustomerDto>> getCustomerList() {
+		List<CustomerDto> customerList = customerService.viewCustomers();
+		return new ResponseEntity<List<CustomerDto>>(customerList, HttpStatus.OK);
+	}
+   
+   //Get Customer By ID, Admin can access
+	@GetMapping(path = "/customer/{custId}", produces = {"application/json","application/xml"})
+	public ResponseEntity<CustomerDto> viewCustomerById(@PathVariable int custId) throws CustomerIdNotFoundException{
+		return new ResponseEntity<CustomerDto>(customerService.viewCustomer(custId), HttpStatus.OK);
+	}
+	
+	/*Delete Customer from DB [Only Admin can access]*/
+	@DeleteMapping(path = "/customer/{custId}", produces = {"application/json","application/xml"})
+	public ResponseEntity<CustomerDto> deleteCustomerById(@PathVariable int custId) throws CustomerIdNotFoundException{
+		return new ResponseEntity<CustomerDto>(customerService.deleteCustomer(custId), HttpStatus.OK);
+	}
 }
