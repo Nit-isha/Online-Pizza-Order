@@ -1,5 +1,7 @@
 package com.cg.onlinepizza.exceptioncontroller;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,4 +29,10 @@ public class ExceptionsHandler {
 		APIError error = new APIError("Pizza ID already exist in database", 400);
 		return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
 	}
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<APIError> constraintViolationExceptionHandler(Exception e){
+		APIError error = new APIError("Invalid details", 400);
+		return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
+	}
+	
 }

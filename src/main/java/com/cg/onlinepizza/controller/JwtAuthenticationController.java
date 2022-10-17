@@ -8,6 +8,8 @@ import com.cg.onlinepizza.secure.model.JwtResponse;
 import com.cg.onlinepizza.secure.model.UserDto;
 import com.cg.onlinepizza.secure.service.JwtUserDetailsService;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,7 +44,7 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@Valid @RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody CustomerDto customerDto) throws Exception {
 		return ResponseEntity.ok(userDetailsService.save(customerDto));
 	}
