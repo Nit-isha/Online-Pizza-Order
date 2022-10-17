@@ -9,9 +9,9 @@ import javax.validation.constraints.Pattern;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "userlogin")
 public class User {
+    @Id
     @GeneratedValue
     private int id;
-    @Id
     @Column
     @NotBlank
     private String username;
