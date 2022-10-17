@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 @Table(name = "userlogin")
 public class User {
     @GeneratedValue
-    private long id;
+    private int id;
     @Id
     @Column
     @NotBlank
@@ -41,7 +41,13 @@ public class User {
 	public String getUsername() {
         return username;
     }
-
+	
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getId() {
+        return id;
+    }
     public void setUsername(String username) {
         this.username = username;
     }

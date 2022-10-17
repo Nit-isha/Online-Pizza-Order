@@ -20,6 +20,7 @@ public class Customer extends User{
 	/*Email Validation using regex*/
 	@Email(regexp = "[a-z0-9]+@[a-z0-9.-]+\\.[a-z]{2,3}")
 	private String customerEmail;
+	
 	@NotBlank
 	private String customerAddress;
 	@OneToMany(mappedBy = "customer")

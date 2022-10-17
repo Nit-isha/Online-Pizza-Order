@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.cg.onlinepizza.entity.Pizza;
+import com.cg.onlinepizza.customer.service.ICustomerService;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
@@ -27,6 +25,10 @@ import com.cg.onlinepizza.pizza.service.IPizzaService;
 public class MyController {
 	@Autowired
 	private IPizzaService pizzaService;
+	@Autowired
+	private ICustomerService customerService;
+	
+	/*-----------------  Pizza Service Controllers  -----------------*/
 	
 	/*Get Pizza List [Both Admin and User can access]*/
 	@GetMapping(path = "/menu", produces = {"application/json","application/xml"})
@@ -68,5 +70,21 @@ public class MyController {
 	double minCost,@RequestParam("max") double maxCost) throws InvalidMinCostException {
 		List<PizzaDto> pizzaList = pizzaService.viewPizzaList(minCost,maxCost);
 		return new ResponseEntity<List<PizzaDto>>(pizzaList, HttpStatus.OK);
-	}	
+	}
+	
+	/*-----------------  Customer Service Controllers  -----------------*/
+	
+//	/*Update Customer [Only Admin can access]*/
+//    @PutMapping(path = "/customer/{custId}",produces = {"application/json","application/xml"},
+//            consumes = {"application/json","application/xml"})
+//    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable int custId,@RequestBody CustomerDto customerDto) throws CustomerIdNotFoundException{
+//        return new ResponseEntity<CustomerDto>(customerService.updateCustomer(custId,customerDto), HttpStatus.OK);
+//    }
+    /*
+    @GetMapping(path="/about",produces = {"application/json","application/xml"},
+            consumes = {"application/json","application/xml"})
+    public ResponseEntity<CustomerDto> getCustomerDetails(Principal p){
+        p.get
+    }\
+    */
 }

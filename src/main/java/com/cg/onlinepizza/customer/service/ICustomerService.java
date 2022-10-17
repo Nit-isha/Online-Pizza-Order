@@ -3,12 +3,13 @@ package com.cg.onlinepizza.customer.service;
 import java.util.List;
 
 import com.cg.onlinepizza.customer.dto.CustomerDto;
+import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 
 public interface ICustomerService {
-	CustomerDto addCustomer(CustomerDto customer);
+	CustomerDto addCustomer(CustomerDto customer) throws CustomerAlreadyExistException;
 
-	CustomerDto updateCustomer(CustomerDto customer);
+	CustomerDto updateCustomer(int customerId, CustomerDto customer) throws CustomerIdNotFoundException;
 
 	CustomerDto deleteCustomer(int customerId) throws CustomerIdNotFoundException;
 

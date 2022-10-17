@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
+import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
@@ -41,5 +43,19 @@ public class ExceptionsHandler {
 		APIError error = new APIError("Invalid Email OR Mobile number", 400);
 		return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
 	}
+	
+	/*Customer Already Exists in Database Exception Handler*/
+	@ExceptionHandler(CustomerAlreadyExistException.class)
+    public ResponseEntity<APIError> CustomerAlreadyExistExceptionHandler(Exception e){
+        APIError error = new APIError("Customer already exist in database", 400);
+        return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
+    }
+	
+	/*Customer ID Not Found Exception Handler*/
+    @ExceptionHandler(CustomerIdNotFoundException.class)
+    public ResponseEntity<APIError> CustomerIdNotFoundExceptionHandler(Exception e) {
+        APIError error = new APIError("Customer not found", 404);
+        return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
+    }
 	
 }
