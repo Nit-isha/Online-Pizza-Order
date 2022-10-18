@@ -104,8 +104,14 @@ public class PizzaOrder {
     public List<Pizza> getPizza() {
         return pizza;
     }
+    
 
-    public Coupon getCoupon() {
+    public void setPizza(List<Pizza> pizza) {
+		this.pizza = pizza;
+	}
+
+
+	public Coupon getCoupon() {
         return coupon;
     }
 

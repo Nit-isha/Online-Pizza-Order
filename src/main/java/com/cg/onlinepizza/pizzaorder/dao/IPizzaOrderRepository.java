@@ -23,7 +23,10 @@ public interface IPizzaOrderRepository extends CrudRepository <PizzaOrder, Integ
 	Customer getCustomerById(@Param("cid") int cid);
 	
 	//List<Pizza> pizzaList = new ArrayList<>();
-	@Query("select p from pizza p where p.pizzaId in :pList =:pid")
-	Pizza getPizzaById(@Param() @Param("pid")int pid);
+	@Query("select p from pizza p where p.pizzaId in :pList")
+	List<Pizza> getPizzaById(@Param("pList") List<Integer> pizzaIdList );
+	
+	@Query("select p from Pizza where p.bookingId= :bid")
+	List<Pizza> getPizzaListByOrderId(@Param("bid")int bookingId);
 	
 }

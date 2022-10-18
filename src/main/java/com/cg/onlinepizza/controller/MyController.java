@@ -19,6 +19,7 @@ import com.cg.onlinepizza.coupon.dto.CouponDto;
 import com.cg.onlinepizza.coupon.service.ICouponService;
 import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.customer.service.ICustomerService;
+import com.cg.onlinepizza.entity.PizzaOrder;
 import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
@@ -162,6 +163,11 @@ public class MyController {
 	@GetMapping(path="/orders", produces = {"application/json","application/xml"} )
 	public ResponseEntity<List<PizzaOrderDto>> viewAllOrders(){
 		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewOrdersList(), HttpStatus.OK);
+	}
+	@PostMapping(path="/order/neworder", produces = {"application/json","application/xml"},
+			consumes = {"application/json","application/xml"})
+	public ResponseEntity<PizzaOrderDto> bookPizzaOrder(PizzaOrderDto pizzaOrderDto) {
+		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.bookPizzaOrder(pizzaOrderDto), HttpStatus.OK);
 	}
 	
 }

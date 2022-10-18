@@ -3,6 +3,7 @@ package com.cg.onlinepizza.pizzaorder.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,17 +20,24 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	@Autowired
 	private IPizzaOrderRepository iPizzaOrderRepository;
 	
+	//Returns all the existing orders in database
 	@Override
 	public List<PizzaOrderDto> viewOrdersList() {
-		List<PizzaOrderDto> fullOrderHistory = new ArrayList<>();
-		Iterable<PizzaOrder> list= iPizzaOrderRepository.findAll();
-		list.forEach(e->fullOrderHistory.add(e));
-		return null;
+		List<PizzaOrder> pizzaOrderList = new ArrayList<>();
+		
+		Iterable<PizzaOrder> list =  iPizzaOrderRepository.findAll();
+		list.forEach(p -> pizzaOrderList.add(p));
+		
+		List<PizzaOrderDto> pizzaOrderDtoList = new ArrayList<>();
+		for(PizzaOrder pizzaOrder: pizzaOrderList) {
+			pizzaOrderDtoList.add(entityToDto(pizzaOrder));
+		}
+		return pizzaOrderDtoList;
 	}
 	
 	@Override
 	public PizzaOrderDto bookPizzaOrder(PizzaOrderDto order) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -47,7 +55,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 
 	@Override
 	public PizzaOrderDto viewPizzaOrder(int pizzaOrderId) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -67,7 +75,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 
 	@Override
 	public List<PizzaOrderDto> viewCustomerOrdersList() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -79,18 +87,29 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		p.setCustomer(iPizzaOrderRepository.getCustomerById(pizzaOrder.getCustId()));
 		p.setOrderDate(pizzaOrder.getOrderDate());
 		p.setOrderType(pizzaOrder.getOrderType());
-		p.setPizza(iPizzaOrderRepository.getPizzaById(pizzaOrder.getPizzaId()));
+		p.setPizza(iPizzaOrderRepository.getPizzaById(pizzaOrder.getPizzaIdList()));
+		p.setQuantity(pizzaOrder.getQuantity());
+		p.setSize(pizzaOrder.getSize());
+		p.setTotalCost(pizzaOrder.getTotalCost());
+		p.setTransactionMode(pizzaOrder.getTransactionMode());
 		return p;
 	}
 	
 	/*Pizza Entity to PizzaDto Class Conversion*/
-	public PizzaDto entityToDto(Pizza pizza) {
-		PizzaDto p = new PizzaDto();
-		p.setPizzaId(pizza.getPizzaId());
-		p.setPizzaName(pizza.getPizzaName());
-		p.setPizzaType(pizza.getPizzaType());
-		p.setPizzaDescription(pizza.getPizzaDescription());
-		p.setPizzaCost(pizza.getPizzaCost());
+	public PizzaOrderDto entityToDto(PizzaOrder pizzaOrder) {
+		PizzaOrderDto p = new PizzaOrderDto();
+		p.setBookingOrderId(pizzaOrder.getBookingOrderId());
+		p.setCouponName(pizzaOrder.getCoupon().getCouponName());
+		p.setCustId(pizzaOrder.getCustomer().getId());
+		p.setOrderDate(pizzaOrder.getOrderDate());
+		p.setOrderType(pizzaOrder.getOrderType());
+		p.setQuantity(pizzaOrder.getQuantity());
+		p.setSize(pizzaOrder.getSize());
+		p.setTotalCost(pizzaOrder.getTotalCost());
+		p.setTransactionMode(pizzaOrder.getTransactionMode());
+		List<Integer> pizzaIdList = new ArrayList<>();
+		pizzaIdList = pizzaOrder.getPizza().stream().map(t->t.getPizzaId()).collect(Collectors.toList());
+		p.setPizzaIdList(pizzaIdList);
 		return p;
 	}
 
