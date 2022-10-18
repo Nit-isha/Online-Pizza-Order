@@ -6,10 +6,8 @@ import org.springframework.stereotype.Component;
 import com.cg.onlinepizza.customer.dao.ICustomerRepository;
 import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.entity.Customer;
-import com.cg.onlinepizza.entity.Pizza;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
-import com.cg.onlinepizza.pizza.dto.PizzaDto;
 
 
 @Component
