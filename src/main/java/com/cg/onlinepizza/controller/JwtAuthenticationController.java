@@ -10,6 +10,7 @@ import com.cg.onlinepizza.secure.model.UserDto;
 import com.cg.onlinepizza.secure.service.JwtUserDetailsService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -49,9 +50,9 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(userDetailsService.save(customerDto));
 	}
 
-	@Valid @RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
-	public ResponseEntity<?> saveAdmin(@RequestBody User user) throws Exception {
-	    
+	@Valid @RequestMapping(value = "/", method = RequestMethod.GET)
+	public ResponseEntity<?> saveAdmin() throws Exception {
+	    User user = new User("admin", "admin", "admin");
 	    return ResponseEntity.ok(userDetailsService.save(user));
 	}
 
@@ -65,4 +66,13 @@ public class JwtAuthenticationController {
 		}
 	}
 	
+	/*-----------------------------------------------------------------------------------------//
+	@Value("${admin.username}")
+	private String adminusr;
+	@Value("${admin.password}")
+	private String adminpwd;
+	@Value("${admin.role}")
+	private String adminrole;
+	User user = new User(adminusr,adminpwd, adminrole );
+	userDeta*/
 }

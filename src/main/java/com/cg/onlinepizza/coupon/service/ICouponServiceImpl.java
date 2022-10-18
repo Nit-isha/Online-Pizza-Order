@@ -95,7 +95,6 @@ public class ICouponServiceImpl implements ICouponService {
 		c.setCouponName(coupon.getCouponName());
 		c.setCouponType(coupon.getCouponType());
 		c.setCouponDescription(coupon.getCouponDescription());
-		c.setCouponPizzaId(coupon.getCouponPizzaId());
 		return c;
 	}
 	/*CoupanDto to Coupon Entity Class Conversion*/
@@ -105,7 +104,6 @@ public class ICouponServiceImpl implements ICouponService {
 		c.setCouponName(coupon.getCouponName());
 		c.setCouponType(coupon.getCouponType());
 		c.setCouponDescription(coupon.getCouponDescription());
-		c.setCouponPizzaId(coupon.getCouponPizzaId());
 		return c;
 	}
 
