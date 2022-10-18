@@ -17,6 +17,8 @@ import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 @RestControllerAdvice // acts as a catch block
 public class ExceptionsHandler {
     
+    /*-----------------  Pizza Exceptions  -----------------*/
+    
     /*Pizza ID Not Found Exception Handler*/
 	@ExceptionHandler(PizzaIdNotFoundException.class)
 	public ResponseEntity<APIError> pizzaIdNotFoundExceptionHandler(Exception e) {
@@ -38,12 +40,16 @@ public class ExceptionsHandler {
 		return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
 	}
 	
+	/*-----------------  Registration Exceptions  -----------------*/
+	
 	/*Constraint Violation Exception Handler*/
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<APIError> constraintViolationExceptionHandler(Exception e){
 		APIError error = new APIError("Invalid Email OR Mobile number", 400);
 		return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
 	}
+	
+	/*-----------------  Customer Exceptions  -----------------*/
 	
 	/*Customer Already Exists in Database Exception Handler*/
 	@ExceptionHandler(CustomerAlreadyExistException.class)
@@ -55,10 +61,13 @@ public class ExceptionsHandler {
 	/*Customer ID Not Found Exception Handler*/
     @ExceptionHandler(CustomerIdNotFoundException.class)
     public ResponseEntity<APIError> CustomerIdNotFoundExceptionHandler(Exception e) {
-        APIError error = new APIError("Customer not found", 404);
+        APIError error = new APIError("Customer Not Found", 404);
         return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
     }
     
+    /*-----------------  Coupon Exceptions  -----------------*/
+
+    /*Coupon Already Exist Exception Exception Handler*/
     @ExceptionHandler(CouponAlreadyExistException.class)
     public ResponseEntity<APIError> couponAlreadyExistExceptionHandler(Exception e) {
         APIError error = new APIError("Coupon already exist in database", 400);

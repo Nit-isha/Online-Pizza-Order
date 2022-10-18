@@ -6,5 +6,5 @@ public class CouponAlreadyExistException extends Exception{
 	}
 	public CouponAlreadyExistException(String msg){
 			super(msg);
-		}
+	}
 }
