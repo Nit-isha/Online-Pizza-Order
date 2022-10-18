@@ -85,14 +85,14 @@ public class MyController {
       return new ResponseEntity<CustomerDto>(customerService.updateCustomer(custId,customerDto), HttpStatus.OK);
     }
     
-   // View customer list.. only admin can have access
+   /*View Customer list [Only admin can access]*/
    @GetMapping(path = "/customer", produces = {"application/json","application/xml"})
 	public ResponseEntity<List<CustomerDto>> getCustomerList() {
 		List<CustomerDto> customerList = customerService.viewCustomers();
 		return new ResponseEntity<List<CustomerDto>>(customerList, HttpStatus.OK);
 	}
    
-   //Get Customer By ID, Admin can access
+   /*Get Customer By ID [Only admin can access]*/
 	@GetMapping(path = "/customer/{custId}", produces = {"application/json","application/xml"})
 	public ResponseEntity<CustomerDto> viewCustomerById(@PathVariable int custId) throws CustomerIdNotFoundException{
 		return new ResponseEntity<CustomerDto>(customerService.viewCustomer(custId), HttpStatus.OK);

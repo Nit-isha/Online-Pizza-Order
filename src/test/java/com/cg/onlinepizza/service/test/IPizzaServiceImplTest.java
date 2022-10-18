@@ -6,11 +6,13 @@ import java.util.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cg.onlinepizza.entity.Pizza;
+import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 import com.cg.onlinepizza.pizza.dao.IPizzaRepository;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
@@ -21,6 +23,8 @@ import com.cg.onlinepizza.pizza.service.IPizzaService;
 public class IPizzaServiceImplTest {
     @MockBean
     private IPizzaRepository iPizzaRepository;
+    @MockBean
+    private Pizza pizza;
     
     @Autowired
     private IPizzaService iPizzaService;
@@ -38,7 +42,7 @@ public class IPizzaServiceImplTest {
     @Test
     void testViewPizzaList() {
         when(iPizzaRepository.findAll()).thenReturn(pizzaList);
-        List<PizzaDto> pList = iPizzaService.viewPizzaList();
+        List<PizzaDto> pList = iPizzaService.viewPizzaList(); 
         assertEquals(pizzaList.size(), pList.size());
     }
     
@@ -46,17 +50,47 @@ public class IPizzaServiceImplTest {
     void testViewPizza() throws PizzaIdNotFoundException {
         Pizza pizza = new Pizza(101, "Veg", "Farm House", "Delightful combination of onion, capsicum, tomato & grilled mushroom", 469);
         when(iPizzaRepository.findById(101)).thenReturn(Optional.of(pizza));
+        
         PizzaDto pizzaDtoObj = iPizzaService.viewPizza(101);
         assertEquals(pizza.getPizzaName(), pizzaDtoObj.getPizzaName());
         assertEquals(pizza.getPizzaType(), pizzaDtoObj.getPizzaType());
         assertEquals(pizza.getPizzaCost(), pizzaDtoObj.getPizzaCost());
     }
     
-//    @Test
-//    void testAddPizza() throws PizzaIdNotFoundException {
-//        Pizza pizza = new Pizza(101, "Veg", "Farm House", "Delightful combination of onion, capsicum, tomato & grilled mushroom", 469);
-//        when(iPizzaRepository.save(pizza)).thenReturn(pizza);
-//        PizzaDto pizzaDtoObj = iPizzaService.addPizza(pizza);
-//    }
+    /*
+    @Test
+    void testViewPizza2() throws PizzaIdNotFoundException {
+        when(iPizzaRepository.findById(pizza.getPizzaId()).thenReturn(Optional.of(pizza)));
+//        doReturn(Optional.of(pizza)).when(iPizzaRepository).findById(pizza.getPizzaId());
+        PizzaDto p2 = iPizzaService.viewPizza(pizza.getPizzaId());
+        assertEquals(pizza.getPizzaId(), p2.getPizzaId());
+    }
+    */
+    
+    @Test
+    void testAddPizza() throws PizzaAlreadyExistException {
+        when(iPizzaRepository.save(Mockito.any(Pizza.class))).thenReturn(pizza);
+        PizzaDto p2 = iPizzaService.addPizza(entityToDto(pizza));
+        assertEquals(pizza.getPizzaId(), p2.getPizzaId());
+    }
+    
+    public Pizza dtoToEntity(PizzaDto pizza) {
+        Pizza p = new Pizza();
+        p.setPizzaId(pizza.getPizzaId());
+        p.setPizzaName(pizza.getPizzaName());
+        p.setPizzaType(pizza.getPizzaType());
+        p.setPizzaDescription(pizza.getPizzaDescription());
+        p.setPizzaCost(pizza.getPizzaCost());
+        return p;
+    }
+    public PizzaDto entityToDto(Pizza pizza) {
+        PizzaDto p = new PizzaDto();
+        p.setPizzaId(pizza.getPizzaId());
+        p.setPizzaName(pizza.getPizzaName());
+        p.setPizzaType(pizza.getPizzaType());
+        p.setPizzaDescription(pizza.getPizzaDescription());
+        p.setPizzaCost(pizza.getPizzaCost());
+        return p;
+    }
 
 }

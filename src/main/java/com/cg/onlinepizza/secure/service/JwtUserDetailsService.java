@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.entity.Customer;
+import com.cg.onlinepizza.secure.model.Admin;
 import com.cg.onlinepizza.secure.model.User;
 import com.cg.onlinepizza.secure.repository.UserRepository;
 import java.util.Arrays;
@@ -48,5 +49,13 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newCust.setRole("user");
 
 		return userDao.save(newCust);
+	}
+
+	public User save(User user) {
+	    User userObj = new User();
+	    userObj.setUsername(user.getUsername());
+	    userObj.setPassword(bcryptEncoder.encode(user.getPassword()));
+	    user.setRole("admin");
+	    return userDao.save(userObj);
 	}
 }

@@ -5,6 +5,8 @@ import com.cg.onlinepizza.config.JwtTokenUtil;
 import com.cg.onlinepizza.customer.dto.*;
 import com.cg.onlinepizza.secure.model.JwtRequest;
 import com.cg.onlinepizza.secure.model.JwtResponse;
+import com.cg.onlinepizza.secure.model.User;
+import com.cg.onlinepizza.secure.model.UserDto;
 import com.cg.onlinepizza.secure.service.JwtUserDetailsService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,14 @@ public class JwtAuthenticationController {
 
 	@Valid @RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody CustomerDto customerDto) throws Exception {
+	    
 		return ResponseEntity.ok(userDetailsService.save(customerDto));
+	}
+
+	@Valid @RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
+	public ResponseEntity<?> saveAdmin(@RequestBody User user) throws Exception {
+	    
+	    return ResponseEntity.ok(userDetailsService.save(user));
 	}
 
 	private void authenticate(String username, String password) throws Exception {
@@ -55,4 +64,5 @@ public class JwtAuthenticationController {
 			throw new Exception("INVALID_CREDENTIALS", e);
 		}
 	}
+	
 }
