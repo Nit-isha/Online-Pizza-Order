@@ -1,8 +1,6 @@
 package com.cg.onlinepizza.pizza.service;
 
 import java.util.List;
-
-import com.cg.onlinepizza.entity.Pizza;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;

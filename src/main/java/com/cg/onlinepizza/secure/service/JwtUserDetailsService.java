@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.entity.Customer;
-import com.cg.onlinepizza.secure.model.Admin;
 import com.cg.onlinepizza.secure.model.User;
 import com.cg.onlinepizza.secure.repository.UserRepository;
 import java.util.Arrays;

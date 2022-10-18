@@ -2,8 +2,6 @@ package com.cg.onlinepizza.pizzaorder.service;
 
 import java.time.LocalDate;
 import java.util.List;
-
-
 import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
 
 public interface IPizzaOrderService {

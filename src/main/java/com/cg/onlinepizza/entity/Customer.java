@@ -8,13 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import com.cg.onlinepizza.secure.model.User;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-
 @Entity
-@Getter(value = AccessLevel.PUBLIC)
-@Setter(value = AccessLevel.PUBLIC)
 public class Customer extends User{
 	@NotBlank
 	private String customerName;
@@ -32,6 +26,37 @@ public class Customer extends User{
 	@OneToMany(mappedBy = "customer")
 	private List<PizzaOrder> pizzaOrder;
 	
+    public String getCustomerName() {
+        return customerName;
+    }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    public String getCustomerMobile() {
+        return customerMobile;
+    }
+    public void setCustomerMobile(String customerMobile) {
+        this.customerMobile = customerMobile;
+    }
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
+    }
+    public List<PizzaOrder> getPizzaOrder() {
+        return pizzaOrder;
+    }
+    public void setPizzaOrder(List<PizzaOrder> pizzaOrder) {
+        this.pizzaOrder = pizzaOrder;
+    }
+	
 	
 //	public Customer(String userName, String password) {
 //		super(userName,password);
@@ -44,4 +69,6 @@ public class Customer extends User{
 //		this.customerEmail = customerEmail;
 //		this.customerAddress = customerAddress;
 //	}
+	
+	
 }
