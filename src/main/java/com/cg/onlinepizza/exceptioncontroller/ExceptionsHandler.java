@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
@@ -57,5 +58,10 @@ public class ExceptionsHandler {
         APIError error = new APIError("Customer not found", 404);
         return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
     }
-	
+    
+    @ExceptionHandler(CouponAlreadyExistException.class)
+    public ResponseEntity<APIError> couponAlreadyExistExceptionHandler(Exception e) {
+        APIError error = new APIError("Coupon already exist in database", 400);
+        return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
+    }
 }

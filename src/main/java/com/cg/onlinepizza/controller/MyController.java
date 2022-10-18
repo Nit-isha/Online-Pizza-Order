@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cg.onlinepizza.coupon.dto.CouponDto;
+import com.cg.onlinepizza.coupon.service.ICouponService;
 import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.customer.service.ICustomerService;
+import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
+import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
@@ -30,6 +34,8 @@ public class MyController {
 	private IPizzaService pizzaService;
 	@Autowired
 	private ICustomerService customerService;
+	@Autowired
+	private ICouponService couponService;
 	
 	/*-----------------  Pizza Service Controllers  -----------------*/
 	
@@ -103,4 +109,44 @@ public class MyController {
 	public ResponseEntity<CustomerDto> deleteCustomerById(@PathVariable int custId) throws CustomerIdNotFoundException{
 		return new ResponseEntity<CustomerDto>(customerService.deleteCustomer(custId), HttpStatus.OK);
 	}
+	
+	/*-----------------  Coupon Service Controllers  -----------------*/
+	
+	/*Add Coupon to DB [Only Admin can access]*/
+	@PostMapping(path = "/coupon",produces = {"application/json","application/xml"},
+			consumes = {"application/json","application/xml"})
+//	@PreAuthorize("hasAuthority('admin')")
+	public ResponseEntity<CouponDto> addCoupon(@RequestBody CouponDto couponDto) throws CouponAlreadyExistException {
+		return new ResponseEntity<CouponDto>(couponService.addCoupons(couponDto), HttpStatus.OK);
+	}
+	
+	//Delete Coupon from DB [Only Admin can access]
+	@DeleteMapping(path = "/coupon/{couponId}", produces = {"application/json","application/xml"})
+//	@PreAuthorize("hasAuthority('admin')")
+	public ResponseEntity<CouponDto> deleteCouponById(@PathVariable int couponId) throws CouponIdNotFoundException{
+		return new ResponseEntity<CouponDto>(couponService.deleteCoupons(couponId), HttpStatus.OK);
+	}
+	
+	//Get Coupon List [Both Admin and User can access]
+	@GetMapping(path = "/coupon", produces = {"application/json","application/xml"})
+	public ResponseEntity<List<CouponDto>> getCouponList() {
+		List<CouponDto> couponList = couponService.viewCoupons();
+		return new ResponseEntity<List<CouponDto>>(couponList, HttpStatus.OK);
+	}
+	
+	/*Update Coupon[Only Admin can access]*/
+	@PutMapping(path = "/coupon/{couponId}",produces = {"application/json","application/xml"},
+			consumes = {"application/json","application/xml"})
+//	@PreAuthorize("hasAuthority('admin')")
+	public ResponseEntity<CouponDto> editCoupon(@PathVariable int couponId,@RequestBody CouponDto couponDto) throws CouponIdNotFoundException{
+		return new ResponseEntity<CouponDto>(couponService.editCoupons(couponId,couponDto), HttpStatus.OK);
+	}
+	
+	/*Get Coupon By ID [Both Admin and User can access]*/
+	@GetMapping(path = "/coupon/{couponId}", produces = {"application/json","application/xml"})
+	public ResponseEntity<CouponDto> viewCouponId(@PathVariable int couponId) throws CouponIdNotFoundException{
+		return new ResponseEntity<CouponDto>(couponService.viewCouponId(couponId), HttpStatus.OK);
+	}
+	
 }
+
