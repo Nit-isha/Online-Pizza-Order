@@ -8,8 +8,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cg.onlinepizza.coupon.dao.ICouponRepository;
+import com.cg.onlinepizza.customer.dao.ICustomerRepository;
 import com.cg.onlinepizza.entity.Pizza;
 import com.cg.onlinepizza.entity.PizzaOrder;
+import com.cg.onlinepizza.pizza.dao.IPizzaRepository;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
 import com.cg.onlinepizza.pizzaorder.dao.IPizzaOrderRepository;
 import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
@@ -19,6 +22,12 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 
 	@Autowired
 	private IPizzaOrderRepository iPizzaOrderRepository;
+	@Autowired
+	private ICouponRepository iCouponRepository;
+	@Autowired
+	private IPizzaRepository iPizzaRepository;
+	@Autowired
+	private ICustomerRepository iCustomerRepository;
 	
 	//Returns all the existing orders in database
 	@Override
@@ -83,11 +92,11 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	public PizzaOrder dtoToEntity(PizzaOrderDto pizzaOrder) {
 		PizzaOrder p = new PizzaOrder();
 		p.setBookingOrderId(pizzaOrder.getBookingOrderId());
-		p.setCoupon(iPizzaOrderRepository.getCouponByName(pizzaOrder.getCouponName()));
-		p.setCustomer(iPizzaOrderRepository.getCustomerById(pizzaOrder.getCustId()));
+		p.setCoupon(iCouponRepository.getCouponByName(pizzaOrder.getCouponName()));
+		p.setCustomer(iCustomerRepository.getCustomerById(pizzaOrder.getCustId()));
 		p.setOrderDate(pizzaOrder.getOrderDate());
 		p.setOrderType(pizzaOrder.getOrderType());
-		p.setPizza(iPizzaOrderRepository.getPizzaById(pizzaOrder.getPizzaIdList()));
+		p.setPizza(iPizzaRepository.getPizzaById(pizzaOrder.getPizzaIdList()));
 		p.setQuantity(pizzaOrder.getQuantity());
 		p.setSize(pizzaOrder.getSize());
 		p.setTotalCost(pizzaOrder.getTotalCost());
