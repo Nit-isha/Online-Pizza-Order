@@ -24,12 +24,11 @@ import com.cg.onlinepizza.pizza.service.IPizzaService;
 public class IPizzaServiceImplTest {
     @MockBean
     private IPizzaRepository iPizzaRepository;
+    @MockBean
+    private Pizza pizza;
     
     @Autowired
     private IPizzaService iPizzaService;
-    
-    @MockBean
-    private Pizza pizza;
     
     private static List<Pizza> pizzaList = new ArrayList<>();
     
@@ -77,7 +76,7 @@ public class IPizzaServiceImplTest {
     @Test
     void testViewPizzaList() {
         when(iPizzaRepository.findAll()).thenReturn(pizzaList);
-        List<PizzaDto> pList = iPizzaService.viewPizzaList();
+        List<PizzaDto> pList = iPizzaService.viewPizzaList(); 
         assertEquals(pizzaList.size(), pList.size());
     }
     
@@ -89,23 +88,23 @@ public class IPizzaServiceImplTest {
     	List<PizzaDto> pList = iPizzaService.viewPizzaList(min, max);
     	assertEquals(pizzaList.size(), pList.size());
     }
-       
+    
     public Pizza dtoToEntity(PizzaDto pizza) {
-		Pizza p = new Pizza();
-		p.setPizzaId(pizza.getPizzaId());
-		p.setPizzaName(pizza.getPizzaName());
-		p.setPizzaType(pizza.getPizzaType());
-		p.setPizzaDescription(pizza.getPizzaDescription());
-		p.setPizzaCost(pizza.getPizzaCost());
-		return p;
-	}
-	public PizzaDto entityToDto(Pizza pizza) {
-		PizzaDto p = new PizzaDto();
-		p.setPizzaId(pizza.getPizzaId());
-		p.setPizzaName(pizza.getPizzaName());
-		p.setPizzaType(pizza.getPizzaType());
-		p.setPizzaDescription(pizza.getPizzaDescription());
-		p.setPizzaCost(pizza.getPizzaCost());
-		return p;
-	}
+        Pizza p = new Pizza();
+        p.setPizzaId(pizza.getPizzaId());
+        p.setPizzaName(pizza.getPizzaName());
+        p.setPizzaType(pizza.getPizzaType());
+        p.setPizzaDescription(pizza.getPizzaDescription());
+        p.setPizzaCost(pizza.getPizzaCost());
+        return p;
+    }
+    public PizzaDto entityToDto(Pizza pizza) {
+        PizzaDto p = new PizzaDto();
+        p.setPizzaId(pizza.getPizzaId());
+        p.setPizzaName(pizza.getPizzaName());
+        p.setPizzaType(pizza.getPizzaType());
+        p.setPizzaDescription(pizza.getPizzaDescription());
+        p.setPizzaCost(pizza.getPizzaCost());
+        return p;
+    }
 }
