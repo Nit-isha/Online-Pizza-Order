@@ -1,5 +1,6 @@
 package com.cg.onlinepizza.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,19 +156,20 @@ public class MyController {
 	
 	/*-----------------  Pizza Order Service Controllers  -----------------*/
 	
-	@GetMapping(path="/customers/{custId}/orders", produces = {"application/json","application/xml"} )
-	public ResponseEntity<List<PizzaOrderDto>> viewCustomerOrderHistory(){
-		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersList(), HttpStatus.OK);
+	@GetMapping(path="/orders", produces = {"application/json","application/xml"} )
+	public ResponseEntity<List<PizzaOrderDto>> viewCustomerOrderHistory(Principal currentCustomer){
+		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersList(currentCustomer), HttpStatus.OK);
 	}
 	/*Admin only---*/
-	@GetMapping(path="/orders", produces = {"application/json","application/xml"} )
+	@GetMapping(path="/allorders", produces = {"application/json","application/xml"} )
 	public ResponseEntity<List<PizzaOrderDto>> viewAllOrders(){
 		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewOrdersList(), HttpStatus.OK);
 	}
+	
 	@PostMapping(path="/order/neworder", produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
-	public ResponseEntity<PizzaOrderDto> bookPizzaOrder(PizzaOrderDto pizzaOrderDto) {
-		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.bookPizzaOrder(pizzaOrderDto), HttpStatus.OK);
+	public ResponseEntity<PizzaOrderDto> bookPizzaOrder(Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) {
+		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.bookPizzaOrder(currentCustomer,pizzaOrderDto), HttpStatus.OK);
 	}
 	
 }

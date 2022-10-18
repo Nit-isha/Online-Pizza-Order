@@ -69,7 +69,7 @@ public class PizzaOrderDto {
 	public void setPizzaIdList(List<Integer> pizzaIdList) {
 		this.pizzaIdList = pizzaIdList;
 	}
-	public int getCustId() {
+	public int getCustId() { 
 		return custId;
 	}
 	public void setCustId(int custId) {

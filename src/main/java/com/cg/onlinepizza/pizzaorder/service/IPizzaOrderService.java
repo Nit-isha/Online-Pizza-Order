@@ -1,12 +1,13 @@
 package com.cg.onlinepizza.pizzaorder.service;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
 
 public interface IPizzaOrderService {
 	
-	PizzaOrderDto bookPizzaOrder(PizzaOrderDto order);
+	PizzaOrderDto bookPizzaOrder(Principal currentCustomer, PizzaOrderDto order);
 	
 	PizzaOrderDto updatePizzaOrder(PizzaOrderDto order);
 	
@@ -16,7 +17,7 @@ public interface IPizzaOrderService {
 	
 	List<PizzaOrderDto> viewOrdersList();		//displays all orders to admin
 	
-	List<PizzaOrderDto> viewCustomerOrdersList();	//Displays customer's order history
+	List<PizzaOrderDto> viewCustomerOrdersList(Principal currentCustomer);	//Displays customer's order history
 	
 	PizzaOrderDto viewOrdersByDate(LocalDate date);
 	

@@ -1,8 +1,10 @@
 package com.cg.onlinepizza.pizzaorder.service;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,15 @@ import org.springframework.stereotype.Component;
 
 import com.cg.onlinepizza.coupon.dao.ICouponRepository;
 import com.cg.onlinepizza.customer.dao.ICustomerRepository;
+import com.cg.onlinepizza.entity.Customer;
 import com.cg.onlinepizza.entity.Pizza;
 import com.cg.onlinepizza.entity.PizzaOrder;
 import com.cg.onlinepizza.pizza.dao.IPizzaRepository;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
 import com.cg.onlinepizza.pizzaorder.dao.IPizzaOrderRepository;
 import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
+import com.cg.onlinepizza.secure.model.User;
+import com.cg.onlinepizza.secure.repository.UserRepository;
 
 @Component
 public class IPizzaOrderServiceImpl implements IPizzaOrderService {
@@ -28,6 +33,8 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	private IPizzaRepository iPizzaRepository;
 	@Autowired
 	private ICustomerRepository iCustomerRepository;
+	@Autowired
+	private UserRepository iUserRepository;
 	
 	//Returns all the existing orders in database
 	@Override
@@ -45,9 +52,31 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	}
 	
 	@Override
-	public PizzaOrderDto bookPizzaOrder(PizzaOrderDto order) {
+	public PizzaOrderDto bookPizzaOrder(Principal currentCustomer, PizzaOrderDto order) {
+		PizzaOrder orderEntity = new PizzaOrder();
+		orderEntity.setBookingOrderId(order.getBookingOrderId());
+		orderEntity.setOrderDate(order.getOrderDate());
+		orderEntity.setTransactionMode(order.getTransactionMode());
+		orderEntity.setSize(order.getSize());
+		orderEntity.setOrderType(order.getOrderType());
+		orderEntity.setCoupon(iCouponRepository.getCouponByName(order.getCouponName()));
 		
-		return null;
+		//get current customer username
+		String custUsername = currentCustomer.getName();
+		//find the user by username
+		User user= iUserRepository.findByUsername(custUsername);
+		//find customer by userid/custid
+		orderEntity.setCustomer(iCustomerRepository.getCustomerById(user.getId()));
+		
+		List<Pizza> orderPizzas = iPizzaRepository.getPizzaListById(order.getPizzaIdList());
+		orderEntity.setPizza(orderPizzas);
+		orderEntity.setQuantity(orderPizzas.size());
+		
+		double totalCost = orderPizzas.stream().mapToDouble(p->p.getPizzaCost()).sum(); 
+		orderEntity.setTotalCost(totalCost);
+		
+		iPizzaOrderRepository.save(orderEntity);
+		return entityToDto(orderEntity);
 	}
 
 	@Override
@@ -63,7 +92,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	}
 
 	@Override
-	public PizzaOrderDto viewPizzaOrder(int pizzaOrderId) {
+	public PizzaOrderDto viewPizzaOrder( int pizzaOrderId) {
 		
 		return null;
 	}
@@ -83,9 +112,22 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	}
 
 	@Override
-	public List<PizzaOrderDto> viewCustomerOrdersList() {
-		
-		return null;
+	public List<PizzaOrderDto> viewCustomerOrdersList(Principal currentCustomer) {
+		String custUsername = currentCustomer.getName();
+		User user= iUserRepository.findByUsername(custUsername);
+		int custId = user.getId();
+		System.out.println(1);
+		System.out.println(custId);
+		List<PizzaOrder> orderHistory= iPizzaOrderRepository.getCustomerPizzaOrderHistory(custId);
+		System.out.println("Query fired");
+		List<PizzaOrderDto> orderHistoryDto = new ArrayList<>();
+		System.out.println(orderHistory);
+		for(PizzaOrder order : orderHistory) {
+			orderHistoryDto.add(entityToDto(order));
+			System.out.println(order);
+		}
+		System.out.println(2);
+		return orderHistoryDto;
 	}
 	
 	/*PizzaOrderDto to Pizza Entity Class Conversion*/
@@ -96,7 +138,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		p.setCustomer(iCustomerRepository.getCustomerById(pizzaOrder.getCustId()));
 		p.setOrderDate(pizzaOrder.getOrderDate());
 		p.setOrderType(pizzaOrder.getOrderType());
-		p.setPizza(iPizzaRepository.getPizzaById(pizzaOrder.getPizzaIdList()));
+		p.setPizza(iPizzaRepository.getPizzaListById(pizzaOrder.getPizzaIdList()));
 		p.setQuantity(pizzaOrder.getQuantity());
 		p.setSize(pizzaOrder.getSize());
 		p.setTotalCost(pizzaOrder.getTotalCost());

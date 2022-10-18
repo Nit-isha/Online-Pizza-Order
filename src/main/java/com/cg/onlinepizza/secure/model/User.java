@@ -5,13 +5,22 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import org.checkerframework.common.aliasing.qual.Unique;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import com.cg.onlinepizza.sequencegen.StringPrefixedSequenceIdGenerator;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "userlogin")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue/*(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @GenericGenerator(name = "user_seq",
+    strategy = "com.cg.onlinepizza.sequencegen.StringPrefixedSequenceIdGenerator",
+    parameters = {
+    	@Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "50"),
+    	@Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "2022"),
+    	@Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%04d")})*/
     private int id;
     @Column
     @NotBlank
