@@ -10,10 +10,12 @@ public class PizzaOrderDto {
 	private int quantity;
 	private String size;
 	private double totalCost;
-	private int couponId;
+	private String couponName;
 	private String orderType;
-	private List<Integer> pizzaId;
-    public int getBookingOrderId() {
+	private List<Integer> pizzaIdList;
+	private int custId;
+    
+	public int getBookingOrderId() {
         return bookingOrderId;
     }
     public void setBookingOrderId(int bookingOrderId) {
@@ -49,24 +51,28 @@ public class PizzaOrderDto {
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
-    public int getCouponId() {
-        return couponId;
-    }
-    public void setCouponId(int couponId) {
-        this.couponId = couponId;
-    }
-    public String getOrderType() {
+    public String getCouponName() {
+		return couponName;
+	}
+	public void setCouponName(String couponName) {
+		this.couponName = couponName;
+	}
+	public String getOrderType() {
         return orderType;
     }
     public void setOrderType(String orderType) {
         this.orderType = orderType;
     }
-    public List<Integer> getPizzaId() {
-        return pizzaId;
-    }
-    public void setPizzaId(List<Integer> pizzaId) {
-        this.pizzaId = pizzaId;
-    }
-	
-	
+	public List<Integer> getPizzaIdList() {
+		return pizzaIdList;
+	}
+	public void setPizzaIdList(List<Integer> pizzaIdList) {
+		this.pizzaIdList = pizzaIdList;
+	}
+	public int getCustId() {
+		return custId;
+	}
+	public void setCustId(int custId) {
+		this.custId = custId;
+	}
 }

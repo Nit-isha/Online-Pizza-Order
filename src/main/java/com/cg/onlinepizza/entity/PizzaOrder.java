@@ -31,6 +31,11 @@ public class PizzaOrder {
 	@OneToOne
 	@JoinColumn(name = "coupon_id")
 	private Coupon coupon;
+	
+	public PizzaOrder() {
+		
+	}
+	
 
     public int getBookingOrderId() {
         return bookingOrderId;
@@ -98,10 +103,6 @@ public class PizzaOrder {
 
     public List<Pizza> getPizza() {
         return pizza;
-    }
-
-    public void setPizza(List<Pizza> pizza) {
-        this.pizza = pizza;
     }
 
     public Coupon getCoupon() {

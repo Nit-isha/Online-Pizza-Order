@@ -27,6 +27,8 @@ import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
 import com.cg.onlinepizza.pizza.service.IPizzaService;
+import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
+import com.cg.onlinepizza.pizzaorder.service.IPizzaOrderService;
 
 @RestController
 public class MyController {
@@ -36,6 +38,8 @@ public class MyController {
 	private ICustomerService customerService;
 	@Autowired
 	private ICouponService couponService;
+	@Autowired
+	private IPizzaOrderService pizzaOrderService;
 	
 	/*-----------------  Pizza Service Controllers  -----------------*/
 	
@@ -146,6 +150,18 @@ public class MyController {
 	@GetMapping(path = "/coupon/{couponId}", produces = {"application/json","application/xml"})
 	public ResponseEntity<CouponDto> viewCouponId(@PathVariable int couponId) throws CouponIdNotFoundException{
 		return new ResponseEntity<CouponDto>(couponService.viewCouponId(couponId), HttpStatus.OK);
+	}
+	
+	/*-----------------  Pizza Order Service Controllers  -----------------*/
+	
+	@GetMapping(path="/customers/{custId}/orders", produces = {"application/json","application/xml"} )
+	public ResponseEntity<List<PizzaOrderDto>> viewCustomerOrderHistory(){
+		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersList(), HttpStatus.OK);
+	}
+	/*Admin only---*/
+	@GetMapping(path="/orders", produces = {"application/json","application/xml"} )
+	public ResponseEntity<List<PizzaOrderDto>> viewAllOrders(){
+		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewOrdersList(), HttpStatus.OK);
 	}
 	
 }
