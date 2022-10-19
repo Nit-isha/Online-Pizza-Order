@@ -160,6 +160,7 @@ public class MyController {
 	public ResponseEntity<List<PizzaOrderDto>> viewCustomerOrderHistory(Principal currentCustomer){
 		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersList(currentCustomer), HttpStatus.OK);
 	}
+	
 	/*Admin only---*/
 	@GetMapping(path="/allorders", produces = {"application/json","application/xml"} )
 	public ResponseEntity<List<PizzaOrderDto>> viewAllOrders(){
@@ -172,5 +173,10 @@ public class MyController {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.bookPizzaOrder(currentCustomer,pizzaOrderDto), HttpStatus.OK);
 	}
 	
+	@PutMapping(path="/order/{orderId}", produces = {"application/json","application/xml"},
+			consumes = {"application/json","application/xml"})
+	public ResponseEntity<PizzaOrderDto> updatePizzaOrder(@PathVariable int orderId,  Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) {
+		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.updatePizzaOrder(currentCustomer,orderId, pizzaOrderDto), HttpStatus.OK);
+	}
 }
 

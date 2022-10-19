@@ -11,6 +11,6 @@ import com.cg.onlinepizza.entity.PizzaOrder;
 
 @Repository
 public interface IPizzaOrderRepository extends CrudRepository <PizzaOrder, Integer> {
-	@Query(value = "select p from PizzaOrder p where p.id =:custid")
+	@Query(value = "select * from pizza_order where cust_id =:custid", nativeQuery = true)
 	List<PizzaOrder> getCustomerPizzaOrderHistory(@Param ("custid") int custid);	
 }

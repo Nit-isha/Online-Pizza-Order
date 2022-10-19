@@ -51,6 +51,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		return pizzaOrderDtoList;
 	}
 	
+	
 	@Override
 	public PizzaOrderDto bookPizzaOrder(Principal currentCustomer, PizzaOrderDto order) {
 		PizzaOrder orderEntity = new PizzaOrder();
@@ -80,8 +81,12 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	}
 
 	@Override
-	public PizzaOrderDto updatePizzaOrder(PizzaOrderDto order) {
-		// TODO Auto-generated method stub
+	public PizzaOrderDto updatePizzaOrder(Principal currentCustomer,int orderId,  PizzaOrderDto order) {
+		String custUsername = currentCustomer.getName();
+		User user= iUserRepository.findByUsername(custUsername);
+		int custId = user.getId();
+		
+		
 		return null;
 	}
 
@@ -116,17 +121,17 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		String custUsername = currentCustomer.getName();
 		User user= iUserRepository.findByUsername(custUsername);
 		int custId = user.getId();
-		System.out.println(1);
-		System.out.println(custId);
+		//System.out.println(1);
+		//System.out.println(custId);
 		List<PizzaOrder> orderHistory= iPizzaOrderRepository.getCustomerPizzaOrderHistory(custId);
-		System.out.println("Query fired");
+		//System.out.println("Query fired");
 		List<PizzaOrderDto> orderHistoryDto = new ArrayList<>();
-		System.out.println(orderHistory);
+		//System.out.println(orderHistory);
 		for(PizzaOrder order : orderHistory) {
 			orderHistoryDto.add(entityToDto(order));
 			System.out.println(order);
 		}
-		System.out.println(2);
+		//System.out.println(2);
 		return orderHistoryDto;
 	}
 	

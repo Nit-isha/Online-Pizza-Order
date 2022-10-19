@@ -9,7 +9,7 @@ public interface IPizzaOrderService {
 	
 	PizzaOrderDto bookPizzaOrder(Principal currentCustomer, PizzaOrderDto order);
 	
-	PizzaOrderDto updatePizzaOrder(PizzaOrderDto order);
+	PizzaOrderDto updatePizzaOrder(Principal currentCustomer, int orderId,PizzaOrderDto order);
 	
 	PizzaOrderDto cancelPizzaOrder(int pizzaOrderId);
 	
