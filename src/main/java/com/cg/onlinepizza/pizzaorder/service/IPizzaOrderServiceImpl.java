@@ -2,6 +2,9 @@ package com.cg.onlinepizza.pizzaorder.service;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Duration;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +15,12 @@ import org.springframework.stereotype.Component;
 
 import com.cg.onlinepizza.coupon.dao.ICouponRepository;
 import com.cg.onlinepizza.customer.dao.ICustomerRepository;
+import com.cg.onlinepizza.entity.Coupon;
 import com.cg.onlinepizza.entity.Customer;
 import com.cg.onlinepizza.entity.Pizza;
 import com.cg.onlinepizza.entity.PizzaOrder;
+import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
+import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
 import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
 import com.cg.onlinepizza.pizza.dao.IPizzaRepository;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
@@ -22,6 +28,8 @@ import com.cg.onlinepizza.pizzaorder.dao.IPizzaOrderRepository;
 import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
 import com.cg.onlinepizza.secure.model.User;
 import com.cg.onlinepizza.secure.repository.UserRepository;
+
+
 
 @Component
 public class IPizzaOrderServiceImpl implements IPizzaOrderService {
@@ -57,18 +65,10 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	public PizzaOrderDto bookPizzaOrder(Principal currentCustomer, PizzaOrderDto order) {
 		PizzaOrder orderEntity = new PizzaOrder();
 		orderEntity.setBookingOrderId(order.getBookingOrderId());
-		orderEntity.setOrderDate(order.getOrderDate());
 		orderEntity.setTransactionMode(order.getTransactionMode());
 		orderEntity.setSize(order.getSize());
 		orderEntity.setOrderType(order.getOrderType());
 		orderEntity.setCoupon(iCouponRepository.getCouponByName(order.getCouponName()));
-		
-		/*//get current customer username
-		String custUsername = currentCustomer.getName();
-		//find the user by username
-		User user= iUserRepository.findByUsername(custUsername);
-		//find customer by userid/custid
-		orderEntity.setCustomer(iCustomerRepository.getCustomerById(user.getId()));*/
 		
 		List<Pizza> orderPizzas = iPizzaRepository.getPizzaListById(order.getPizzaIdList());
 		
@@ -77,6 +77,8 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		orderEntity.setPizza(orderPizzas);
 		orderEntity.setQuantity(orderPizzas.size());
 		orderEntity.setTotalCost(calcTotal(orderPizzas));
+		
+		orderEntity.setOrderDate(LocalDateTime.now());
 		
 		iPizzaOrderRepository.save(orderEntity);
 		return entityToDto(orderEntity);
@@ -95,6 +97,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 			updateEntity.setQuantity(updatedPizzaList.size());
 			updateEntity.setTotalCost(calcTotal(updatedPizzaList));
 			updateEntity.setCustomer(getCustomer(currentCustomer));
+			updateEntity.setOrderDate(LocalDateTime.now());
 			
 			iPizzaOrderRepository.save(updateEntity);
 			
@@ -107,8 +110,18 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	}
 
 	@Override
-	public PizzaOrderDto cancelPizzaOrder(int pizzaOrderId) {
-		// TODO Auto-generated method stub
+	public PizzaOrderDto cancelPizzaOrder(Principal currentCustomer, int bookingOrderId) throws OrderIdNotFoundException, OrderCancelDeclinedException {
+		
+		LocalDateTime currTime = LocalDateTime.now();
+		PizzaOrderDto order = viewCustomerPizzaOrderById(currentCustomer, bookingOrderId);
+		LocalDateTime bookingTime = order.getOrderDate();
+		
+		if(timeDiffValidation(bookingTime, currTime)) {
+			iPizzaOrderRepository.delete(dtoToEntity(order));
+		}
+		else {
+			throw new OrderCancelDeclinedException();
+		}
 		return null;
 	}
 
@@ -124,11 +137,10 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 			throw new OrderIdNotFoundException();
 		}
 	}
-	//Admin access only
+	
 	@Override
 	public PizzaOrderDto viewCustomerPizzaOrderById( Principal currentCustomer, int pizzaOrderId) throws OrderIdNotFoundException {
 		List<PizzaOrderDto> orderHistory= viewCustomerOrdersList(currentCustomer);
-		
 		Optional<PizzaOrderDto> optionalOrderDto = orderHistory.stream().filter(p->p.getBookingOrderId() == pizzaOrderId).findFirst();
 		if(optionalOrderDto.isPresent()) {
 			return optionalOrderDto.get();
@@ -204,6 +216,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		double totalCost = orderPizzas.stream().mapToDouble(p->p.getPizzaCost()).sum();
 		return totalCost;
 	}
+	
 	public Customer getCustomer(Principal currentCustomer) {
 		String custUsername = currentCustomer.getName();
 		User user= iUserRepository.findByUsername(custUsername);
@@ -211,6 +224,13 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		return cust;
 	}
 	
-	
-	
+	public Boolean timeDiffValidation(LocalDateTime bookingTime, LocalDateTime currentTime) {
+		Boolean flag=true;
+		Duration timeDiff = Duration.between(bookingTime, currentTime);
+		if(timeDiff.toMinutes() > 15) {
+			flag = false;
+		}
+		return flag;
+		
+	}
 }

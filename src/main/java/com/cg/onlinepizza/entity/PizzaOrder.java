@@ -1,6 +1,7 @@
 package com.cg.onlinepizza.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ import javax.persistence.OneToOne;
 public class PizzaOrder {
 	@Id
 	private int bookingOrderId;
-	private LocalDate orderDate;
+	private LocalDateTime orderDate;
 	private String transactionMode;
 	private int quantity;
 	private String size;
@@ -46,11 +47,11 @@ public class PizzaOrder {
         this.bookingOrderId = bookingOrderId;
     }
 
-    public LocalDate getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDate orderDate) {
+    public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
 

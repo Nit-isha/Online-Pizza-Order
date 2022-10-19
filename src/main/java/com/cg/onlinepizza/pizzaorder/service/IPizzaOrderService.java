@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
 import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
 import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
 
@@ -13,7 +14,7 @@ public interface IPizzaOrderService {
 	
 	PizzaOrderDto updatePizzaOrder(Principal currentCustomer, int orderId,PizzaOrderDto order) throws OrderIdNotFoundException;
 	
-	PizzaOrderDto cancelPizzaOrder(int pizzaOrderId);
+	PizzaOrderDto cancelPizzaOrder(Principal currentCustomer, int bookingOrderId)throws OrderIdNotFoundException, OrderCancelDeclinedException ;
 	
 	PizzaOrderDto viewPizzaOrder(int pizzaOrderId) throws OrderIdNotFoundException;
 	
