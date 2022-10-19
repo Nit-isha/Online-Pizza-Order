@@ -25,6 +25,7 @@ import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
+import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
 import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
@@ -188,6 +189,10 @@ public class MyController {
 	@GetMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"})
 	public ResponseEntity<PizzaOrderDto> viewCustomerPizzaOrderById(@PathVariable int orderId,  Principal currentCustomer) throws OrderIdNotFoundException {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.viewCustomerPizzaOrderById(currentCustomer,orderId), HttpStatus.OK);
+	}
+	@DeleteMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"})
+	public ResponseEntity<PizzaOrderDto> cancelPizzaOrder(Principal currentCustomer,@PathVariable int orderId) throws OrderIdNotFoundException, OrderCancelDeclinedException {
+		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.cancelPizzaOrder(currentCustomer,orderId), HttpStatus.OK);
 	}
 }
 

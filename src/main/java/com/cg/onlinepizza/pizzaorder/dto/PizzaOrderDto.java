@@ -1,11 +1,12 @@
 package com.cg.onlinepizza.pizzaorder.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class PizzaOrderDto {
 	private int bookingOrderId;
-	private LocalDate orderDate;
+	private LocalDateTime orderDate;
 	private String transactionMode;
 	private int quantity;
 	private String size;
@@ -21,13 +22,14 @@ public class PizzaOrderDto {
     public void setBookingOrderId(int bookingOrderId) {
         this.bookingOrderId = bookingOrderId;
     }
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-    public void setOrderDate(LocalDate orderDate) {
-        this.orderDate = orderDate;
-    }
-    public String getTransactionMode() {
+   
+    public LocalDateTime getOrderDate() {
+		return orderDate;
+	}
+	public void setOrderDate(LocalDateTime orderDate) {
+		this.orderDate = orderDate;
+	}
+	public String getTransactionMode() {
         return transactionMode;
     }
     public void setTransactionMode(String transactionMode) {

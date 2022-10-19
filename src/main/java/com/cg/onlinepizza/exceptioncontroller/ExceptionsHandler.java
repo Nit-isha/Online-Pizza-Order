@@ -12,6 +12,7 @@ import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
+import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
 import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
@@ -55,14 +56,14 @@ public class ExceptionsHandler {
 	
 	/*Customer Already Exists in Database Exception Handler*/
 	@ExceptionHandler(CustomerAlreadyExistException.class)
-    public ResponseEntity<APIError> CustomerAlreadyExistExceptionHandler(Exception e){
+    public ResponseEntity<APIError> customerAlreadyExistExceptionHandler(Exception e){
         APIError error = new APIError("Customer already exist in database", 400);
         return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
     }
 	
 	/*Customer ID Not Found Exception Handler*/
     @ExceptionHandler(CustomerIdNotFoundException.class)
-    public ResponseEntity<APIError> CustomerIdNotFoundExceptionHandler(Exception e) {
+    public ResponseEntity<APIError> customerIdNotFoundExceptionHandler(Exception e) {
         APIError error = new APIError("Customer Not Found", 404);
         return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
     }
@@ -78,7 +79,7 @@ public class ExceptionsHandler {
     
     /*Coupon ID Not Found Exception Handler*/
     @ExceptionHandler(CouponIdNotFoundException.class)
-    public ResponseEntity<APIError> CouponIdNotFoundExceptionHandler(Exception e) {
+    public ResponseEntity<APIError> couponIdNotFoundExceptionHandler(Exception e) {
         APIError error = new APIError("Coupon Not Found", 404);
         return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
 	}
@@ -87,8 +88,16 @@ public class ExceptionsHandler {
     
     /*Order ID Not Found Exception Handler*/
     @ExceptionHandler(OrderIdNotFoundException.class)
-    public ResponseEntity<APIError> OrderIdNotFoundExceptionHandler(Exception e) {
+    public ResponseEntity<APIError> orderIdNotFoundExceptionHandler(Exception e) {
         APIError error = new APIError("OrderId Not Found", 404);
         return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
     }
+    
+    @ExceptionHandler(OrderCancelDeclinedException.class)
+    public ResponseEntity<APIError> orderCancelDeclinedExceptionHandler(Exception e) {
+    	APIError error = new APIError("Oops!! Order cannot be cancelled after 15 minutes.", 400);
+    	return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
+    }
+    
+    
 }
