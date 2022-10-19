@@ -1,10 +1,19 @@
 package com.cg.onlinepizza.customer.dto;
 
-public class CustomerDto {
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
+public class CustomerDto {
+	@NotBlank
 	private String customerName;
+	/*Mobile Number length must be equal to 10.*/
+	@Pattern(regexp="^[6-9][0-9]{9}", message="length must be 10")
 	private String customerMobile;
+	/*Email Validation using regex*/
+	@Email(regexp = "[a-z0-9]+@[a-z0-9.-]+\\.[a-z]{2,3}")
 	private String customerEmail;
+	@NotBlank
 	private String customerAddress;
 	private String username;
 	private String password;
