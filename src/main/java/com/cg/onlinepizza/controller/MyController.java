@@ -25,6 +25,7 @@ import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
+import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
@@ -160,17 +161,33 @@ public class MyController {
 	public ResponseEntity<List<PizzaOrderDto>> viewCustomerOrderHistory(Principal currentCustomer){
 		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersList(currentCustomer), HttpStatus.OK);
 	}
+	
 	/*Admin only---*/
 	@GetMapping(path="/allorders", produces = {"application/json","application/xml"} )
 	public ResponseEntity<List<PizzaOrderDto>> viewAllOrders(){
 		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewOrdersList(), HttpStatus.OK);
 	}
+	/*Admin only---*/
+	@GetMapping(path="/allorders/{orderId}", produces = {"application/json","application/xml"})
+	public ResponseEntity<PizzaOrderDto> viewPizzaOrder(@PathVariable int orderId) throws OrderIdNotFoundException {
+		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.viewPizzaOrder(orderId), HttpStatus.OK);
+	}
 	
-	@PostMapping(path="/order/neworder", produces = {"application/json","application/xml"},
+	@PostMapping(path="/orders/neworder", produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	public ResponseEntity<PizzaOrderDto> bookPizzaOrder(Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.bookPizzaOrder(currentCustomer,pizzaOrderDto), HttpStatus.OK);
 	}
 	
+	@PutMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"},
+			consumes = {"application/json","application/xml"})
+	public ResponseEntity<PizzaOrderDto> updatePizzaOrder(@PathVariable int orderId,  Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) throws OrderIdNotFoundException {
+		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.updatePizzaOrder(currentCustomer,orderId, pizzaOrderDto), HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"})
+	public ResponseEntity<PizzaOrderDto> viewCustomerPizzaOrderById(@PathVariable int orderId,  Principal currentCustomer) throws OrderIdNotFoundException {
+		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.viewCustomerPizzaOrderById(currentCustomer,orderId), HttpStatus.OK);
+	}
 }
 

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -24,7 +25,7 @@ public class PizzaOrder {
 	@JoinColumn(name = "custId")
 	private Customer customer;
 	
-	@OneToMany
+	@ManyToMany
 	@JoinColumn(name = "booking_id")
 	private List<Pizza> pizza;
 	

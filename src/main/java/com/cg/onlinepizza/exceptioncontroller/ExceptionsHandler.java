@@ -12,6 +12,7 @@ import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
+import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 
@@ -81,4 +82,13 @@ public class ExceptionsHandler {
         APIError error = new APIError("Coupon Not Found", 404);
         return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
 	}
+    
+    /*-----------------  PizzaOrder Exceptions  -----------------*/
+    
+    /*Order ID Not Found Exception Handler*/
+    @ExceptionHandler(OrderIdNotFoundException.class)
+    public ResponseEntity<APIError> OrderIdNotFoundExceptionHandler(Exception e) {
+        APIError error = new APIError("OrderId Not Found", 404);
+        return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
+    }
 }
