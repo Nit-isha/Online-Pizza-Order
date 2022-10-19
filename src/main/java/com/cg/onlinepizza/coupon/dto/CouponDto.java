@@ -5,7 +5,7 @@ public class CouponDto {
 	private String couponName;
 	private String couponType;
 	private String couponDescription;
-	private int couponPizzaId;
+	
 	public int getCouponId() {
 		return couponId;
 	}
@@ -30,12 +30,7 @@ public class CouponDto {
 	public void setCouponDescription(String couponDescription) {
 		this.couponDescription = couponDescription;
 	}
-	public int getCouponPizzaId() {
-		return couponPizzaId;
-	}
-	public void setCouponPizzaId(int couponPizzaId) {
-		this.couponPizzaId = couponPizzaId;
-	}
+	
 
 	
 	

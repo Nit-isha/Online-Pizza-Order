@@ -1,9 +1,13 @@
 package com.cg.onlinepizza.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,14 +28,17 @@ import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
+import com.cg.onlinepizza.exceptions.NoOrdersFoundException;
 import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
 import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
+import com.cg.onlinepizza.exceptions.OrderUpdateDeclinedException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
 import com.cg.onlinepizza.pizza.service.IPizzaService;
 import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
 import com.cg.onlinepizza.pizzaorder.service.IPizzaOrderService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @RestController
 public class MyController {
@@ -194,7 +201,7 @@ public class MyController {
 	/*Update Pizza Order [Both Admin and User can access]*/
 	@PutMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
-	public ResponseEntity<PizzaOrderDto> updatePizzaOrder(@PathVariable int orderId, Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) throws OrderIdNotFoundException {
+	public ResponseEntity<PizzaOrderDto> updatePizzaOrder(@PathVariable int orderId, Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) throws OrderIdNotFoundException, OrderUpdateDeclinedException {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.updatePizzaOrder(currentCustomer,orderId, pizzaOrderDto), HttpStatus.OK);
 	}
 	
@@ -209,5 +216,21 @@ public class MyController {
 	public ResponseEntity<PizzaOrderDto> cancelPizzaOrder(Principal currentCustomer,@PathVariable int orderId) throws OrderIdNotFoundException, OrderCancelDeclinedException {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.cancelPizzaOrder(currentCustomer,orderId), HttpStatus.OK);
 	}
+	
+	/*Filter All Orders By Date [Only Admin can access]*/
+	@GetMapping(path="/allorders/ordersbydate", produces = {"application/json","application/xml"}, consumes = {"application/json","application/xml"})
+	public ResponseEntity<List<PizzaOrderDto>> viewAllOrdersByDate(@RequestParam(value="date") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate date) throws NoOrdersFoundException {
+		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewAllOrdersByDate(date), HttpStatus.OK);
+		//localhost:8081/allorders/ordersbydate?date=2022-10-19
+	}
+	
+	/*Filter All Orders By Date [Only Customer can access]*/
+		@GetMapping(path="/orders/ordersbydate", produces = {"application/json","application/xml"}, consumes = {"application/json","application/xml"})
+	public ResponseEntity<List<PizzaOrderDto>> viewCustomerOrdersByDate(Principal currentCustomer,@RequestParam(value="date") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate date) throws NoOrdersFoundException {
+	return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersByDate(currentCustomer,date), HttpStatus.OK);
+	//localhost:8081/orders/ordersbydate?date=2022-10-19
+	}
+	
+	
 }
 

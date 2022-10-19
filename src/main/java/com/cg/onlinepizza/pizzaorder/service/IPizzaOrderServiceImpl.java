@@ -3,6 +3,7 @@ package com.cg.onlinepizza.pizzaorder.service;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +18,16 @@ import com.cg.onlinepizza.customer.dao.ICustomerRepository;
 import com.cg.onlinepizza.entity.Customer;
 import com.cg.onlinepizza.entity.Pizza;
 import com.cg.onlinepizza.entity.PizzaOrder;
+import com.cg.onlinepizza.exceptions.NoOrdersFoundException;
 import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
 import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
+import com.cg.onlinepizza.exceptions.OrderUpdateDeclinedException;
 import com.cg.onlinepizza.pizza.dao.IPizzaRepository;
 import com.cg.onlinepizza.pizzaorder.dao.IPizzaOrderRepository;
 import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
 import com.cg.onlinepizza.secure.model.User;
 import com.cg.onlinepizza.secure.repository.UserRepository;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Component
 public class IPizzaOrderServiceImpl implements IPizzaOrderService {
@@ -67,9 +71,13 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		orderEntity.setOrderDate(LocalDateTime.now());
 		orderEntity.setCustomer(getCustomer(currentCustomer));
 		
-		List<Pizza> orderPizzas = iPizzaRepository.getPizzaListById(order.getPizzaIdList());
+		List<Integer> pizzaIds = order.getPizzaIdList();
+		List<Pizza> orderPizzas = new ArrayList<>();
+		for(int id : pizzaIds) {
+			orderPizzas.add(iPizzaRepository.findById(id).get());
+		}
 		orderEntity.setPizza(orderPizzas);
-		orderEntity.setQuantity(orderPizzas.size());
+		orderEntity.setQuantity(pizzaIds.size());
 		orderEntity.setTotalCost(calcTotal(orderPizzas));
 		
 		iPizzaOrderRepository.save(orderEntity);
@@ -78,22 +86,37 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*--- Update Pizza order ---*/
 	@Override
-	public PizzaOrderDto updatePizzaOrder(Principal currentCustomer, int orderId, PizzaOrderDto order) throws OrderIdNotFoundException {
+	public PizzaOrderDto updatePizzaOrder(Principal currentCustomer, int orderId, PizzaOrderDto order) throws OrderIdNotFoundException, OrderUpdateDeclinedException {
+		LocalDateTime currTime = LocalDateTime.now();
+		PizzaOrderDto orderDto = viewCustomerPizzaOrderById(currentCustomer, orderId);
+		LocalDateTime bookingTime = orderDto.getOrderDate();
+		
 		List<PizzaOrderDto> orderHistory = viewCustomerOrdersList(currentCustomer);
 		
 		Optional<PizzaOrderDto> optionalOrderDto = orderHistory.stream().filter(p -> p.getBookingOrderId() == orderId).findFirst();
 		if(optionalOrderDto.isPresent()) {
-			
+			if(timeDiffValidation(bookingTime, currTime)) {
 			PizzaOrder updateEntity = dtoToEntity(order);
 			updateEntity.setBookingOrderId(optionalOrderDto.get().getBookingOrderId());
-			List<Pizza> updatedPizzaList = updateEntity.getPizza();
-			updateEntity.setQuantity(updatedPizzaList.size());
+			
+			List<Integer> updatedPizzaIds = order.getPizzaIdList();
+			List<Pizza> updatedPizzaList = new ArrayList<>();
+			for(int id : updatedPizzaIds) {
+				updatedPizzaList.add(iPizzaRepository.findById(id).get());
+			}
+			updateEntity.setPizza(updatedPizzaList);
+			
+			updateEntity.setQuantity(updatedPizzaIds.size());
 			updateEntity.setTotalCost(calcTotal(updatedPizzaList));
 			updateEntity.setCustomer(getCustomer(currentCustomer));
 			updateEntity.setOrderDate(LocalDateTime.now());
 			
 			iPizzaOrderRepository.save(updateEntity);
 			return entityToDto(updateEntity);
+			}
+			else {
+				throw new OrderUpdateDeclinedException();
+			}
 		}
 		else {
 			throw new OrderIdNotFoundException();
@@ -143,16 +166,38 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		}
 	}
 
-	/*--- Filter by particular date ---*/
+	/*--- Filter all orders by particular date ---*/
 	@Override
-	public PizzaOrderDto viewOrdersByDate(LocalDate date) {
-
-	    return null;
+	public List<PizzaOrderDto> viewAllOrdersByDate(LocalDate date) throws NoOrdersFoundException {
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		List<PizzaOrderDto> allOrders = viewOrdersList();
+		List<PizzaOrderDto> orderBydateList=allOrders.stream().filter(o -> o.getOrderDate().format(dtf).equals(date.format(dtf))).toList();
+		
+		if(orderBydateList.isEmpty()) {
+			throw new NoOrdersFoundException();
+		}
+	    return orderBydateList;
+	}
+	
+	/*--- Filter customer orders by particular date ---*/
+	@Override
+	public List<PizzaOrderDto> viewCustomerOrdersByDate(Principal currentCustomer, LocalDate date) throws NoOrdersFoundException{
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		List<PizzaOrderDto> orderHistory = viewCustomerOrdersList(currentCustomer);
+		List<PizzaOrderDto> orderBydateList=orderHistory.stream().filter(o -> o.getOrderDate().format(dtf).equals(date.format(dtf))).toList();
+		if(orderBydateList.isEmpty()) {
+			throw new NoOrdersFoundException();
+		}
+		return orderBydateList;
 	}
 	
 	/*--- Calculate total ---*/
 	@Override
-	public List<PizzaOrderDto> calculateTotal(String size, int quantity) {
+	public List<PizzaOrderDto> calculateTotal(List<PizzaOrderDto> order) {
+		
 
 	    return null;
 	}
@@ -176,8 +221,8 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*PizzaOrderDto to Pizza Entity Class Conversion*/
 	public PizzaOrder dtoToEntity(PizzaOrderDto pizzaOrder) {
-		PizzaOrder p= new ModelMapper().map(pizzaOrder,PizzaOrder.class);
-		/*
+		//PizzaOrder p= new ModelMapper().map(pizzaOrder,PizzaOrder.class);
+		
 		PizzaOrder p = new PizzaOrder();
 		p.setBookingOrderId(pizzaOrder.getBookingOrderId());
 		p.setCoupon(iCouponRepository.getCouponByName(pizzaOrder.getCouponName()));
@@ -189,14 +234,14 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		p.setSize(pizzaOrder.getSize());
 		p.setTotalCost(pizzaOrder.getTotalCost());
 		p.setTransactionMode(pizzaOrder.getTransactionMode());
-		*/
+		
 		return p;
 	}
 	
 	/*Pizza Entity to PizzaDto Class Conversion*/
 	public PizzaOrderDto entityToDto(PizzaOrder pizzaOrder) {
-		PizzaOrderDto p= new ModelMapper().map(pizzaOrder,PizzaOrderDto.class);
-		/*
+		//PizzaOrderDto p= new ModelMapper().map(pizzaOrder,PizzaOrderDto.class);
+		
 		PizzaOrderDto p = new PizzaOrderDto();
 		p.setBookingOrderId(pizzaOrder.getBookingOrderId());
 		p.setCouponName(pizzaOrder.getCoupon().getCouponName());
@@ -210,7 +255,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		List<Integer> pizzaIdList = new ArrayList<>();
 		pizzaIdList = pizzaOrder.getPizza().stream().map(t->t.getPizzaId()).collect(Collectors.toList());
 		p.setPizzaIdList(pizzaIdList);
-		*/
+		
 		return p;
 	}
 	
@@ -237,4 +282,6 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		}
 		return flag;	
 	}
+
+	
 }

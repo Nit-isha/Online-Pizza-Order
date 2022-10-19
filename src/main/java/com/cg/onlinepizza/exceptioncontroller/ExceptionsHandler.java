@@ -11,10 +11,11 @@ import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
-import com.cg.onlinepizza.exceptions.DataIntegrityViolationException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
+import com.cg.onlinepizza.exceptions.NoOrdersFoundException;
 import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
 import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
+import com.cg.onlinepizza.exceptions.OrderUpdateDeclinedException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 
@@ -94,18 +95,24 @@ public class ExceptionsHandler {
         return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
     }
     
+    /*Unable to Cancel Order After 15mins Exception Handler*/
     @ExceptionHandler(OrderCancelDeclinedException.class)
     public ResponseEntity<APIError> orderCancelDeclinedExceptionHandler(Exception e) {
     	APIError error = new APIError("Oops!! Order cannot be cancelled after 15 minutes.", 400);
     	return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
     }
     
-    
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<APIError> dataIntegrityViolationExceptionHandler(Exception e) {
-        APIError error = new APIError("Duplicat data insertion", 400);
-        return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
+    /*Unable to Update Order After 15mins Exception Handler*/
+    @ExceptionHandler(OrderUpdateDeclinedException.class)
+    public ResponseEntity<APIError> orderUpdateDeclinedExceptionHandler(Exception e) {
+    	APIError error = new APIError("Oops!! Order cannot be updated after 15 minutes.", 400);
+    	return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
     }
     
-    
+    /*No Orders Found Exception Handler*/
+    @ExceptionHandler(NoOrdersFoundException.class)
+    public ResponseEntity<APIError> NoOrdersFoundException(Exception e) {
+    	APIError error = new APIError("No orders found for current date", 404);
+    	return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
+}
 }
