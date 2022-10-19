@@ -7,11 +7,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cg.onlinepizza.entity.Pizza;
+import com.cg.onlinepizza.entity.PizzaOrder;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
@@ -90,21 +92,27 @@ public class IPizzaServiceImplTest {
     }
     
     public Pizza dtoToEntity(PizzaDto pizza) {
+    	Pizza p= new ModelMapper().map(pizza,Pizza.class);
+    	/*
         Pizza p = new Pizza();
         p.setPizzaId(pizza.getPizzaId());
         p.setPizzaName(pizza.getPizzaName());
         p.setPizzaType(pizza.getPizzaType());
         p.setPizzaDescription(pizza.getPizzaDescription());
         p.setPizzaCost(pizza.getPizzaCost());
+        */
         return p;
     }
     public PizzaDto entityToDto(Pizza pizza) {
+    	PizzaDto p= new ModelMapper().map(pizza,PizzaDto.class);
+    	/*
         PizzaDto p = new PizzaDto();
         p.setPizzaId(pizza.getPizzaId());
         p.setPizzaName(pizza.getPizzaName());
         p.setPizzaType(pizza.getPizzaType());
         p.setPizzaDescription(pizza.getPizzaDescription());
         p.setPizzaCost(pizza.getPizzaCost());
+        */
         return p;
     }
 }

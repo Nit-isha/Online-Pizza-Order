@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.cg.onlinepizza.coupon.dao.ICouponRepository;
@@ -174,6 +176,8 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*PizzaOrderDto to Pizza Entity Class Conversion*/
 	public PizzaOrder dtoToEntity(PizzaOrderDto pizzaOrder) {
+		PizzaOrder p= new ModelMapper().map(pizzaOrder,PizzaOrder.class);
+		/*
 		PizzaOrder p = new PizzaOrder();
 		p.setBookingOrderId(pizzaOrder.getBookingOrderId());
 		p.setCoupon(iCouponRepository.getCouponByName(pizzaOrder.getCouponName()));
@@ -185,11 +189,14 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		p.setSize(pizzaOrder.getSize());
 		p.setTotalCost(pizzaOrder.getTotalCost());
 		p.setTransactionMode(pizzaOrder.getTransactionMode());
+		*/
 		return p;
 	}
 	
 	/*Pizza Entity to PizzaDto Class Conversion*/
 	public PizzaOrderDto entityToDto(PizzaOrder pizzaOrder) {
+		PizzaOrderDto p= new ModelMapper().map(pizzaOrder,PizzaOrderDto.class);
+		/*
 		PizzaOrderDto p = new PizzaOrderDto();
 		p.setBookingOrderId(pizzaOrder.getBookingOrderId());
 		p.setCouponName(pizzaOrder.getCoupon().getCouponName());
@@ -203,6 +210,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		List<Integer> pizzaIdList = new ArrayList<>();
 		pizzaIdList = pizzaOrder.getPizza().stream().map(t->t.getPizzaId()).collect(Collectors.toList());
 		p.setPizzaIdList(pizzaIdList);
+		*/
 		return p;
 	}
 	
