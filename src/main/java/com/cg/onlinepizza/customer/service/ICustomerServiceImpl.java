@@ -1,6 +1,8 @@
 package com.cg.onlinepizza.customer.service;
 
 import java.util.*;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.cg.onlinepizza.customer.dao.ICustomerRepository;
@@ -18,14 +20,14 @@ public class ICustomerServiceImpl implements ICustomerService{
     @Override
     public CustomerDto addCustomer(CustomerDto customer) throws CustomerAlreadyExistException {
 
-//    	Optional<Customer> optional = iCustomerRepository.findByUsername(customer.getUsername());
-//        //Optional<Customer> optional = iCustomerRepository.findById(custId);
-//        if(optional.isPresent()) {
-//            throw new CustomerAlreadyExistException();
-//        }
-//        iCustomerRepository.save(dtoToEntity(customer));
-//        return customer;
-        return null;
+    	Optional<Customer> optional = iCustomerRepository.findByUsername(customer.getUsername());
+        //Optional<Customer> optional = iCustomerRepository.findById(custId);
+        if(optional.isPresent()) {
+            throw new CustomerAlreadyExistException();
+        }
+        iCustomerRepository.save(dtoToEntity(customer));
+        return customer;
+       // return null;
     }
     
     // for both admin and user
@@ -92,22 +94,29 @@ public class ICustomerServiceImpl implements ICustomerService{
     
     /*PizzaDto to Pizza Entity Class Conversion*/
     public Customer dtoToEntity(CustomerDto customer) {
+    	Customer c = new ModelMapper().map(customer,Customer.class);
+    	/*
         Customer c = new Customer();
         c.setCustomerName(customer.getCustomerName());
         c.setCustomerEmail(customer.getCustomerEmail());
         c.setCustomerMobile(customer.getCustomerMobile());
         c.setCustomerAddress(customer.getCustomerAddress());
+        */
         return c;
     }
     
     /*Pizza Entity to PizzaDto Class Conversion*/
     public CustomerDto entityToDto(Customer customer) {
+    	CustomerDto c = new ModelMapper().map(customer,CustomerDto.class);
+    	/*
         CustomerDto c = new CustomerDto();
         c.setCustomerName(customer.getCustomerName());
         c.setCustomerEmail(customer.getCustomerEmail());
         c.setCustomerMobile(customer.getCustomerMobile());
         c.setCustomerAddress(customer.getCustomerAddress());
+        */
         return c;
     }
+   
 } 
 

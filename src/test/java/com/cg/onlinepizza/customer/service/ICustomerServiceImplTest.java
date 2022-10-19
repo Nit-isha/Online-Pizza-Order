@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,10 +22,9 @@ import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.entity.Customer;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
-import com.cg.onlinepizza.pizza.dto.PizzaDto;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 class ICustomerServiceImplTest {
 	@MockBean
     private ICustomerRepository iCustomerRepository ;
@@ -75,19 +75,11 @@ class ICustomerServiceImplTest {
 		fail("Not yet implemented");
 	}
 	public Customer dtoToEntity(CustomerDto customer) {
-    	Customer c = new Customer();
-        c.setCustomerName(customer.getCustomerName());
-        c.setCustomerEmail(customer.getCustomerEmail());
-        c.setCustomerMobile(customer.getCustomerMobile());
-        c.setCustomerAddress(customer.getCustomerAddress());
+		Customer c = new ModelMapper().map(customer,Customer.class);
         return c;
     }
     public CustomerDto entityToDto(Customer customer) {
-    	CustomerDto c = new CustomerDto();
-        c.setCustomerName(customer.getCustomerName());
-        c.setCustomerEmail(customer.getCustomerEmail());
-        c.setCustomerMobile(customer.getCustomerMobile());
-        c.setCustomerAddress(customer.getCustomerAddress());
+    	CustomerDto c = new ModelMapper().map(customer,CustomerDto.class);
         return c;
     }
 
