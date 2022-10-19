@@ -15,6 +15,7 @@ public class ICustomerServiceImpl implements ICustomerService{
     @Autowired
     private ICustomerRepository iCustomerRepository;
     
+    /*Add customer*/
     @Override
     public CustomerDto addCustomer(CustomerDto customer) throws CustomerAlreadyExistException {
 
@@ -28,7 +29,7 @@ public class ICustomerServiceImpl implements ICustomerService{
         return null;
     }
     
-    // for both admin and user
+    /*Update customers by ID*/
     @Override
     public CustomerDto updateCustomer(int customerId, CustomerDto customer) throws CustomerIdNotFoundException {
         Optional<Customer> optional = iCustomerRepository.findById(customerId);
@@ -52,7 +53,8 @@ public class ICustomerServiceImpl implements ICustomerService{
             throw new CustomerIdNotFoundException();
         }
     }
-    // for both admin and user
+    
+    /*Delete customer by ID*/
     @Override
     public CustomerDto deleteCustomer(int customerId) throws CustomerIdNotFoundException {
         // TODO Auto-generated method stub
@@ -65,11 +67,12 @@ public class ICustomerServiceImpl implements ICustomerService{
         }
     }
 
+    /*View all customers*/
     @Override
     public List<CustomerDto> viewCustomers() {
     	List<Customer> customerList = new ArrayList<>();
 		
-		Iterable<Customer> list =  iCustomerRepository.findAll();
+		Iterable<Customer> list = iCustomerRepository.findAll();
 		list.forEach(p -> customerList.add(p));
 		
 		List<CustomerDto> customerDtoList = new ArrayList<>();
@@ -79,9 +82,10 @@ public class ICustomerServiceImpl implements ICustomerService{
 		return customerDtoList;
     }
 
+    /*View customer by ID*/
     @Override
     public CustomerDto viewCustomer(int customerId) throws CustomerIdNotFoundException {
-        // TODO Auto-generated method stub
+       
     	Optional<Customer> optional = iCustomerRepository.findById(customerId);
         if(optional.isPresent()) {
         	return entityToDto(optional.get());

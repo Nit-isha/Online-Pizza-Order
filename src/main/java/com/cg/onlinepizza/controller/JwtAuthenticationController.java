@@ -17,6 +17,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,6 +33,9 @@ public class JwtAuthenticationController {
 
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
+	
+	@Autowired
+    private PasswordEncoder bcryptEncoder;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -50,11 +55,6 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(userDetailsService.save(customerDto));
 	}
 
-	@Valid @RequestMapping(value = "/", method = RequestMethod.GET)
-	public ResponseEntity<?> saveAdmin() throws Exception {
-	    User user = new User("admin", "admin", "admin");
-	    return ResponseEntity.ok(userDetailsService.save(user));
-	}
 
 	private void authenticate(String username, String password) throws Exception {
 		try {
@@ -65,14 +65,5 @@ public class JwtAuthenticationController {
 			throw new Exception("INVALID_CREDENTIALS", e);
 		}
 	}
-	
-	/*-----------------------------------------------------------------------------------------//
-	@Value("${admin.username}")
-	private String adminusr;
-	@Value("${admin.password}")
-	private String adminpwd;
-	@Value("${admin.role}")
-	private String adminrole;
-	User user = new User(adminusr,adminpwd, adminrole );
-	userDeta*/
+
 }
