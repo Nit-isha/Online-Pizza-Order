@@ -20,7 +20,6 @@ import com.cg.onlinepizza.coupon.dto.CouponDto;
 import com.cg.onlinepizza.coupon.service.ICouponService;
 import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.customer.service.ICustomerService;
-import com.cg.onlinepizza.entity.PizzaOrder;
 import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
@@ -47,6 +46,7 @@ public class MyController {
 	
 	/*-----------------  Pizza Service Controllers  -----------------*/
 	
+	
 	/*Get Pizza List [Both Admin and User can access]*/
 	@GetMapping(path = "/menu", produces = {"application/json","application/xml"})
 	public ResponseEntity<List<PizzaDto>> getPizzaList() {
@@ -57,7 +57,7 @@ public class MyController {
 	/*Add Pizza to DB [Only Admin can access]*/
 	@PostMapping(path = "/addpizza",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
-//	@PreAuthorize("hasAuthority('admin')")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<PizzaDto> addPizza(@RequestBody PizzaDto pizzaDto) throws PizzaAlreadyExistException{
 		return new ResponseEntity<PizzaDto>(pizzaService.addPizza(pizzaDto), HttpStatus.OK);
 	}
@@ -70,7 +70,7 @@ public class MyController {
 	
 	/*Delete Pizza from DB [Only Admin can access]*/
 	@DeleteMapping(path = "/menu/{pizzaId}", produces = {"application/json","application/xml"})
-//	@PreAuthorize("hasAuthority('admin')")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<PizzaDto> deletePizzaById(@PathVariable int pizzaId) throws PizzaIdNotFoundException{
 		return new ResponseEntity<PizzaDto>(pizzaService.deletePizza(pizzaId), HttpStatus.OK);
 	}
@@ -78,7 +78,7 @@ public class MyController {
 	/*Update Pizza [Only Admin can access]*/
 	@PutMapping(path = "/menu/{pizzaId}",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
-//	@PreAuthorize("hasAuthority('admin')")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<PizzaDto> updatePizza(@PathVariable int pizzaId,@RequestBody PizzaDto pizzaDto) throws PizzaIdNotFoundException{
 		return new ResponseEntity<PizzaDto>(pizzaService.updatePizza(pizzaId,pizzaDto), HttpStatus.OK);
 	}
@@ -93,14 +93,16 @@ public class MyController {
 	
 	/*-----------------  Customer Service Controllers  -----------------*/
 	
+	
 	/*Update Customer [user and admin can access]*/
    @PutMapping(path = "/customer/{custId}",produces = {"application/json","application/xml"},consumes = {"application/json","application/xml"})
-  public ResponseEntity<CustomerDto> updateCustomer(@PathVariable int custId,@RequestBody CustomerDto customerDto) throws CustomerIdNotFoundException{
+   public ResponseEntity<CustomerDto> updateCustomer(@PathVariable int custId,@RequestBody CustomerDto customerDto) throws CustomerIdNotFoundException{
       return new ResponseEntity<CustomerDto>(customerService.updateCustomer(custId,customerDto), HttpStatus.OK);
     }
     
    /*View Customer list [Only admin can access]*/
    @GetMapping(path = "/customer", produces = {"application/json","application/xml"})
+   @PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<CustomerDto>> getCustomerList() {
 		List<CustomerDto> customerList = customerService.viewCustomers();
 		return new ResponseEntity<List<CustomerDto>>(customerList, HttpStatus.OK);
@@ -108,44 +110,47 @@ public class MyController {
    
    /*Get Customer By ID [Only admin can access]*/
 	@GetMapping(path = "/customer/{custId}", produces = {"application/json","application/xml"})
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<CustomerDto> viewCustomerById(@PathVariable int custId) throws CustomerIdNotFoundException{
 		return new ResponseEntity<CustomerDto>(customerService.viewCustomer(custId), HttpStatus.OK);
 	}
 	
 	/*Delete Customer from DB [Only Admin can access]*/
 	@DeleteMapping(path = "/customer/{custId}", produces = {"application/json","application/xml"})
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<CustomerDto> deleteCustomerById(@PathVariable int custId) throws CustomerIdNotFoundException{
 		return new ResponseEntity<CustomerDto>(customerService.deleteCustomer(custId), HttpStatus.OK);
 	}
 	
 	/*-----------------  Coupon Service Controllers  -----------------*/
 	
+	
 	/*Add Coupon to DB [Only Admin can access]*/
 	@PostMapping(path = "/coupon",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
-//	@PreAuthorize("hasAuthority('admin')")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<CouponDto> addCoupon(@RequestBody CouponDto couponDto) throws CouponAlreadyExistException {
 		return new ResponseEntity<CouponDto>(couponService.addCoupons(couponDto), HttpStatus.OK);
 	}
 	
-	//Delete Coupon from DB [Only Admin can access]
+	/*Delete Coupon from DB [Only Admin can access]*/
 	@DeleteMapping(path = "/coupon/{couponId}", produces = {"application/json","application/xml"})
-//	@PreAuthorize("hasAuthority('admin')")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<CouponDto> deleteCouponById(@PathVariable int couponId) throws CouponIdNotFoundException{
 		return new ResponseEntity<CouponDto>(couponService.deleteCoupons(couponId), HttpStatus.OK);
 	}
 	
-	//Get Coupon List [Both Admin and User can access]
+	/*Get Coupon List [Both Admin and User can access]*/
 	@GetMapping(path = "/coupon", produces = {"application/json","application/xml"})
 	public ResponseEntity<List<CouponDto>> getCouponList() {
 		List<CouponDto> couponList = couponService.viewCoupons();
 		return new ResponseEntity<List<CouponDto>>(couponList, HttpStatus.OK);
 	}
 	
-	/*Update Coupon[Only Admin can access]*/
+	/*Update Coupon [Only Admin can access]*/
 	@PutMapping(path = "/coupon/{couponId}",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
-//	@PreAuthorize("hasAuthority('admin')")
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<CouponDto> editCoupon(@PathVariable int couponId,@RequestBody CouponDto couponDto) throws CouponIdNotFoundException{
 		return new ResponseEntity<CouponDto>(couponService.editCoupons(couponId,couponDto), HttpStatus.OK);
 	}
@@ -158,38 +163,48 @@ public class MyController {
 	
 	/*-----------------  Pizza Order Service Controllers  -----------------*/
 	
-	@GetMapping(path="/orders", produces = {"application/json","application/xml"} )
+	
+	/*Get Customer order history [Both Admin and User can access]*/
+	@GetMapping(path="/orders", produces = {"application/json","application/xml"})
 	public ResponseEntity<List<PizzaOrderDto>> viewCustomerOrderHistory(Principal currentCustomer){
 		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersList(currentCustomer), HttpStatus.OK);
 	}
 	
-	/*Admin only---*/
-	@GetMapping(path="/allorders", produces = {"application/json","application/xml"} )
+	/*Get All Orders [Only Admin can access]*/
+	@GetMapping(path="/allorders", produces = {"application/json","application/xml"})
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<PizzaOrderDto>> viewAllOrders(){
 		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewOrdersList(), HttpStatus.OK);
 	}
-	/*Admin only---*/
+	
+	/*View any pizza by ID [Only Admin can access]*/
 	@GetMapping(path="/allorders/{orderId}", produces = {"application/json","application/xml"})
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<PizzaOrderDto> viewPizzaOrder(@PathVariable int orderId) throws OrderIdNotFoundException {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.viewPizzaOrder(orderId), HttpStatus.OK);
 	}
 	
+	/*Book Pizza Order [Both Admin and User can access]*/
 	@PostMapping(path="/orders/neworder", produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	public ResponseEntity<PizzaOrderDto> bookPizzaOrder(Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.bookPizzaOrder(currentCustomer,pizzaOrderDto), HttpStatus.OK);
 	}
 	
+	/*Update Pizza Order [Both Admin and User can access]*/
 	@PutMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
-	public ResponseEntity<PizzaOrderDto> updatePizzaOrder(@PathVariable int orderId,  Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) throws OrderIdNotFoundException {
+	public ResponseEntity<PizzaOrderDto> updatePizzaOrder(@PathVariable int orderId, Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) throws OrderIdNotFoundException {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.updatePizzaOrder(currentCustomer,orderId, pizzaOrderDto), HttpStatus.OK);
 	}
 	
+	/*View Customer pizza order by ID [Both Admin and User can access]*/
 	@GetMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"})
-	public ResponseEntity<PizzaOrderDto> viewCustomerPizzaOrderById(@PathVariable int orderId,  Principal currentCustomer) throws OrderIdNotFoundException {
+	public ResponseEntity<PizzaOrderDto> viewCustomerPizzaOrderById(@PathVariable int orderId, Principal currentCustomer) throws OrderIdNotFoundException {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.viewCustomerPizzaOrderById(currentCustomer,orderId), HttpStatus.OK);
 	}
+	
+	/*Cancel Pizza Order within 15 minutes [Both Admin and User can access]*/
 	@DeleteMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"})
 	public ResponseEntity<PizzaOrderDto> cancelPizzaOrder(Principal currentCustomer,@PathVariable int orderId) throws OrderIdNotFoundException, OrderCancelDeclinedException {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.cancelPizzaOrder(currentCustomer,orderId), HttpStatus.OK);

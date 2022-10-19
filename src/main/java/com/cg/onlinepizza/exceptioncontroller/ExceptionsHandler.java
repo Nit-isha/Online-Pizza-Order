@@ -11,6 +11,7 @@ import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
+import com.cg.onlinepizza.exceptions.DataIntegrityViolationException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
 import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
@@ -97,6 +98,13 @@ public class ExceptionsHandler {
     public ResponseEntity<APIError> orderCancelDeclinedExceptionHandler(Exception e) {
     	APIError error = new APIError("Oops!! Order cannot be cancelled after 15 minutes.", 400);
     	return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
+    }
+    
+    
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<APIError> dataIntegrityViolationExceptionHandler(Exception e) {
+        APIError error = new APIError("Duplicat data insertion", 400);
+        return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
     }
     
     
