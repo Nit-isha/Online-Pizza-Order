@@ -16,23 +16,8 @@ import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 public class ICustomerServiceImpl implements ICustomerService{
     @Autowired
     private ICustomerRepository iCustomerRepository;
-    
-    /*Add customer*/
-    @Override
-    public CustomerDto addCustomer(CustomerDto customer) throws CustomerAlreadyExistException {
-
-    	Optional<Customer> optional = iCustomerRepository.findByUsername(customer.getUsername());
-        //Optional<Customer> optional = iCustomerRepository.findById(custId);
-        if(optional.isPresent()) {
-            throw new CustomerAlreadyExistException();
-        }
-        iCustomerRepository.save(dtoToEntity(customer));
-        return customer;
-       // return null;
-    }
-    
+     
     /*Update customers by ID*/
-    @Override
     public CustomerDto updateCustomer(int customerId, CustomerDto customer) throws CustomerIdNotFoundException {
         Optional<Customer> optional = iCustomerRepository.findById(customerId);
         if(optional.isPresent()) {
@@ -43,6 +28,7 @@ public class ICustomerServiceImpl implements ICustomerService{
         }else {
         	throw new CustomerIdNotFoundException();
         }
+        
     }
     
     /*Delete customer by ID*/
@@ -51,7 +37,7 @@ public class ICustomerServiceImpl implements ICustomerService{
         // TODO Auto-generated method stub
         Optional<Customer> optional = iCustomerRepository.findById(customerId);
         if(optional.isPresent()) {
-            iCustomerRepository.deleteById(customerId);;
+            iCustomerRepository.deleteById(customerId);
             return entityToDto(optional.get());
         }else {
             throw new CustomerIdNotFoundException();

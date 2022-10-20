@@ -52,23 +52,30 @@ class ICustomerServiceImplTest {
     	CustomerDto updatedCustomer = iCustomerService.updateCustomer(customer.getId(), entityToDto(customer));
     	// Verify the output
     	assertEquals(customer.getUsername(),updatedCustomer.getUsername());
-//    	assertThat(updatedCustomer.getCustomerEmail().equals("anmol@gmail.com"));
 	}
 
-//	@Test
-//	void testDeleteCustomer() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testViewCustomers() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testViewCustomer() {
-//		fail("Not yet implemented");
-//	}
+    @DisplayName("JUnit test for deleteCustomer method")
+	@Test
+	void testDeleteCustomer() throws CustomerIdNotFoundException {
+    	when(iCustomerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
+    	CustomerDto updatedCustomer = iCustomerService.deleteCustomer(customer.getId());
+    	// Verify the output
+    	assertEquals(customer.getUsername(),updatedCustomer.getUsername());
+	}
+    @DisplayName("JUnit test for viewCustomers method")
+	@Test
+	void testViewCustomers() {
+		when(iCustomerRepository.findAll()).thenReturn(customerList);
+		List<CustomerDto> customerDto = iCustomerService.viewCustomers();
+		assertEquals(customerList.size(), customerDto.size());
+	}
+    @DisplayName("JUnit test for viewCustomer method")
+	@Test
+	void testViewCustomer() throws CustomerIdNotFoundException {
+    	when(iCustomerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
+    	CustomerDto customerDto = iCustomerService.viewCustomer(customer.getId());
+    	assertEquals(customer.getUsername(), customerDto.getUsername());
+	}
 	public Customer dtoToEntity(CustomerDto customer) {
 		Customer c = new ModelMapper().map(customer,Customer.class);
         return c;
