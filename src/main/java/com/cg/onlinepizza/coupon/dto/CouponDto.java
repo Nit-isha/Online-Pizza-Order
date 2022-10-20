@@ -6,7 +6,7 @@ import javax.validation.constraints.Pattern;
 public class CouponDto {
 	@GeneratedValue
 	private int couponId;
-	@Pattern(regexp="^(FLAT)+[1-9]{1}+[0-9]{1,2}+(MN)+[1-9]{1}+[0-9]{1-2}$", message="Enter valid coupon name")
+	//@Pattern(regexp="^(FLAT)+[1-9]{1}+[0-9]{1,2}+(MN)+[1-9]{1}+[0-9]{1-2}$", message="Enter valid coupon name")
 	
 	//FLAT150MN500
 	//PIZZA10MX100

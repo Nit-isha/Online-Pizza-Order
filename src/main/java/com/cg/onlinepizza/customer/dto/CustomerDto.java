@@ -18,7 +18,6 @@ public class CustomerDto {
 	@NotBlank
 	private String customerAddress;
 	private String username;
-	@JsonIgnore
 	private String password;
 
 	public String getCustomerName() {

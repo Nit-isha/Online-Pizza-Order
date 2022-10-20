@@ -7,7 +7,6 @@ import javax.persistence.Id;
 @Entity
 public class Pizza {
 	@Id
-	@GeneratedValue
 	private int pizzaId;
 	private String pizzaType;
 	private String pizzaName;
