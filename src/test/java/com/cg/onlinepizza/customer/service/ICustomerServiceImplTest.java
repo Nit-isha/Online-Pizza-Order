@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,8 @@ class ICustomerServiceImplTest {
     private Customer customer;
     @Autowired
     private ICustomerService iCustomerService;
+    @MockBean
+    private Principal principal;
     
     private static List<Customer> customerList = new ArrayList<>();
     
@@ -44,16 +47,16 @@ class ICustomerServiceImplTest {
         customerList.add(obj2);
     }
     
-    /*@DisplayName("JUnit test for updateCustomer method")
+    @DisplayName("JUnit test for updateCustomer method")
 	@Test
 	void testUpdateCustomer() throws CustomerIdNotFoundException {
     	// given - precondition or setup
-    	when(iCustomerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
+    	when(iCustomerRepository.findById(iCustomerRepository.findByUsername(principal.getName()).get().getId())).thenReturn(Optional.of(customer));
     	// Action
-    	CustomerDto updatedCustomer = iCustomerService.updateCustomer(customer.getId(), entityToDto(customer));
+    	CustomerDto updatedCustomer = iCustomerService.updateCustomer(principal, entityToDto(customer));
     	// Verify the output
-    	assertEquals(customer.getUsername(),updatedCustomer.getUsername());
-	}*/
+    	assertEquals(iCustomerRepository.findByUsername(principal.getName()).get().getId(),dtoToEntity(updatedCustomer).getId());
+	}
 
     @DisplayName("JUnit test for deleteCustomer method")
 	@Test
@@ -89,5 +92,4 @@ class ICustomerServiceImplTest {
     	CustomerDto c = new ModelMapper().map(customer,CustomerDto.class);
         return c;
     }
-
 }

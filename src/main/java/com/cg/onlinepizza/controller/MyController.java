@@ -98,6 +98,8 @@ public class MyController {
 	double minCost,@RequestParam("max") double maxCost) throws InvalidMinCostException {
 		List<PizzaDto> pizzaList = pizzaService.viewPizzaList(minCost,maxCost);
 		return new ResponseEntity<List<PizzaDto>>(pizzaList, HttpStatus.OK);
+		
+		// http://localhost:9993/search?mincost=300&maxcost=500
 	}
 	
 	/*-----------------  Customer Service Controllers  -----------------*/
