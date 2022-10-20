@@ -27,7 +27,7 @@ public class ICustomerServiceImpl implements ICustomerService{
 		String currUsername= currentCustomer.getName();
 		Optional<Customer> optional = iCustomerRepository.findById(iCustomerRepository.findByUsername(currUsername).get().getId());
 		if(optional.isPresent()) {
-			Customer updatedCustomer = dtoToEntity(customer);
+			Customer updatedCustomer = dtoToEntity1(customer);
 			updatedCustomer.setId(optional.get().getId());
 			updatedCustomer.setPassword(bcryptEncoder.encode(customer.getPassword()));
 			updatedCustomer.setRole("user");
@@ -45,7 +45,7 @@ public class ICustomerServiceImpl implements ICustomerService{
 		Optional<Customer> optional = iCustomerRepository.findById(customerId);
 		if(optional.isPresent()) {
 			iCustomerRepository.deleteById(customerId);
-			return entityToDto(optional.get());
+			return entityToDto1(optional.get());
 		}else {
 			throw new CustomerIdNotFoundException();
 		}
@@ -61,47 +61,77 @@ public class ICustomerServiceImpl implements ICustomerService{
 
 		List<CustomerDto> customerDtoList = new ArrayList<>();
 		for(Customer customer:customerList) {
-			customerDtoList.add(entityToDto(customer));
+			customerDtoList.add(entityToDto1(customer));
 		}
 		return customerDtoList;
 	}
 
 	/*View customer by ID*/
-	@Override
-	public CustomerDto viewCustomer(int customerId) throws CustomerIdNotFoundException {
+	public CustomerDto viewCustomer1(int customerId) throws CustomerIdNotFoundException {
 
 		Optional<Customer> optional = iCustomerRepository.findById(customerId);
 		if(optional.isPresent()) {
-			return entityToDto(optional.get());
+			return entityToDto1(optional.get());
 		}else {
 			throw new CustomerIdNotFoundException();
 		}
 	}
 
 	/*View customer own details*/
-	@Override
-	public CustomerDto aboutCustomer(Principal currentCustomer) {
+	public CustomerDto aboutCustomer1(Principal currentCustomer) {
 		String currUsername= currentCustomer.getName();
 		Optional<Customer> optional = iCustomerRepository.findByUsername(currUsername);
-		return entityToDto(optional.get());
+		return entityToDto1(optional.get());
 	}
 
 
 	/*PizzaDto to Pizza Entity Class Conversion*/
-	public Customer dtoToEntity(CustomerDto customer) {
+	public Customer dtoToEntity1(CustomerDto customer) {
 		Customer c = new ModelMapper().map(customer,Customer.class);
 
 		return c;
 	}
 
 	/*Pizza Entity to PizzaDto Class Conversion*/
-	public CustomerDto entityToDto(Customer customer) {
+	public CustomerDto entityToDto1(Customer customer) {
 		CustomerDto c = new ModelMapper().map(customer,CustomerDto.class);
 
 		return c;
 	}
 
-
-
+    /*View customer by ID*/
+    @Override
+    public CustomerDto viewCustomer(int customerId) throws CustomerIdNotFoundException {
+       
+    	Optional<Customer> optional = iCustomerRepository.findById(customerId);
+        if(optional.isPresent()) {
+        	return entityToDto1(optional.get());
+        }else {
+            throw new CustomerIdNotFoundException();
+        }
+    }
+    
+    /*View customer own details*/
+   	@Override
+   	public CustomerDto aboutCustomer(Principal currentCustomer) {
+   		String currUsername= currentCustomer.getName();
+    	Optional<Customer> optional = iCustomerRepository.findByUsername(currUsername);
+   		return entityToDto1(optional.get());
+   	}
+    
+   	
+    /*CustomerDto to Customer Entity Class Conversion*/
+    public Customer dtoToEntity(CustomerDto customer) {
+    	Customer c = new ModelMapper().map(customer,Customer.class);
+    	
+        return c;
+    }
+    
+    /*Customer Entity to CustomerDto Class Conversion*/
+    public CustomerDto entityToDto(Customer customer) {
+    	CustomerDto c = new ModelMapper().map(customer,CustomerDto.class);
+    
+        return c;
+    }
 } 
 

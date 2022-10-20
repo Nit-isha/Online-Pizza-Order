@@ -10,7 +10,7 @@ import org.checkerframework.common.aliasing.qual.Unique;
 @Table(name = "userlogin")
 public class User {
     @Id
-    @GeneratedValue/*(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)/*(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @GenericGenerator(name = "user_seq",
     strategy = "com.cg.onlinepizza.sequencegen.StringPrefixedSequenceIdGenerator"'
     parameters = {
