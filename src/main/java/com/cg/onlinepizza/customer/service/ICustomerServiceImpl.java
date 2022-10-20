@@ -16,7 +16,7 @@ import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 
 @Component
 public class ICustomerServiceImpl implements ICustomerService{
-<<<<<<< Updated upstream
+
 	@Autowired
 	private ICustomerRepository iCustomerRepository;
 	
@@ -28,7 +28,7 @@ public class ICustomerServiceImpl implements ICustomerService{
 		String currUsername= currentCustomer.getName();
 		Optional<Customer> optional = iCustomerRepository.findById(iCustomerRepository.findByUsername(currUsername).get().getId());
 		if(optional.isPresent()) {
-			Customer updatedCustomer = dtoToEntity1(customer);
+			Customer updatedCustomer = dtoToEntity(customer);
 			updatedCustomer.setId(optional.get().getId());
 			updatedCustomer.setPassword(bcryptEncoder.encode(customer.getPassword()));
 			updatedCustomer.setRole("user");
@@ -46,52 +46,22 @@ public class ICustomerServiceImpl implements ICustomerService{
 		Optional<Customer> optional = iCustomerRepository.findById(customerId);
 		if(optional.isPresent()) {
 			iCustomerRepository.deleteById(customerId);
-			return entityToDto1(optional.get());
+			return entityToDto(optional.get());
 		}else {
 			throw new CustomerIdNotFoundException();
 		}
 	}
 
-	/*View all customers*/
+    /*View all customers*/
 	@Override
 	public List<CustomerDto> viewCustomers() {
 		List<Customer> customerList = new ArrayList<>();
-=======
-    @Autowired
-    private ICustomerRepository iCustomerRepository;
-  
-     
-    /*Update customers */
-    public CustomerDto updateCustomer(Principal currentCustomer, CustomerDto customer){
-        String currUsername= currentCustomer.getName();
-    	Optional<Customer> optional = iCustomerRepository.findById(iCustomerRepository.findByUsername(currUsername).get().getId());
-        
-        	Customer updatedCustomer = dtoToEntity(customer);
-        	updatedCustomer.setId(optional.get().getId());
-        	iCustomerRepository.save(updatedCustomer);
-        	return customer;
-    }
-    
-    /*Delete customer by ID*/
-    @Override
-    public CustomerDto deleteCustomer(int customerId) throws CustomerIdNotFoundException {
-        // TODO Auto-generated method stub
-        Optional<Customer> optional = iCustomerRepository.findById(customerId);
-        if(optional.isPresent()) {
-            iCustomerRepository.deleteById(customerId);
-            return entityToDto(optional.get());
-        }else {
-            throw new CustomerIdNotFoundException();
-        }
-    }
->>>>>>> Stashed changes
-
-		Iterable<Customer> list = iCustomerRepository.findAll();
+    	Iterable<Customer> list = iCustomerRepository.findAll();
 		list.forEach(p -> customerList.add(p));
 
 		List<CustomerDto> customerDtoList = new ArrayList<>();
 		for(Customer customer:customerList) {
-			customerDtoList.add(entityToDto1(customer));
+			customerDtoList.add(entityToDto(customer));
 		}
 		return customerDtoList;
 	}
@@ -101,7 +71,7 @@ public class ICustomerServiceImpl implements ICustomerService{
 
 		Optional<Customer> optional = iCustomerRepository.findById(customerId);
 		if(optional.isPresent()) {
-			return entityToDto1(optional.get());
+			return entityToDto(optional.get());
 		}else {
 			throw new CustomerIdNotFoundException();
 		}
@@ -111,23 +81,10 @@ public class ICustomerServiceImpl implements ICustomerService{
 	public CustomerDto aboutCustomer1(Principal currentCustomer) {
 		String currUsername= currentCustomer.getName();
 		Optional<Customer> optional = iCustomerRepository.findByUsername(currUsername);
-		return entityToDto1(optional.get());
+		return entityToDto(optional.get());
 	}
 
 
-	/*PizzaDto to Pizza Entity Class Conversion*/
-	public Customer dtoToEntity1(CustomerDto customer) {
-		Customer c = new ModelMapper().map(customer,Customer.class);
-
-		return c;
-	}
-
-	/*Pizza Entity to PizzaDto Class Conversion*/
-	public CustomerDto entityToDto1(Customer customer) {
-		CustomerDto c = new ModelMapper().map(customer,CustomerDto.class);
-
-		return c;
-	}
 
     /*View customer by ID*/
     @Override
@@ -135,7 +92,7 @@ public class ICustomerServiceImpl implements ICustomerService{
        
     	Optional<Customer> optional = iCustomerRepository.findById(customerId);
         if(optional.isPresent()) {
-        	return entityToDto1(optional.get());
+        	return entityToDto(optional.get());
         }else {
             throw new CustomerIdNotFoundException();
         }
@@ -146,7 +103,7 @@ public class ICustomerServiceImpl implements ICustomerService{
    	public CustomerDto aboutCustomer(Principal currentCustomer) {
    		String currUsername= currentCustomer.getName();
     	Optional<Customer> optional = iCustomerRepository.findByUsername(currUsername);
-   		return entityToDto1(optional.get());
+   		return entityToDto(optional.get());
    	}
     
    	
