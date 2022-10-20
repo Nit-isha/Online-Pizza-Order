@@ -103,10 +103,10 @@ public class MyController {
 	/*-----------------  Customer Service Controllers  -----------------*/
 	
 	
-	/*Update Customer [user and admin can access]*/
-   @PutMapping(path = "/customer/{custId}",produces = {"application/json","application/xml"},consumes = {"application/json","application/xml"})
-   public ResponseEntity<CustomerDto> updateCustomer(@PathVariable int custId,@RequestBody CustomerDto customerDto) throws CustomerIdNotFoundException{
-      return new ResponseEntity<CustomerDto>(customerService.updateCustomer(custId,customerDto), HttpStatus.OK);
+	/*Update Customer [User can access]*/
+   @PutMapping(path = "/customer/update",produces = {"application/json","application/xml"},consumes = {"application/json","application/xml"})
+   public ResponseEntity<CustomerDto> updateCustomer(Principal currentCustomer,@RequestBody CustomerDto customerDto) throws CustomerIdNotFoundException{
+      return new ResponseEntity<CustomerDto>(customerService.updateCustomer(currentCustomer, customerDto), HttpStatus.OK);
     }
     
    /*View Customer list [Only admin can access]*/
@@ -174,7 +174,7 @@ public class MyController {
 	/*-----------------  Pizza Order Service Controllers  -----------------*/
 	
 	
-	/*Get Customer order history [Both Admin and User can access]*/
+	/*Get Customer order history [Only User can access]*/
 	@GetMapping(path="/orders", produces = {"application/json","application/xml"})
 	public ResponseEntity<List<PizzaOrderDto>> viewCustomerOrderHistory(Principal currentCustomer){
 		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersList(currentCustomer), HttpStatus.OK);
@@ -194,21 +194,21 @@ public class MyController {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.viewPizzaOrder(orderId), HttpStatus.OK);
 	}
 	
-	/*Book Pizza Order [Both Admin and User can access]*/
+	/*Book Pizza Order [Only User can access]*/
 	@PostMapping(path="/orders/neworder", produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	public ResponseEntity<PizzaOrderDto> bookPizzaOrder(Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.bookPizzaOrder(currentCustomer,pizzaOrderDto), HttpStatus.OK);
 	}
 	
-	/*Update Pizza Order [Both Admin and User can access]*/
+	/*Update Pizza Order [Only User can access]*/
 	@PutMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	public ResponseEntity<PizzaOrderDto> updatePizzaOrder(@PathVariable int orderId, Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) throws OrderIdNotFoundException, OrderUpdateDeclinedException {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.updatePizzaOrder(currentCustomer,orderId, pizzaOrderDto), HttpStatus.OK);
 	}
 	
-	/*View Customer pizza order by ID [Both Admin and User can access]*/
+	/*View Customer pizza order by ID [Only User can access]*/
 	@GetMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"})
 	public ResponseEntity<PizzaOrderDto> viewCustomerPizzaOrderById(@PathVariable int orderId, Principal currentCustomer) throws OrderIdNotFoundException {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.viewCustomerPizzaOrderById(currentCustomer,orderId), HttpStatus.OK);
@@ -222,6 +222,7 @@ public class MyController {
 	
 	/*Filter All Orders By Date [Only Admin can access]*/
 	@GetMapping(path="/allorders/ordersbydate", produces = {"application/json","application/xml"}, consumes = {"application/json","application/xml"})
+	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<List<PizzaOrderDto>> viewAllOrdersByDate(@RequestParam(value="date") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate date) throws NoOrdersFoundException {
 		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewAllOrdersByDate(date), HttpStatus.OK);
 		//localhost:8081/allorders/ordersbydate?date=2022-10-19

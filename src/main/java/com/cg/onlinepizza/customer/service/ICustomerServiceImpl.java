@@ -1,5 +1,6 @@
 package com.cg.onlinepizza.customer.service;
 
+import java.security.Principal;
 import java.util.*;
 
 import org.modelmapper.ModelMapper;
@@ -16,10 +17,12 @@ import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 public class ICustomerServiceImpl implements ICustomerService{
     @Autowired
     private ICustomerRepository iCustomerRepository;
+  
      
     /*Update customers by ID*/
-    public CustomerDto updateCustomer(int customerId, CustomerDto customer) throws CustomerIdNotFoundException {
-        Optional<Customer> optional = iCustomerRepository.findById(customerId);
+    public CustomerDto updateCustomer(Principal currentCustomer, CustomerDto customer) throws CustomerIdNotFoundException {
+        String currUsername= currentCustomer.getName();
+    	Optional<Customer> optional = iCustomerRepository.findById(iCustomerRepository.findByUsername(currUsername).get().getId());
         if(optional.isPresent()) {
         	Customer updatedCustomer = dtoToEntity(customer);
         	updatedCustomer.setId(optional.get().getId());
@@ -81,7 +84,7 @@ public class ICustomerServiceImpl implements ICustomerService{
     /*Pizza Entity to PizzaDto Class Conversion*/
     public CustomerDto entityToDto(Customer customer) {
     	CustomerDto c = new ModelMapper().map(customer,CustomerDto.class);
-  
+    
         return c;
     }
    

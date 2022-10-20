@@ -43,7 +43,8 @@ class ICustomerServiceImplTest {
         customerList.add(obj1);
         customerList.add(obj2);
     }
-    @DisplayName("JUnit test for updateCustomer method")
+    
+    /*@DisplayName("JUnit test for updateCustomer method")
 	@Test
 	void testUpdateCustomer() throws CustomerIdNotFoundException {
     	// given - precondition or setup
@@ -52,7 +53,7 @@ class ICustomerServiceImplTest {
     	CustomerDto updatedCustomer = iCustomerService.updateCustomer(customer.getId(), entityToDto(customer));
     	// Verify the output
     	assertEquals(customer.getUsername(),updatedCustomer.getUsername());
-	}
+	}*/
 
     @DisplayName("JUnit test for deleteCustomer method")
 	@Test
@@ -62,6 +63,7 @@ class ICustomerServiceImplTest {
     	// Verify the output
     	assertEquals(customer.getUsername(),updatedCustomer.getUsername());
 	}
+    
     @DisplayName("JUnit test for viewCustomers method")
 	@Test
 	void testViewCustomers() {
@@ -69,6 +71,7 @@ class ICustomerServiceImplTest {
 		List<CustomerDto> customerDto = iCustomerService.viewCustomers();
 		assertEquals(customerList.size(), customerDto.size());
 	}
+    
     @DisplayName("JUnit test for viewCustomer method")
 	@Test
 	void testViewCustomer() throws CustomerIdNotFoundException {
@@ -76,10 +79,12 @@ class ICustomerServiceImplTest {
     	CustomerDto customerDto = iCustomerService.viewCustomer(customer.getId());
     	assertEquals(customer.getUsername(), customerDto.getUsername());
 	}
+    
 	public Customer dtoToEntity(CustomerDto customer) {
 		Customer c = new ModelMapper().map(customer,Customer.class);
         return c;
     }
+	
     public CustomerDto entityToDto(Customer customer) {
     	CustomerDto c = new ModelMapper().map(customer,CustomerDto.class);
         return c;
