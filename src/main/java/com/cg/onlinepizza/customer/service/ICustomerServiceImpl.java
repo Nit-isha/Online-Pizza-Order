@@ -20,18 +20,14 @@ public class ICustomerServiceImpl implements ICustomerService{
   
      
     /*Update customers by ID*/
-    public CustomerDto updateCustomer(Principal currentCustomer, CustomerDto customer) throws CustomerIdNotFoundException {
+    public CustomerDto updateCustomer(Principal currentCustomer, CustomerDto customer){
         String currUsername= currentCustomer.getName();
     	Optional<Customer> optional = iCustomerRepository.findById(iCustomerRepository.findByUsername(currUsername).get().getId());
-        if(optional.isPresent()) {
+        
         	Customer updatedCustomer = dtoToEntity(customer);
         	updatedCustomer.setId(optional.get().getId());
         	iCustomerRepository.save(updatedCustomer);
         	return customer;
-        }else {
-        	throw new CustomerIdNotFoundException();
-        }
-        
     }
     
     /*Delete customer by ID*/
@@ -74,6 +70,15 @@ public class ICustomerServiceImpl implements ICustomerService{
         }
     }
     
+    /*View customer own details*/
+   	@Override
+   	public CustomerDto aboutCustomer(Principal currentCustomer) {
+   		String currUsername= currentCustomer.getName();
+    	Optional<Customer> optional = iCustomerRepository.findByUsername(currUsername);
+   		return entityToDto(optional.get());
+   	}
+    
+   	
     /*PizzaDto to Pizza Entity Class Conversion*/
     public Customer dtoToEntity(CustomerDto customer) {
     	Customer c = new ModelMapper().map(customer,Customer.class);
@@ -87,6 +92,8 @@ public class ICustomerServiceImpl implements ICustomerService{
     
         return c;
     }
+    
+   
    
 } 
 

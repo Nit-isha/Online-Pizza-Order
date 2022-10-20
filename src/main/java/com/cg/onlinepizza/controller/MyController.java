@@ -124,6 +124,12 @@ public class MyController {
 		return new ResponseEntity<CustomerDto>(customerService.viewCustomer(custId), HttpStatus.OK);
 	}
 	
+	/*Get Customer Details [Only user can access]*/
+	@GetMapping(path = "/customer/about", produces = {"application/json","application/xml"})
+	public ResponseEntity<CustomerDto> aboutCustomer(Principal currentCustomer) {
+		return new ResponseEntity<CustomerDto>(customerService.aboutCustomer(currentCustomer), HttpStatus.OK);
+	}
+	
 	/*Delete Customer from DB [Only Admin can access]*/
 	@DeleteMapping(path = "/customer/{custId}", produces = {"application/json","application/xml"})
 	@PreAuthorize("hasAuthority('admin')")
@@ -170,6 +176,7 @@ public class MyController {
 	public ResponseEntity<CouponDto> viewCouponId(@PathVariable int couponId) throws CouponIdNotFoundException{
 		return new ResponseEntity<CouponDto>(couponService.viewCouponId(couponId), HttpStatus.OK);
 	}
+	
 	
 	/*-----------------  Pizza Order Service Controllers  -----------------*/
 	

@@ -4,6 +4,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class CustomerDto {
 	@NotBlank
 	private String customerName;
@@ -16,6 +18,7 @@ public class CustomerDto {
 	@NotBlank
 	private String customerAddress;
 	private String username;
+	@JsonIgnore
 	private String password;
 
 	public String getCustomerName() {
