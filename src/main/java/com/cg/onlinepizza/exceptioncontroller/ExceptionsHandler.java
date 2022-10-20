@@ -4,6 +4,7 @@ import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -88,6 +89,13 @@ public class ExceptionsHandler {
         return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
     }
     
+    /*Constraint Violation Exception Handler*/
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<APIError> methodArgumentNotValidException(Exception e){
+		APIError error = new APIError("Invalid coupon name", 400);
+		return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
+	}
+	
     /*Coupon ID Not Found Exception Handler*/
     @ExceptionHandler(CouponIdNotFoundException.class)
     public ResponseEntity<APIError> couponIdNotFoundExceptionHandler(Exception e) {

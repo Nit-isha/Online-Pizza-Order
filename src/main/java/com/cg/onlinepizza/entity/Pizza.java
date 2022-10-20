@@ -25,6 +25,7 @@ public class Pizza {
 		this.setPizzaDescription(pizzaDescription);
 		this.pizzaCost = pizzaCost;
 	}
+	
     public String getPizzaDescription() {
         return pizzaDescription;
     }

@@ -12,7 +12,7 @@ public interface ICouponService {
 
 	CouponDto addCoupons(CouponDto coupon) throws CouponAlreadyExistException;
 
-	CouponDto editCoupons(int couponId, CouponDto coupon)throws CouponIdNotFoundException;
+	CouponDto editCoupons(int couponId, CouponDto coupon)throws CouponIdNotFoundException, CouponAlreadyExistException;
 
 	CouponDto deleteCoupons(int couponId)throws CouponIdNotFoundException;
 

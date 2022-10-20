@@ -216,7 +216,6 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*PizzaOrderDto to Pizza Entity Class Conversion*/
 	public PizzaOrder dtoToEntity(PizzaOrderDto pizzaOrder) {
-		//PizzaOrder p= new ModelMapper().map(pizzaOrder,PizzaOrder.class);
 		
 		PizzaOrder p = new PizzaOrder();
 		p.setBookingOrderId(pizzaOrder.getBookingOrderId());
@@ -235,7 +234,6 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*Pizza Entity to PizzaDto Class Conversion*/
 	public PizzaOrderDto entityToDto(PizzaOrder pizzaOrder) {
-		//PizzaOrderDto p= new ModelMapper().map(pizzaOrder,PizzaOrderDto.class);
 		
 		PizzaOrderDto p = new PizzaOrderDto();
 		p.setBookingOrderId(pizzaOrder.getBookingOrderId());
@@ -258,18 +256,18 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	public double calcTotal(String couponName, List<Pizza> orderPizzas) { 
 		
 		double totalCost = orderPizzas.stream().mapToDouble(p->p.getPizzaCost()).sum();
-		if(couponName.startsWith("FLAT") && couponName.contains("MN")) {
+		if(couponName.startsWith("FLAT") && couponName.contains("M")) {
 			int indexOfM = couponName.indexOf('M');
 			int discount = Integer.parseInt(couponName.substring(4, indexOfM));
-			int minValue = Integer.parseInt(couponName.substring(indexOfM + 2 ));
+			int minValue = Integer.parseInt(couponName.substring(indexOfM + 1 ));
 			if(totalCost >= minValue) {
 				totalCost -= discount;
 			}
 		}
-		else if(couponName.startsWith("PIZZA") && couponName.contains("MX")) {
+		else if(couponName.startsWith("PIZZA") && couponName.contains("M")) {
 			int indexOfM = couponName.indexOf('M');
 			int percent = Integer.parseInt(couponName.substring(5, indexOfM));
-			int maxValue = Integer.parseInt(couponName.substring(indexOfM + 2 ));
+			int maxValue = Integer.parseInt(couponName.substring(indexOfM + 1 ));
 			double discount = (percent * totalCost)/100; 
 			if(discount > maxValue) {
 				discount = maxValue;

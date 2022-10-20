@@ -16,6 +16,7 @@ import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 
 @Component
 public class ICustomerServiceImpl implements ICustomerService{
+<<<<<<< Updated upstream
 	@Autowired
 	private ICustomerRepository iCustomerRepository;
 	
@@ -55,6 +56,35 @@ public class ICustomerServiceImpl implements ICustomerService{
 	@Override
 	public List<CustomerDto> viewCustomers() {
 		List<Customer> customerList = new ArrayList<>();
+=======
+    @Autowired
+    private ICustomerRepository iCustomerRepository;
+  
+     
+    /*Update customers */
+    public CustomerDto updateCustomer(Principal currentCustomer, CustomerDto customer){
+        String currUsername= currentCustomer.getName();
+    	Optional<Customer> optional = iCustomerRepository.findById(iCustomerRepository.findByUsername(currUsername).get().getId());
+        
+        	Customer updatedCustomer = dtoToEntity(customer);
+        	updatedCustomer.setId(optional.get().getId());
+        	iCustomerRepository.save(updatedCustomer);
+        	return customer;
+    }
+    
+    /*Delete customer by ID*/
+    @Override
+    public CustomerDto deleteCustomer(int customerId) throws CustomerIdNotFoundException {
+        // TODO Auto-generated method stub
+        Optional<Customer> optional = iCustomerRepository.findById(customerId);
+        if(optional.isPresent()) {
+            iCustomerRepository.deleteById(customerId);
+            return entityToDto(optional.get());
+        }else {
+            throw new CustomerIdNotFoundException();
+        }
+    }
+>>>>>>> Stashed changes
 
 		Iterable<Customer> list = iCustomerRepository.findAll();
 		list.forEach(p -> customerList.add(p));

@@ -169,7 +169,7 @@ public class MyController {
 	@PutMapping(path = "/coupon/{couponId}",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	@PreAuthorize("hasAuthority('admin')")
-	public ResponseEntity<CouponDto> editCoupon(@PathVariable int couponId,@RequestBody CouponDto couponDto) throws CouponIdNotFoundException{
+	public ResponseEntity<CouponDto> editCoupon(@PathVariable int couponId,@RequestBody CouponDto couponDto) throws CouponIdNotFoundException, CouponAlreadyExistException{
 		return new ResponseEntity<CouponDto>(couponService.editCoupons(couponId,couponDto), HttpStatus.OK);
 	}
 	

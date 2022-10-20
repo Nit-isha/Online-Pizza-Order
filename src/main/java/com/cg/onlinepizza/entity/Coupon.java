@@ -13,7 +13,20 @@ public class Coupon {
 	private String couponName;
 	private String couponType;
 	private String couponDescription;
-    public int getCouponId() {
+    
+
+	public Coupon() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Coupon(String couponName, String couponType, String couponDescription) {
+		super();
+		this.couponName = couponName;
+		this.couponType = couponType;
+		this.couponDescription = couponDescription;
+	}
+	
+	public int getCouponId() {
         return couponId;
     }
     public void setCouponId(int couponId) {

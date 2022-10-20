@@ -65,7 +65,7 @@ class ICouponServiceImplTest {
 	}
 
 	@Test
-	void testEditCoupons() throws CouponIdNotFoundException {
+	void testEditCoupons() throws CouponIdNotFoundException, CouponAlreadyExistException {
 		when(iCouponRepository.findById(coupon.getCouponId())).thenReturn(Optional.of(coupon));
 		//when(iCouponRepository.save(Mockito.any(Coupon.class))).thenReturn(coupon);
    		CouponDto p2 = iCouponService.editCoupons(coupon.getCouponId(),entityToDto(coupon));

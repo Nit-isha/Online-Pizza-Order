@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,14 @@ public class ICouponServiceImpl implements ICouponService {
 	private ICouponRepository iCouponRepository;
 	@Override
 	public CouponDto addCoupons(CouponDto coupon) throws CouponAlreadyExistException {
-		Optional<Coupon> optional = iCouponRepository.findById(coupon.getCouponId());
-		if(optional.isPresent()){
+		
+		List<CouponDto> couponsList= viewCoupons();
+		Optional<CouponDto> couponMatchDto =  couponsList.stream().filter(c->c.getCouponName().equals(coupon.getCouponName())).findAny();
+		
+		if(couponMatchDto.isPresent()){
 			throw new CouponAlreadyExistException();
 		}
+		
 		
 		iCouponRepository.save(dtoToEntity(coupon));
 		return coupon;
@@ -38,9 +43,15 @@ public class ICouponServiceImpl implements ICouponService {
 	
 
 	@Override
-	public CouponDto editCoupons(int couponId, CouponDto coupon) throws CouponIdNotFoundException {
+	public CouponDto editCoupons(int couponId, CouponDto coupon) throws CouponIdNotFoundException, CouponAlreadyExistException {
 		Optional<Coupon> optional = iCouponRepository.findById(couponId);
+		
+		List<CouponDto> couponsList= viewCoupons();
+		Optional<CouponDto> couponNameMatchDto =  couponsList.stream().filter(c->c.getCouponName().equals(coupon.getCouponName())).findAny();
 		if(optional.isPresent()) {
+			if(couponNameMatchDto.isPresent()){
+				throw new CouponAlreadyExistException();
+			}
 			Coupon couponEntity = dtoToEntity(coupon);
 			couponEntity.setCouponId(optional.get().getCouponId());
 			iCouponRepository.save(couponEntity);
@@ -93,21 +104,11 @@ public class ICouponServiceImpl implements ICouponService {
 	//Coupon Entity to CouponDto Class Conversion//
 	public CouponDto entityToDto(Coupon coupon) {
 		CouponDto c= new ModelMapper().map(coupon,CouponDto.class);
-		/*CouponDto c = new CouponDto();
-		c.setCouponId(coupon.getCouponId());
-		c.setCouponName(coupon.getCouponName());
-		c.setCouponType(coupon.getCouponType());
-		c.setCouponDescription(coupon.getCouponDescription());*/
 		return c;
 	}
 	/*CoupanDto to Coupon Entity Class Conversion*/
 	public Coupon dtoToEntity(CouponDto coupon) {
 		Coupon c= new ModelMapper().map(coupon,Coupon.class);
-		/*Coupon c = new Coupon();
-		c.setCouponId(coupon.getCouponId());
-		c.setCouponName(coupon.getCouponName());
-		c.setCouponType(coupon.getCouponType());
-		c.setCouponDescription(coupon.getCouponDescription());*/
 		return c;
 	}
 
