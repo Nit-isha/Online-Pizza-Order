@@ -18,7 +18,7 @@ public class CustomerDto {
 	@NotBlank
 	private String customerAddress;
 	private String username;
-	private String password;
+	//private String password;
 
 	public String getCustomerName() {
 		return customerName;
@@ -60,12 +60,12 @@ public class CustomerDto {
 		this.username = username;
 	}
 
-	public String getPassword() {
+	/*public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
+	}*/
 
 }

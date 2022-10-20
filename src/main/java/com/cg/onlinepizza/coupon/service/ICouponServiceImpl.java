@@ -6,6 +6,7 @@ import java.util.List;
 
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -91,20 +92,13 @@ public class ICouponServiceImpl implements ICouponService {
 	
 	//Coupon Entity to CouponDto Class Conversion//
 	public CouponDto entityToDto(Coupon coupon) {
-		CouponDto c = new CouponDto();
-		c.setCouponId(coupon.getCouponId());
-		c.setCouponName(coupon.getCouponName());
-		c.setCouponType(coupon.getCouponType());
-		c.setCouponDescription(coupon.getCouponDescription());
+		CouponDto c= new ModelMapper().map(coupon,CouponDto.class);
 		return c;
 	}
 	/*CoupanDto to Coupon Entity Class Conversion*/
 	public Coupon dtoToEntity(CouponDto coupon) {
-		Coupon c = new Coupon();
-		c.setCouponId(coupon.getCouponId());
-		c.setCouponName(coupon.getCouponName());
-		c.setCouponType(coupon.getCouponType());
-		c.setCouponDescription(coupon.getCouponDescription());
+		Coupon c= new ModelMapper().map(coupon,Coupon.class);
+		
 		return c;
 	}
 
