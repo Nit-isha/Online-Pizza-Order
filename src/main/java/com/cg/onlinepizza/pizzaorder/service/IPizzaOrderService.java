@@ -30,7 +30,5 @@ public interface IPizzaOrderService {
 	
 	List<PizzaOrderDto> viewCustomerOrdersByDate(Principal currentCustomer, LocalDate date)throws NoOrdersFoundException;
 	
-	List<PizzaOrderDto> calculateTotal(List<PizzaOrderDto> orderPizzas);
-	
 	PizzaOrderDto viewCustomerPizzaOrderById( Principal currentCustomer, int pizzaOrderId) throws OrderIdNotFoundException;
 }

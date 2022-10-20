@@ -19,6 +19,8 @@ import com.cg.onlinepizza.exceptions.OrderUpdateDeclinedException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 
+import org.postgresql.util.PSQLException;
+
 @RestControllerAdvice // acts as a catch block
 public class ExceptionsHandler {
     
@@ -51,6 +53,13 @@ public class ExceptionsHandler {
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<APIError> constraintViolationExceptionHandler(Exception e){
 		APIError error = new APIError("Invalid Email OR Mobile number", 400);
+		return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
+	}
+	
+	/*Username Already Exists in Database Exception Handler*/
+	@ExceptionHandler(PSQLException.class)
+	public ResponseEntity<APIError> pSQLException(Exception e){
+		APIError error = new APIError("This Username is already taken.", 400);
 		return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
 	}
 	

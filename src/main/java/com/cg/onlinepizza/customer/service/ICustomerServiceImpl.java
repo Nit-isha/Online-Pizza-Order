@@ -88,26 +88,14 @@ public class ICustomerServiceImpl implements ICustomerService{
     /*PizzaDto to Pizza Entity Class Conversion*/
     public Customer dtoToEntity(CustomerDto customer) {
     	Customer c = new ModelMapper().map(customer,Customer.class);
-    	/*
-        Customer c = new Customer();
-        c.setCustomerName(customer.getCustomerName());
-        c.setCustomerEmail(customer.getCustomerEmail());
-        c.setCustomerMobile(customer.getCustomerMobile());
-        c.setCustomerAddress(customer.getCustomerAddress());
-        */
+    	
         return c;
     }
     
     /*Pizza Entity to PizzaDto Class Conversion*/
     public CustomerDto entityToDto(Customer customer) {
     	CustomerDto c = new ModelMapper().map(customer,CustomerDto.class);
-    	/*
-        CustomerDto c = new CustomerDto();
-        c.setCustomerName(customer.getCustomerName());
-        c.setCustomerEmail(customer.getCustomerEmail());
-        c.setCustomerMobile(customer.getCustomerMobile());
-        c.setCustomerAddress(customer.getCustomerAddress());
-        */
+  
         return c;
     }
    

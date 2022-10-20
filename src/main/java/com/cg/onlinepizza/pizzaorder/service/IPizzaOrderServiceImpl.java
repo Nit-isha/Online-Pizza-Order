@@ -61,12 +61,13 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	/*--- Book Pizza Order ---*/
 	@Override
 	public PizzaOrderDto bookPizzaOrder(Principal currentCustomer, PizzaOrderDto order) {
+		String couponName = order.getCouponName();
 		PizzaOrder orderEntity = new PizzaOrder();
 		orderEntity.setBookingOrderId(order.getBookingOrderId());
 		orderEntity.setTransactionMode(order.getTransactionMode());
 		orderEntity.setSize(order.getSize());
 		orderEntity.setOrderType(order.getOrderType());
-		orderEntity.setCoupon(iCouponRepository.getCouponByName(order.getCouponName()));
+		orderEntity.setCoupon(iCouponRepository.getCouponByName(couponName));
 		
 		orderEntity.setOrderDate(LocalDateTime.now());
 		orderEntity.setCustomer(getCustomer(currentCustomer));
@@ -78,7 +79,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		}
 		orderEntity.setPizza(orderPizzas);
 		orderEntity.setQuantity(pizzaIds.size());
-		orderEntity.setTotalCost(calcTotal(orderPizzas));
+		orderEntity.setTotalCost(calcTotal(couponName, orderPizzas));
 		
 		iPizzaOrderRepository.save(orderEntity);
 		return entityToDto(orderEntity);
@@ -96,23 +97,24 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		Optional<PizzaOrderDto> optionalOrderDto = orderHistory.stream().filter(p -> p.getBookingOrderId() == orderId).findFirst();
 		if(optionalOrderDto.isPresent()) {
 			if(timeDiffValidation(bookingTime, currTime)) {
-			PizzaOrder updateEntity = dtoToEntity(order);
-			updateEntity.setBookingOrderId(optionalOrderDto.get().getBookingOrderId());
-			
-			List<Integer> updatedPizzaIds = order.getPizzaIdList();
-			List<Pizza> updatedPizzaList = new ArrayList<>();
-			for(int id : updatedPizzaIds) {
-				updatedPizzaList.add(iPizzaRepository.findById(id).get());
-			}
-			updateEntity.setPizza(updatedPizzaList);
-			
-			updateEntity.setQuantity(updatedPizzaIds.size());
-			updateEntity.setTotalCost(calcTotal(updatedPizzaList));
-			updateEntity.setCustomer(getCustomer(currentCustomer));
-			updateEntity.setOrderDate(LocalDateTime.now());
-			
-			iPizzaOrderRepository.save(updateEntity);
-			return entityToDto(updateEntity);
+				PizzaOrder updateEntity = dtoToEntity(order);
+				String couponName = order.getCouponName();
+				updateEntity.setBookingOrderId(optionalOrderDto.get().getBookingOrderId());
+				
+				List<Integer> updatedPizzaIds = order.getPizzaIdList();
+				List<Pizza> updatedPizzaList = new ArrayList<>();
+				for(int id : updatedPizzaIds) {
+					updatedPizzaList.add(iPizzaRepository.findById(id).get());
+				}
+				updateEntity.setPizza(updatedPizzaList);
+				
+				updateEntity.setQuantity(updatedPizzaIds.size());
+				updateEntity.setTotalCost(calcTotal(couponName, updatedPizzaList));
+				updateEntity.setCustomer(getCustomer(currentCustomer));
+				updateEntity.setOrderDate(LocalDateTime.now());
+				
+				iPizzaOrderRepository.save(updateEntity);
+				return entityToDto(updateEntity);
 			}
 			else {
 				throw new OrderUpdateDeclinedException();
@@ -194,13 +196,6 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		return orderBydateList;
 	}
 	
-	/*--- Calculate total ---*/
-	@Override
-	public List<PizzaOrderDto> calculateTotal(List<PizzaOrderDto> order) {
-		
-
-	    return null;
-	}
 	
 	/*--- View customer orders list  ---*/
 	@Override
@@ -260,8 +255,27 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	}
 	
 	/*Calculate total*/
-	public double calcTotal(List<Pizza> orderPizzas) { 
+	public double calcTotal(String couponName, List<Pizza> orderPizzas) { 
+		
 		double totalCost = orderPizzas.stream().mapToDouble(p->p.getPizzaCost()).sum();
+		if(couponName.startsWith("FLAT") && couponName.contains("MN")) {
+			int indexOfM = couponName.indexOf('M');
+			int discount = Integer.parseInt(couponName.substring(4, indexOfM));
+			int minValue = Integer.parseInt(couponName.substring(indexOfM + 2 ));
+			if(totalCost >= minValue) {
+				totalCost -= discount;
+			}
+		}
+		else if(couponName.startsWith("PIZZA") && couponName.contains("MX")) {
+			int indexOfM = couponName.indexOf('M');
+			int percent = Integer.parseInt(couponName.substring(5, indexOfM));
+			int maxValue = Integer.parseInt(couponName.substring(indexOfM + 2 ));
+			double discount = (percent * totalCost)/100; 
+			if(discount > maxValue) {
+				discount = maxValue;
+			}
+			totalCost -= discount;
+		}	
 		return totalCost;
 	}
 	

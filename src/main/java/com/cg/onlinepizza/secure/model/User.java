@@ -5,10 +5,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import org.checkerframework.common.aliasing.qual.Unique;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import com.cg.onlinepizza.sequencegen.StringPrefixedSequenceIdGenerator;
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "userlogin")

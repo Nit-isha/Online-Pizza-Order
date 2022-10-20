@@ -1,7 +1,10 @@
 package com.cg.onlinepizza.coupon.dto;
 
+import javax.validation.constraints.Pattern;
+
 public class CouponDto {
 	private int couponId;
+	@Pattern(regexp="^(FLAT)+[1-9]{1}+[0-9]{1,2}+(MN)+[1-9]{1}+[0-9]{1-2}$", message="length must be 10")
 	private String couponName;
 	private String couponType;
 	private String couponDescription;
@@ -12,6 +15,7 @@ public class CouponDto {
 	public void setCouponId(int couponId) {
 		this.couponId = couponId;
 	}
+	
 	public String getCouponName() {
 		return couponName;
 	}

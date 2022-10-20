@@ -5,20 +5,15 @@ import com.cg.onlinepizza.config.JwtTokenUtil;
 import com.cg.onlinepizza.customer.dto.*;
 import com.cg.onlinepizza.secure.model.JwtRequest;
 import com.cg.onlinepizza.secure.model.JwtResponse;
-import com.cg.onlinepizza.secure.model.User;
-import com.cg.onlinepizza.secure.model.UserDto;
 import com.cg.onlinepizza.secure.service.JwtUserDetailsService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,8 +29,6 @@ public class JwtAuthenticationController {
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
 	
-	@Autowired
-    private PasswordEncoder bcryptEncoder;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -50,8 +43,10 @@ public class JwtAuthenticationController {
 	}
 
 	@Valid @RequestMapping(value = "/register", method = RequestMethod.POST)
+	//public ResponseEntity<?> saveUser(@RequestBody CustomerDto customerDto) throws Exception {
+	  
 	public ResponseEntity<?> saveUser(@RequestBody CustomerDto customerDto) throws Exception {
-	    
+		  
 		return ResponseEntity.ok(userDetailsService.save(customerDto));
 	}
 

@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -133,10 +135,11 @@ public class MyController {
 	
 	
 	/*Add Coupon to DB [Only Admin can access]*/
+	
 	@PostMapping(path = "/coupon",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	@PreAuthorize("hasAuthority('admin')")
-	public ResponseEntity<CouponDto> addCoupon(@RequestBody CouponDto couponDto) throws CouponAlreadyExistException {
+	public ResponseEntity<CouponDto> addCoupon(@Valid @RequestBody CouponDto couponDto) throws CouponAlreadyExistException {
 		return new ResponseEntity<CouponDto>(couponService.addCoupons(couponDto), HttpStatus.OK);
 	}
 	

@@ -30,13 +30,14 @@ public class ICouponServiceImpl implements ICouponService {
 		if(optional.isPresent()){
 			throw new CouponAlreadyExistException();
 		}
+		
 		iCouponRepository.save(dtoToEntity(coupon));
 		return coupon;
 	}
 	
 
 	@Override
-	public CouponDto editCoupons(int couponId, CouponDto coupon) throws  CouponIdNotFoundException {
+	public CouponDto editCoupons(int couponId, CouponDto coupon) throws CouponIdNotFoundException {
 		Optional<Coupon> optional = iCouponRepository.findById(couponId);
 		if(optional.isPresent()) {
 			Coupon couponEntity = dtoToEntity(coupon);
