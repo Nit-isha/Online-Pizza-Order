@@ -36,23 +36,12 @@ public class ICustomerServiceImpl implements ICustomerService{
     public CustomerDto updateCustomer(int customerId, CustomerDto customer) throws CustomerIdNotFoundException {
         Optional<Customer> optional = iCustomerRepository.findById(customerId);
         if(optional.isPresent()) {
-        	Customer customerEntity = optional.get();
-           if(!customer.getCustomerName().isEmpty())
-        	   customerEntity.setCustomerName(customer.getCustomerName());
-           
-           if(!customer.getCustomerEmail().isEmpty())
-        	   customerEntity.setCustomerEmail(customer.getCustomerEmail());
-           
-           if(!customer.getCustomerMobile().isEmpty())
-        	   customerEntity.setCustomerMobile(customer.getCustomerMobile());
-           
-           if(!customer.getCustomerAddress().isEmpty())
-        	   customerEntity.setCustomerAddress(customer.getCustomerAddress());
-           
-            iCustomerRepository.save(customerEntity);
-            return customer;
+        	Customer updatedCustomer = dtoToEntity(customer);
+        	updatedCustomer.setId(optional.get().getId());
+        	iCustomerRepository.save(updatedCustomer);
+        	return customer;
         }else {
-            throw new CustomerIdNotFoundException();
+        	throw new CustomerIdNotFoundException();
         }
     }
     

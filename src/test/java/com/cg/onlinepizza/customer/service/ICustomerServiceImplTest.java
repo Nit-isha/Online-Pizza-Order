@@ -1,6 +1,7 @@
 package com.cg.onlinepizza.customer.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -8,29 +9,24 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import com.cg.onlinepizza.customer.dao.ICustomerRepository;
 import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.entity.Customer;
-import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
+@SpringBootTest
 class ICustomerServiceImplTest {
 	@MockBean
     private ICustomerRepository iCustomerRepository ;
     @MockBean
     private Customer customer;
-    
     @Autowired
     private ICustomerService iCustomerService;
     
@@ -47,33 +43,32 @@ class ICustomerServiceImplTest {
         customerList.add(obj1);
         customerList.add(obj2);
     }
-    
-	@Test
-	void testAddCustomer() throws CustomerAlreadyExistException {
-		fail("Not yet implemented");
-	}
-
+    @DisplayName("JUnit test for updateCustomer method")
 	@Test
 	void testUpdateCustomer() throws CustomerIdNotFoundException {
-		when(iCustomerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
-    	CustomerDto  customerDto = iCustomerService.updateCustomer(customer.getId(), entityToDto(customer));
-    	assertEquals(entityToDto(customer).getCustomerName(), customerDto.getCustomerName());
+    	// given - precondition or setup
+    	when(iCustomerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
+    	// Action
+    	CustomerDto updatedCustomer = iCustomerService.updateCustomer(customer.getId(), entityToDto(customer));
+    	// Verify the output
+    	assertEquals(customer.getUsername(),updatedCustomer.getUsername());
+//    	assertThat(updatedCustomer.getCustomerEmail().equals("anmol@gmail.com"));
 	}
 
-	@Test
-	void testDeleteCustomer() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testViewCustomers() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testViewCustomer() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testDeleteCustomer() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testViewCustomers() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testViewCustomer() {
+//		fail("Not yet implemented");
+//	}
 	public Customer dtoToEntity(CustomerDto customer) {
 		Customer c = new ModelMapper().map(customer,Customer.class);
         return c;
