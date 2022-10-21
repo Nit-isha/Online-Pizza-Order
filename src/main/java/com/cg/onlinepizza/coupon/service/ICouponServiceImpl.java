@@ -55,7 +55,7 @@ public class ICouponServiceImpl implements ICouponService {
 			Coupon couponEntity = dtoToEntity(coupon);
 			couponEntity.setCouponId(optional.get().getCouponId());
 			iCouponRepository.save(couponEntity);
-			return coupon;
+			return entityToDto(couponEntity);
 		}else {
 			throw new CouponIdNotFoundException();
 		}

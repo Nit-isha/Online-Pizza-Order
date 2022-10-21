@@ -16,7 +16,7 @@ import com.cg.onlinepizza.pizza.dto.PizzaDto;
 public class IPizzaServiceImpl implements IPizzaService{
 	@Autowired
 	private IPizzaRepository iPizzaRepository;
-	
+
 	/*Add Pizza Method*/
 	@Override
 	public PizzaDto addPizza(PizzaDto pizza) throws PizzaAlreadyExistException {
@@ -27,7 +27,7 @@ public class IPizzaServiceImpl implements IPizzaService{
 		iPizzaRepository.save(dtoToEntity(pizza));
 		return pizza;
 	}
-	
+
 	/*Update Pizza Method*/
 	@Override
 	public PizzaDto updatePizza(int pizzaId,PizzaDto pizza) throws PizzaIdNotFoundException {
@@ -36,12 +36,12 @@ public class IPizzaServiceImpl implements IPizzaService{
 			Pizza pizzaEntity = dtoToEntity(pizza);
 			pizzaEntity.setPizzaId(optional.get().getPizzaId());
 			iPizzaRepository.save(pizzaEntity);
-			return pizza;
+			return entityToDto(pizzaEntity);
 		}else {
 			throw new PizzaIdNotFoundException();
 		}
 	}
-	
+
 	/*Delete Pizza Method*/
 	@Override
 	public PizzaDto deletePizza(int pizzaId) throws PizzaIdNotFoundException {
@@ -64,22 +64,22 @@ public class IPizzaServiceImpl implements IPizzaService{
 			throw new PizzaIdNotFoundException();
 		}
 	}
-	
+
 	/*View All Pizza Method*/
 	@Override
 	public List<PizzaDto> viewPizzaList() {
 		List<Pizza> pizzaList = new ArrayList<>();
-		
+
 		Iterable<Pizza> list =  iPizzaRepository.findAll();
 		list.forEach(p -> pizzaList.add(p));
-		
+
 		List<PizzaDto> pizzaDtoList = new ArrayList<>();
 		for(Pizza pizza: pizzaList) {
 			pizzaDtoList.add(entityToDto(pizza));
 		}
 		return pizzaDtoList;
 	}
-	
+
 	/*Filter Pizza by Cost Range Method*/
 	@Override
 	public List<PizzaDto> viewPizzaList(double minCost, double maxCost) throws InvalidMinCostException {
@@ -93,7 +93,7 @@ public class IPizzaServiceImpl implements IPizzaService{
 		}
 		return pizzaDtoList;
 	}
-	
+
 	/*PizzaDto to Pizza Entity Class Conversion*/
 	public Pizza dtoToEntity(PizzaDto pizza) {
 		Pizza p = new Pizza();
@@ -104,7 +104,7 @@ public class IPizzaServiceImpl implements IPizzaService{
 		p.setPizzaCost(pizza.getPizzaCost());
 		return p;
 	}
-	
+
 	/*Pizza Entity to PizzaDto Class Conversion*/
 	public PizzaDto entityToDto(Pizza pizza) {
 		PizzaDto p = new PizzaDto();

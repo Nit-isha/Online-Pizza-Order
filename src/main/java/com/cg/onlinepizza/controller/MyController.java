@@ -100,7 +100,7 @@ public class MyController {
 		List<PizzaDto> pizzaList = pizzaService.viewPizzaList(minCost,maxCost);
 		return new ResponseEntity<List<PizzaDto>>(pizzaList, HttpStatus.OK);
 		
-		// http://localhost:9993/search?mincost=300&maxcost=500
+		// localhost:8081/menu/search?min=300&max=500
 	}
 	
 	/*-----------------  Customer Service Controllers  -----------------*/
