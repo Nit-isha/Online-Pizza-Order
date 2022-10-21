@@ -189,7 +189,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
 		List<PizzaOrderDto> orderHistory = viewCustomerOrdersList(currentCustomer);
-		List<PizzaOrderDto> orderBydateList=orderHistory.stream().filter(o -> o.getOrderDate().format(dtf).equals(date.format(dtf))).toList();
+		List<PizzaOrderDto> orderBydateList=orderHistory.stream().filter(o -> o.getOrderDate().format(dtf).equals(date.format(dtf))).collect(Collectors.toList());
 		if(orderBydateList.isEmpty()) {
 			throw new NoOrdersFoundException();
 		}
