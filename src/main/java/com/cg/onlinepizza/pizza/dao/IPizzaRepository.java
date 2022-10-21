@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.cg.onlinepizza.entity.Pizza;
+import com.cg.onlinepizza.entity.PizzaOrder;
 
 @Repository
 public interface IPizzaRepository extends CrudRepository<Pizza, Integer>{
@@ -20,5 +21,8 @@ public interface IPizzaRepository extends CrudRepository<Pizza, Integer>{
 		
 		/*@Query("select p from Pizza where p.bookingId= :bid")
 		List<Pizza> getPizzaListByOrderId(@Param("bid")int bookingId);*/
+		
+		@Query(value = "select pizza_id from pizza", nativeQuery = true)
+		List<Integer> getPizzaIdList();
 		
 }

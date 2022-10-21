@@ -22,6 +22,7 @@ import com.cg.onlinepizza.exceptions.NoOrdersFoundException;
 import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
 import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
 import com.cg.onlinepizza.exceptions.OrderUpdateDeclinedException;
+import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 import com.cg.onlinepizza.pizza.dao.IPizzaRepository;
 import com.cg.onlinepizza.pizzaorder.dao.IPizzaOrderRepository;
 import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
@@ -60,7 +61,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*--- Book Pizza Order ---*/
 	@Override
-	public PizzaOrderDto bookPizzaOrder(String currentCustomer, PizzaOrderDto order) {
+	public PizzaOrderDto bookPizzaOrder(String currentCustomer, PizzaOrderDto order) throws PizzaIdNotFoundException {
 		String couponName = order.getCouponName();
 		PizzaOrder orderEntity = new PizzaOrder();
 		orderEntity.setBookingOrderId(order.getBookingOrderId());
@@ -74,7 +75,13 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		
 		List<Integer> pizzaIds = order.getPizzaIdList();
 		List<Pizza> orderPizzas = new ArrayList<>();
+		
+		List<Integer> cataloguePizzaIds = iPizzaRepository.getPizzaIdList();
 		for(int id : pizzaIds) {
+			if(!cataloguePizzaIds.contains(id)) {
+				throw new PizzaIdNotFoundException();
+			}
+			
 			orderPizzas.add(iPizzaRepository.findById(id).get());
 		}
 		orderEntity.setPizza(orderPizzas);
@@ -87,7 +94,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*--- Update Pizza order ---*/
 	@Override
-	public PizzaOrderDto updatePizzaOrder(String currentCustomer, int orderId, PizzaOrderDto order) throws OrderIdNotFoundException, OrderUpdateDeclinedException {
+	public PizzaOrderDto updatePizzaOrder(String currentCustomer, int orderId, PizzaOrderDto order) throws OrderIdNotFoundException, OrderUpdateDeclinedException, PizzaIdNotFoundException {
 		LocalDateTime currTime = LocalDateTime.now();
 		PizzaOrderDto orderDto = viewCustomerPizzaOrderById(currentCustomer, orderId);
 		LocalDateTime bookingTime = orderDto.getOrderDate();
@@ -101,9 +108,13 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 				String couponName = order.getCouponName();
 				updateEntity.setBookingOrderId(optionalOrderDto.get().getBookingOrderId());
 				
+				List<Integer> cataloguePizzaIds = iPizzaRepository.getPizzaIdList();
 				List<Integer> updatedPizzaIds = order.getPizzaIdList();
 				List<Pizza> updatedPizzaList = new ArrayList<>();
 				for(int id : updatedPizzaIds) {
+					if(!cataloguePizzaIds.contains(id)) {
+						throw new PizzaIdNotFoundException();
+					}
 					updatedPizzaList.add(iPizzaRepository.findById(id).get());
 				}
 				updateEntity.setPizza(updatedPizzaList);

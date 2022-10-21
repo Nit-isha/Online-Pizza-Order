@@ -208,14 +208,14 @@ public class MyController {
 	/*Book Pizza Order [Only User can access]*/
 	@PostMapping(path="/orders/neworder", produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
-	public ResponseEntity<PizzaOrderDto> bookPizzaOrder(Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) {
+	public ResponseEntity<PizzaOrderDto> bookPizzaOrder(Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) throws PizzaIdNotFoundException{
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.bookPizzaOrder(currentCustomer.getName(),pizzaOrderDto), HttpStatus.OK);
 	}
 	
 	/*Update Pizza Order [Only User can access]*/
 	@PutMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
-	public ResponseEntity<PizzaOrderDto> updatePizzaOrder(@PathVariable int orderId, Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) throws OrderIdNotFoundException, OrderUpdateDeclinedException {
+	public ResponseEntity<PizzaOrderDto> updatePizzaOrder(@PathVariable int orderId, Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) throws OrderIdNotFoundException, OrderUpdateDeclinedException, PizzaIdNotFoundException {
 		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.updatePizzaOrder(currentCustomer.getName(),orderId, pizzaOrderDto), HttpStatus.OK);
 	}
 	
