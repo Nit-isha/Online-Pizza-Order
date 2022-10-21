@@ -17,5 +17,5 @@ public interface ICustomerService {
 
 	CustomerDto viewCustomer(int customerId) throws CustomerIdNotFoundException;
 	
-	CustomerDto aboutCustomer(Principal currentCustomer);
+	CustomerDto aboutCustomer(String currentCustomer);
 }
