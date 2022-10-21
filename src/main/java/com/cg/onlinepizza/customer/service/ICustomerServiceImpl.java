@@ -2,6 +2,7 @@ package com.cg.onlinepizza.customer.service;
 
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +25,26 @@ public class ICustomerServiceImpl implements ICustomerService{
 	private PasswordEncoder bcryptEncoder;
 
 	/*Update customers*/
-	public CustomerDto updateCustomer(Principal currentCustomer, CustomerDto customer) throws CustomerIdNotFoundException{
+	public CustomerDto updateCustomer(Principal currentCustomer, CustomerDto customer) throws CustomerIdNotFoundException, CustomerAlreadyExistException{
 		String currUsername= currentCustomer.getName();
 		Optional<Customer> optional = iCustomerRepository.findById(iCustomerRepository.findByUsername(currUsername).get().getId());
+		List<CustomerDto> customerDatabase = viewCustomers();
+		List<String> usernameList = customerDatabase.stream().map(CustomerDto::getUsername).collect(Collectors.toList());
+		usernameList.remove(currUsername);
 		if(optional.isPresent()) {
+			if(usernameList.contains(currUsername)) {
+				throw new CustomerAlreadyExistException();
+			}
+			else {
 			Customer updatedCustomer = dtoToEntity(customer);
 			updatedCustomer.setId(optional.get().getId());
 			updatedCustomer.setPassword(bcryptEncoder.encode(customer.getPassword()));
 			updatedCustomer.setRole("user");
 			iCustomerRepository.save(updatedCustomer);
 			return customer;
-		}else {
+			}
+		}
+		else {
 			throw new CustomerIdNotFoundException();
 		}
 	}

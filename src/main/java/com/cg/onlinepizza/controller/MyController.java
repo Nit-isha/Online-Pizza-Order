@@ -28,6 +28,7 @@ import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.customer.service.ICustomerService;
 import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
+import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.NoOrdersFoundException;
@@ -107,7 +108,7 @@ public class MyController {
 	
 	/*Update Customer [User can access]*/
    @PutMapping(path = "/customer/update",produces = {"application/json","application/xml"},consumes = {"application/json","application/xml"})
-   public ResponseEntity<CustomerDto> updateCustomer(Principal currentCustomer,@RequestBody CustomerDto customerDto) throws CustomerIdNotFoundException{
+   public ResponseEntity<CustomerDto> updateCustomer(Principal currentCustomer,@RequestBody CustomerDto customerDto) throws CustomerIdNotFoundException, CustomerAlreadyExistException{
       return new ResponseEntity<CustomerDto>(customerService.updateCustomer(currentCustomer, customerDto), HttpStatus.OK);
     }
     

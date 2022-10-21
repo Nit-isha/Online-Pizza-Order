@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.cg.onlinepizza.customer.dao.ICustomerRepository;
 import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.entity.Customer;
+import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 
 @SpringBootTest
@@ -49,7 +50,7 @@ class ICustomerServiceImplTest {
     
     @DisplayName("JUnit test for updateCustomer method")
 	@Test
-	void testUpdateCustomer() throws CustomerIdNotFoundException {
+	void testUpdateCustomer() throws CustomerIdNotFoundException, CustomerAlreadyExistException {
     	// given - precondition or setup
     	when(iCustomerRepository.findById(iCustomerRepository.findByUsername(principal.getName()).get().getId())).thenReturn(Optional.of(customer));
     	// Action
