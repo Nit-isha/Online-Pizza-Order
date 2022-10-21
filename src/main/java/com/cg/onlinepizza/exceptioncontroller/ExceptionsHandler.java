@@ -44,7 +44,7 @@ public class ExceptionsHandler {
 	/*Pizza Already Exist in Database Exception Handler*/
 	@ExceptionHandler(PizzaAlreadyExistException.class)
 	public ResponseEntity<APIError> pizzaAlreadyExistExceptionHandler(Exception e){
-		APIError error = new APIError("Pizza ID already exist in database", 400);
+		APIError error = new APIError("Pizza Id or name already exists in database", 400);
 		return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
 	}
 	
