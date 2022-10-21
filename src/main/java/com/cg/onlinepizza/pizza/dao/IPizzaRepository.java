@@ -25,4 +25,6 @@ public interface IPizzaRepository extends CrudRepository<Pizza, Integer>{
 		@Query(value = "select pizza_id from pizza", nativeQuery = true)
 		List<Integer> getPizzaIdList();
 		
+		@Query(value = "select pizza_name from pizza", nativeQuery = true)
+		List<String> getPizzaNameList();
 }

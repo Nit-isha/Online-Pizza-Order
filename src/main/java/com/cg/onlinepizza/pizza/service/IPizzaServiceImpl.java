@@ -30,9 +30,13 @@ public class IPizzaServiceImpl implements IPizzaService{
 
 	/*Update Pizza Method*/
 	@Override
-	public PizzaDto updatePizza(int pizzaId,PizzaDto pizza) throws PizzaIdNotFoundException {
+	public PizzaDto updatePizza(int pizzaId,PizzaDto pizza) throws PizzaIdNotFoundException, PizzaAlreadyExistException {
 		Optional<Pizza> optional = iPizzaRepository.findById(pizzaId);
+		List<String> allPizzaNames = iPizzaRepository.getPizzaNameList();
 		if(optional.isPresent()) {
+			if(allPizzaNames.contains(pizza.getPizzaName())) {
+				throw new PizzaAlreadyExistException();
+			}
 			Pizza pizzaEntity = dtoToEntity(pizza);
 			pizzaEntity.setPizzaId(optional.get().getPizzaId());
 			iPizzaRepository.save(pizzaEntity);

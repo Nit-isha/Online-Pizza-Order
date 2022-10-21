@@ -89,7 +89,7 @@ public class MyController {
 	@PutMapping(path = "/menu/{pizzaId}",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	@PreAuthorize("hasAuthority('admin')")
-	public ResponseEntity<PizzaDto> updatePizza(@PathVariable int pizzaId,@RequestBody PizzaDto pizzaDto) throws PizzaIdNotFoundException{
+	public ResponseEntity<PizzaDto> updatePizza(@PathVariable int pizzaId,@RequestBody PizzaDto pizzaDto) throws PizzaIdNotFoundException, PizzaAlreadyExistException{
 		return new ResponseEntity<PizzaDto>(pizzaService.updatePizza(pizzaId,pizzaDto), HttpStatus.OK);
 	}
 	
