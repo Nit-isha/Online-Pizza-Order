@@ -25,14 +25,14 @@ public class ICustomerServiceImpl implements ICustomerService{
 	private PasswordEncoder bcryptEncoder;
 
 	/*Update customers*/
-	public CustomerDto updateCustomer(String currentCustomer, CustomerDto customer) throws CustomerIdNotFoundException, CustomerAlreadyExistException{
+	public CustomerDto updateCustomer(String currentCustomer, CustomerDto customer) throws  CustomerAlreadyExistException{
 		
 		Optional<Customer> optional = iCustomerRepository.findById(iCustomerRepository.findByUsername(currentCustomer).get().getId());
 		
 		List<CustomerDto> customerDatabase = viewCustomers();
 		List<String> usernameList = customerDatabase.stream().map(CustomerDto::getUsername).collect(Collectors.toList());
 		usernameList.remove(currentCustomer);
-		if(optional.isPresent()) {
+		
 			if(usernameList.contains(currentCustomer)) {
 				throw new CustomerAlreadyExistException();
 			}
@@ -45,10 +45,6 @@ public class ICustomerServiceImpl implements ICustomerService{
 			return customer;
 			}
 		}
-		else {
-			throw new CustomerIdNotFoundException();
-		}
-	}
 
 	/*Delete customer by ID*/
 	@Override
@@ -76,26 +72,6 @@ public class ICustomerServiceImpl implements ICustomerService{
 		}
 		return customerDtoList;
 	}
-
-	/*View customer by ID*/
-	public CustomerDto viewCustomer1(int customerId) throws CustomerIdNotFoundException {
-
-		Optional<Customer> optional = iCustomerRepository.findById(customerId);
-		if(optional.isPresent()) {
-			return entityToDto(optional.get());
-		}else {
-			throw new CustomerIdNotFoundException();
-		}
-	}
-
-	/*View customer own details*/
-	public CustomerDto aboutCustomer1(Principal currentCustomer) {
-		String currUsername= currentCustomer.getName();
-		Optional<Customer> optional = iCustomerRepository.findByUsername(currUsername);
-		return entityToDto(optional.get());
-	}
-
-
 
     /*View customer by ID*/
     @Override
