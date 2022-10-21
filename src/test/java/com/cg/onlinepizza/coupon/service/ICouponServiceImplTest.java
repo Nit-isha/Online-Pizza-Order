@@ -42,21 +42,18 @@ class ICouponServiceImplTest {
     static void setUp() {
         Coupon obj1 =new Coupon();
         obj1.setCouponId(1000);
-        obj1.setCouponName("Domino4");
+        obj1.setCouponName("PIZZA30M60");
         obj1.setCouponType("30% OFF");
-        obj1.setCouponDescription("Get flat 30% OFF up to Rs.60 on your orders during weekend. Minimum purchase value – Rs.200.");
+        obj1.setCouponDescription("Get flat 30% OFF up to Rs.60 on your orders.");
         Coupon obj2 = new Coupon();
         obj2.setCouponId(1001);
-        obj2.setCouponName("Domino5");
-        obj2.setCouponType("40% OFF");
-        obj2.setCouponDescription("Get flat 40% OFF up to Rs.40 on your orders during weekend. Minimum purchase value – Rs.300.");
+        obj2.setCouponName("FLAT40M300");
+        obj2.setCouponType("Rs 40 OFF");
+        obj2.setCouponDescription("Get flat Rs 40 OFF on your orders. Minimum purchase value – Rs.300.");
         couponList.add(obj1);
         couponList.add(obj2);
     }
-	
-	
-	
-	
+		
 	@Test
 	void testAddCoupons() throws CouponAlreadyExistException {
 		when(iCouponRepository.save(Mockito.any(Coupon.class))).thenReturn(coupon);
