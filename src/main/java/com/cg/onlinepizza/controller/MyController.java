@@ -198,7 +198,7 @@ public class MyController {
 		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewOrdersList(), HttpStatus.OK);
 	}
 	
-	/*View any pizza by ID [Only Admin can access]*/
+	/*View any pizza by order ID [Only Admin can access]*/
 	@GetMapping(path="/allorders/{orderId}", produces = {"application/json","application/xml"})
 	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<PizzaOrderDto> viewPizzaOrder(@PathVariable int orderId) throws OrderIdNotFoundException {
