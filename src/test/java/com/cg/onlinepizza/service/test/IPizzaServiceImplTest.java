@@ -87,7 +87,7 @@ public class IPizzaServiceImplTest {
     	double min = 300;
     	double max = 500;
     	when(iPizzaRepository.filterPizzaByPrice(min, max)).thenReturn(pizzaList);
-    	List<PizzaDto> pList = iPizzaService.viewPizzaList(min, max);
+    	List<PizzaDto> pList = iPizzaService.viewPizzaListByRange(min,max);
     	assertEquals(pizzaList.size(), pList.size());
     }
     

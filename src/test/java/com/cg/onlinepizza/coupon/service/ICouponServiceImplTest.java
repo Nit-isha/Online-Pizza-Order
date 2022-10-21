@@ -89,7 +89,7 @@ class ICouponServiceImplTest {
 	@Test
 	void testViewCouponId() throws CouponIdNotFoundException {
 		when(iCouponRepository.findById(coupon.getCouponId())).thenReturn(Optional.of(coupon));
-   		CouponDto p2 = iCouponService.viewCouponId(coupon.getCouponId());
+   		CouponDto p2 = iCouponService.viewCouponById(coupon.getCouponId());
    		assertEquals(coupon.getCouponId(), p2.getCouponId());
 	}
 
