@@ -9,14 +9,15 @@ import com.cg.onlinepizza.exceptions.NoOrdersFoundException;
 import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
 import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
 import com.cg.onlinepizza.exceptions.OrderUpdateDeclinedException;
+import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public interface IPizzaOrderService {
 	
-	PizzaOrderDto bookPizzaOrder(String currentCustomer, PizzaOrderDto order);
+	PizzaOrderDto bookPizzaOrder(String currentCustomer, PizzaOrderDto order) throws PizzaIdNotFoundException;
 	
-	PizzaOrderDto updatePizzaOrder(String currentCustomer, int orderId,PizzaOrderDto order) throws OrderIdNotFoundException, OrderUpdateDeclinedException;
+	PizzaOrderDto updatePizzaOrder(String currentCustomer, int orderId,PizzaOrderDto order) throws OrderIdNotFoundException, OrderUpdateDeclinedException, PizzaIdNotFoundException;
 	
 	PizzaOrderDto cancelPizzaOrder(String currentCustomer, int bookingOrderId)throws OrderIdNotFoundException, OrderCancelDeclinedException ;
 	
