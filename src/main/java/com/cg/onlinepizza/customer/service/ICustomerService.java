@@ -9,7 +9,7 @@ import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
 
 public interface ICustomerService {
 
-	CustomerDto updateCustomer(String currentCustomer, CustomerDto customer)throws CustomerAlreadyExistException;
+	CustomerDto updateCustomer(String currentCustomer, CustomerDto customer)throws CustomerAlreadyExistException, CustomerIdNotFoundException;
 
 	CustomerDto deleteCustomer(int customerId) throws CustomerIdNotFoundException;
 
