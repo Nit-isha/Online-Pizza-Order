@@ -25,14 +25,15 @@ public class ICustomerServiceImpl implements ICustomerService{
 	private PasswordEncoder bcryptEncoder;
 
 	/*Update customers*/
-	public CustomerDto updateCustomer(Principal currentCustomer, CustomerDto customer) throws CustomerIdNotFoundException, CustomerAlreadyExistException{
-		String currUsername= currentCustomer.getName();
-		Optional<Customer> optional = iCustomerRepository.findById(iCustomerRepository.findByUsername(currUsername).get().getId());
+	public CustomerDto updateCustomer(String currentCustomer, CustomerDto customer) throws CustomerIdNotFoundException, CustomerAlreadyExistException{
+		
+		Optional<Customer> optional = iCustomerRepository.findById(iCustomerRepository.findByUsername(currentCustomer).get().getId());
+		
 		List<CustomerDto> customerDatabase = viewCustomers();
 		List<String> usernameList = customerDatabase.stream().map(CustomerDto::getUsername).collect(Collectors.toList());
-		usernameList.remove(currUsername);
+		usernameList.remove(currentCustomer);
 		if(optional.isPresent()) {
-			if(usernameList.contains(currUsername)) {
+			if(usernameList.contains(currentCustomer)) {
 				throw new CustomerAlreadyExistException();
 			}
 			else {

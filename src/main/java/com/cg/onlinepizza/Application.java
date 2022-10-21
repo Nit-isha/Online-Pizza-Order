@@ -47,9 +47,9 @@ public class Application implements CommandLineRunner {
             userDetailsService.save(user);
             
             Pizza pizza1 = new Pizza(101, "Veg", "Farm House", "Delightful combination of onion, capsicum, tomato & grilled mushroom", 469);
-            Pizza pizza2 = new Pizza(102, "Veg", "Peppy Paneer", " Flavorful trio of juicy paneer, crisp capsicum with spicy red paprika ", 469);
-            Pizza pizza3 = new Pizza(201, "Non-Veg", "Chicken Dominator",  " Loaded with double pepper barbecue chicken, peri-peri chicken, chicken tikka & grilled chicken rashers ", 609);
-            Pizza pizza4 = new Pizza(202, "Non-Veg", "Spiced Double Chicken", " Delightful combination of our spicy duo- Pepper Barbecue Chicken and Peri Peri Chicken for Chicken Lovers. ", 569);
+            Pizza pizza2 = new Pizza(102, "Veg", "Peppy Paneer", "Flavorful trio of juicy paneer, crisp capsicum with spicy red paprika.", 469);
+            Pizza pizza3 = new Pizza(201, "Non-Veg", "Chicken Dominator",  "Loaded with double pepper barbecue chicken, peri-peri chicken, chicken tikka & grilled chicken rashers ", 609);
+            Pizza pizza4 = new Pizza(202, "Non-Veg", "Spiced Double Chicken", "Delightful combination of our spicy duo- Pepper Barbecue Chicken and Peri Peri Chicken for Chicken Lovers. ", 569);
             pizzaService.addPizza(entityToDto(pizza1));
             pizzaService.addPizza(entityToDto(pizza2));
             pizzaService.addPizza(entityToDto(pizza3));

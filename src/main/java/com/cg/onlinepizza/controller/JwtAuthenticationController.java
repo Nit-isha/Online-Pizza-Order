@@ -49,6 +49,15 @@ public class JwtAuthenticationController {
 		  
 		return ResponseEntity.ok(userDetailsService.save(customerDto));
 	}
+	
+	/*@Valid @RequestMapping(value = "/logout", method = RequestMethod.POST)
+	//public ResponseEntity<?> saveUser(@RequestBody CustomerDto customerDto) throws Exception {
+	
+	public ResponseEntity<?> saveUser(@RequestBody CustomerDto customerDto) throws Exception {
+		
+		return ResponseEntity.ok(userDetailsService.save(customerDto));
+	}*/
+	
 
 
 	private void authenticate(String username, String password) throws Exception {
