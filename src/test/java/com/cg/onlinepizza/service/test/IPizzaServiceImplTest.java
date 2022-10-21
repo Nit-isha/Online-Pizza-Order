@@ -50,7 +50,7 @@ public class IPizzaServiceImplTest {
    	}
     
     @Test
-    void testUpdatePizza() throws PizzaIdNotFoundException {
+    void testUpdatePizza() throws PizzaIdNotFoundException, PizzaAlreadyExistException {
     	when(iPizzaRepository.findById(pizza.getPizzaId())).thenReturn(Optional.of(pizza));
     	PizzaDto  pizzaDto = iPizzaService.updatePizza(pizza.getPizzaId(), entityToDto(pizza));
     	assertEquals(entityToDto(pizza).getPizzaId(), pizzaDto.getPizzaId());
