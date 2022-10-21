@@ -46,16 +46,16 @@ public class Application implements CommandLineRunner {
             User user = new User(adminusr, adminpwd, adminrole);
             userDetailsService.save(user);
             
-            Pizza pizza1 = new Pizza(101, "Veg", "Farm House", "Delightful combination of onion, capsicum, tomato & grilled mushroom", 469);
+            Pizza pizza1 = new Pizza(101, "Veg", "Farm House", "Delightful combination of onion, capsicum, tomato & grilled mushroom", 369);
             Pizza pizza2 = new Pizza(102, "Veg", "Peppy Paneer", "Flavorful trio of juicy paneer, crisp capsicum with spicy red paprika.", 469);
-            Pizza pizza3 = new Pizza(201, "Non-Veg", "Chicken Dominator",  "Loaded with double pepper barbecue chicken, peri-peri chicken, chicken tikka & grilled chicken rashers ", 609);
+            Pizza pizza3 = new Pizza(201, "Non-Veg", "Chicken Dominator", "Loaded with double pepper barbecue chicken, peri-peri chicken, chicken tikka & grilled chicken rashers ", 609);
             Pizza pizza4 = new Pizza(202, "Non-Veg", "Spiced Double Chicken", "Delightful combination of our spicy duo- Pepper Barbecue Chicken and Peri Peri Chicken for Chicken Lovers. ", 569);
             pizzaService.addPizza(entityToDto(pizza1));
             pizzaService.addPizza(entityToDto(pizza2));
             pizzaService.addPizza(entityToDto(pizza3));
             pizzaService.addPizza(entityToDto(pizza4));
             
-            Coupon coupon1= new Coupon("FLAT80M200","Rs. 80 OFF" , "Flat Rs. 80 off on a minimum order of Rs. 200");
+            Coupon coupon1= new Coupon("FLAT50M450","Rs. 50 OFF" , "Flat Rs. 50 off on a minimum order of Rs. 450");
             Coupon coupon2= new Coupon("PIZZA10M150", "10% OFF", "10% OFF upto Rs. 150 on your orders.");
             couponService.addCoupons(entityToDto(coupon1));
             couponService.addCoupons(entityToDto(coupon2));

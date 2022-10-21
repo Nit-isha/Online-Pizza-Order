@@ -12,15 +12,11 @@ import com.cg.onlinepizza.entity.PizzaOrder;
 @Repository
 public interface IPizzaRepository extends CrudRepository<Pizza, Integer>{
 	
-	@Query("select p from Pizza p where p.pizzaCost > :min and p.pizzaCost < :max")
-	List<Pizza> filterPizzaByPrice(@Param("min") double minCost, @Param("max") double maxCost);
+		@Query("select p from Pizza p where p.pizzaCost > :min and p.pizzaCost < :max")
+		List<Pizza> filterPizzaByPrice(@Param("min") double minCost, @Param("max") double maxCost);
 	
-		//List<Pizza> pizzaList = new ArrayList<>();
 		@Query("select p from Pizza p where p.pizzaId in :pList")
 		List<Pizza> getPizzaListById(@Param("pList") List<Integer> pizzaIdList );
-		
-		/*@Query("select p from Pizza where p.bookingId= :bid")
-		List<Pizza> getPizzaListByOrderId(@Param("bid")int bookingId);*/
 		
 		@Query(value = "select pizza_id from pizza", nativeQuery = true)
 		List<Integer> getPizzaIdList();
