@@ -14,21 +14,21 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public interface IPizzaOrderService {
 	
-	PizzaOrderDto bookPizzaOrder(Principal currentCustomer, PizzaOrderDto order);
+	PizzaOrderDto bookPizzaOrder(String currentCustomer, PizzaOrderDto order);
 	
-	PizzaOrderDto updatePizzaOrder(Principal currentCustomer, int orderId,PizzaOrderDto order) throws OrderIdNotFoundException, OrderUpdateDeclinedException;
+	PizzaOrderDto updatePizzaOrder(String currentCustomer, int orderId,PizzaOrderDto order) throws OrderIdNotFoundException, OrderUpdateDeclinedException;
 	
-	PizzaOrderDto cancelPizzaOrder(Principal currentCustomer, int bookingOrderId)throws OrderIdNotFoundException, OrderCancelDeclinedException ;
+	PizzaOrderDto cancelPizzaOrder(String currentCustomer, int bookingOrderId)throws OrderIdNotFoundException, OrderCancelDeclinedException ;
 	
 	PizzaOrderDto viewPizzaOrder(int pizzaOrderId) throws OrderIdNotFoundException;
 	
 	List<PizzaOrderDto> viewOrdersList();		//displays all orders to admin
 	
-	List<PizzaOrderDto> viewCustomerOrdersList(Principal currentCustomer);	//Displays customer's order history
+	List<PizzaOrderDto> viewCustomerOrdersList(String currentCustomer);	//Displays customer's order history
 	
 	List<PizzaOrderDto> viewAllOrdersByDate(LocalDate date) throws NoOrdersFoundException;
 	
-	List<PizzaOrderDto> viewCustomerOrdersByDate(Principal currentCustomer, LocalDate date)throws NoOrdersFoundException;
+	List<PizzaOrderDto> viewCustomerOrdersByDate(String currentCustomer, LocalDate date)throws NoOrdersFoundException;
 	
-	PizzaOrderDto viewCustomerPizzaOrderById( Principal currentCustomer, int pizzaOrderId) throws OrderIdNotFoundException;
+	PizzaOrderDto viewCustomerPizzaOrderById( String currentCustomer, int pizzaOrderId) throws OrderIdNotFoundException;
 }

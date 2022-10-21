@@ -188,7 +188,7 @@ public class MyController {
 	/*Get Customer order history [Only User can access]*/
 	@GetMapping(path="/orders", produces = {"application/json","application/xml"})
 	public ResponseEntity<List<PizzaOrderDto>> viewCustomerOrderHistory(Principal currentCustomer){
-		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersList(currentCustomer), HttpStatus.OK);
+		return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersList(currentCustomer.getName()), HttpStatus.OK);
 	}
 	
 	/*Get All Orders [Only Admin can access]*/
@@ -209,26 +209,26 @@ public class MyController {
 	@PostMapping(path="/orders/neworder", produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	public ResponseEntity<PizzaOrderDto> bookPizzaOrder(Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) {
-		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.bookPizzaOrder(currentCustomer,pizzaOrderDto), HttpStatus.OK);
+		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.bookPizzaOrder(currentCustomer.getName(),pizzaOrderDto), HttpStatus.OK);
 	}
 	
 	/*Update Pizza Order [Only User can access]*/
 	@PutMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	public ResponseEntity<PizzaOrderDto> updatePizzaOrder(@PathVariable int orderId, Principal currentCustomer, @RequestBody PizzaOrderDto pizzaOrderDto) throws OrderIdNotFoundException, OrderUpdateDeclinedException {
-		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.updatePizzaOrder(currentCustomer,orderId, pizzaOrderDto), HttpStatus.OK);
+		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.updatePizzaOrder(currentCustomer.getName(),orderId, pizzaOrderDto), HttpStatus.OK);
 	}
 	
 	/*View Customer pizza order by ID [Only User can access]*/
 	@GetMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"})
 	public ResponseEntity<PizzaOrderDto> viewCustomerPizzaOrderById(@PathVariable int orderId, Principal currentCustomer) throws OrderIdNotFoundException {
-		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.viewCustomerPizzaOrderById(currentCustomer,orderId), HttpStatus.OK);
+		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.viewCustomerPizzaOrderById(currentCustomer.getName(),orderId), HttpStatus.OK);
 	}
 	
 	/*Cancel Pizza Order within 15 minutes [Both Admin and User can access]*/
 	@DeleteMapping(path="/orders/{orderId}", produces = {"application/json","application/xml"})
 	public ResponseEntity<PizzaOrderDto> cancelPizzaOrder(Principal currentCustomer,@PathVariable int orderId) throws OrderIdNotFoundException, OrderCancelDeclinedException {
-		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.cancelPizzaOrder(currentCustomer,orderId), HttpStatus.OK);
+		return new ResponseEntity<PizzaOrderDto>(pizzaOrderService.cancelPizzaOrder(currentCustomer.getName(),orderId), HttpStatus.OK);
 	}
 	
 	/*Filter All Orders By Date [Only Admin can access]*/
@@ -242,7 +242,7 @@ public class MyController {
 	/*Filter All Orders By Date [Only Customer can access]*/
 		@GetMapping(path="/orders/ordersbydate", produces = {"application/json","application/xml"}, consumes = {"application/json","application/xml"})
 	public ResponseEntity<List<PizzaOrderDto>> viewCustomerOrdersByDate(Principal currentCustomer,@RequestParam(value="date") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate date) throws NoOrdersFoundException {
-	return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersByDate(currentCustomer,date), HttpStatus.OK);
+	return new ResponseEntity<List<PizzaOrderDto>>(pizzaOrderService.viewCustomerOrdersByDate(currentCustomer.getName(),date), HttpStatus.OK);
 	//localhost:8081/orders/ordersbydate?date=2022-10-19
 	}
 	

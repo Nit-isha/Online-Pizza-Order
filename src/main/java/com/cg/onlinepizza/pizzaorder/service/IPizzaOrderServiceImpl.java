@@ -60,7 +60,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*--- Book Pizza Order ---*/
 	@Override
-	public PizzaOrderDto bookPizzaOrder(Principal currentCustomer, PizzaOrderDto order) {
+	public PizzaOrderDto bookPizzaOrder(String currentCustomer, PizzaOrderDto order) {
 		String couponName = order.getCouponName();
 		PizzaOrder orderEntity = new PizzaOrder();
 		orderEntity.setBookingOrderId(order.getBookingOrderId());
@@ -70,7 +70,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		orderEntity.setCoupon(iCouponRepository.getCouponByName(couponName));
 		
 		orderEntity.setOrderDate(LocalDateTime.now());
-		orderEntity.setCustomer(getCustomer(currentCustomer));
+		orderEntity.setCustomer(iCustomerRepository.findByUsername(currentCustomer).get());
 		
 		List<Integer> pizzaIds = order.getPizzaIdList();
 		List<Pizza> orderPizzas = new ArrayList<>();
@@ -87,7 +87,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*--- Update Pizza order ---*/
 	@Override
-	public PizzaOrderDto updatePizzaOrder(Principal currentCustomer, int orderId, PizzaOrderDto order) throws OrderIdNotFoundException, OrderUpdateDeclinedException {
+	public PizzaOrderDto updatePizzaOrder(String currentCustomer, int orderId, PizzaOrderDto order) throws OrderIdNotFoundException, OrderUpdateDeclinedException {
 		LocalDateTime currTime = LocalDateTime.now();
 		PizzaOrderDto orderDto = viewCustomerPizzaOrderById(currentCustomer, orderId);
 		LocalDateTime bookingTime = orderDto.getOrderDate();
@@ -110,7 +110,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 				
 				updateEntity.setQuantity(updatedPizzaIds.size());
 				updateEntity.setTotalCost(calcTotal(couponName, updatedPizzaList));
-				updateEntity.setCustomer(getCustomer(currentCustomer));
+				updateEntity.setCustomer(iCustomerRepository.findByUsername(currentCustomer).get());
 				updateEntity.setOrderDate(LocalDateTime.now());
 				
 				iPizzaOrderRepository.save(updateEntity);
@@ -127,7 +127,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*--- Cancel Pizza order within 15 minutes ---*/
 	@Override
-	public PizzaOrderDto cancelPizzaOrder(Principal currentCustomer, int bookingOrderId) throws OrderIdNotFoundException, OrderCancelDeclinedException {
+	public PizzaOrderDto cancelPizzaOrder(String currentCustomer, int bookingOrderId) throws OrderIdNotFoundException, OrderCancelDeclinedException {
 		
 		LocalDateTime currTime = LocalDateTime.now();
 		PizzaOrderDto order = viewCustomerPizzaOrderById(currentCustomer, bookingOrderId);
@@ -157,7 +157,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*--- View pizza order by ID ---*/
 	@Override
-	public PizzaOrderDto viewCustomerPizzaOrderById(Principal currentCustomer, int pizzaOrderId) throws OrderIdNotFoundException {
+	public PizzaOrderDto viewCustomerPizzaOrderById(String currentCustomer, int pizzaOrderId) throws OrderIdNotFoundException {
 		List<PizzaOrderDto> orderHistory = viewCustomerOrdersList(currentCustomer);
 		Optional<PizzaOrderDto> optionalOrderDto = orderHistory.stream().filter(p -> p.getBookingOrderId() == pizzaOrderId).findFirst();
 		if(optionalOrderDto.isPresent()) {
@@ -175,7 +175,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
 		List<PizzaOrderDto> allOrders = viewOrdersList();
-		List<PizzaOrderDto> orderBydateList=allOrders.stream().filter(o -> o.getOrderDate().format(dtf).equals(date.format(dtf))).toList();
+		List<PizzaOrderDto> orderBydateList=allOrders.stream().filter(o -> o.getOrderDate().format(dtf).equals(date.format(dtf))).collect(Collectors.toList());
 		
 		if(orderBydateList.isEmpty()) {
 			throw new NoOrdersFoundException();
@@ -185,7 +185,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*--- Filter customer orders by particular date ---*/
 	@Override
-	public List<PizzaOrderDto> viewCustomerOrdersByDate(Principal currentCustomer, LocalDate date) throws NoOrdersFoundException{
+	public List<PizzaOrderDto> viewCustomerOrdersByDate(String currentCustomer, LocalDate date) throws NoOrdersFoundException{
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
 		List<PizzaOrderDto> orderHistory = viewCustomerOrdersList(currentCustomer);
@@ -199,8 +199,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	
 	/*--- View customer orders list  ---*/
 	@Override
-	public List<PizzaOrderDto> viewCustomerOrdersList(Principal currentCustomer) {
-		String custUsername = currentCustomer.getName();
+	public List<PizzaOrderDto> viewCustomerOrdersList(String custUsername) {
 		User user = iUserRepository.findByUsername(custUsername);
 		int custId = user.getId();
 		List<PizzaOrder> orderHistory = iPizzaOrderRepository.getCustomerPizzaOrderHistory(custId);
