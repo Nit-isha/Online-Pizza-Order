@@ -97,7 +97,7 @@ public class MyController {
 	@GetMapping( value = "/menu/search", produces = {"application/json","application/xml"})
 	public ResponseEntity<List<PizzaDto>> filterPizzaListByRange(@RequestParam("min") 
 	double minCost,@RequestParam("max") double maxCost) throws InvalidMinCostException {
-		List<PizzaDto> pizzaList = pizzaService.viewPizzaList(minCost,maxCost);
+		List<PizzaDto> pizzaList = pizzaService.viewPizzaListByRange(minCost,maxCost);
 		return new ResponseEntity<List<PizzaDto>>(pizzaList, HttpStatus.OK);
 		
 		// localhost:8081/menu/search?min=300&max=500
@@ -178,7 +178,7 @@ public class MyController {
 	/*Get Coupon By ID [Both Admin and User can access]*/
 	@GetMapping(path = "/coupon/{couponId}", produces = {"application/json","application/xml"})
 	public ResponseEntity<CouponDto> viewCouponId(@PathVariable int couponId) throws CouponIdNotFoundException{
-		return new ResponseEntity<CouponDto>(couponService.viewCouponId(couponId), HttpStatus.OK);
+		return new ResponseEntity<CouponDto>(couponService.viewCouponById(couponId), HttpStatus.OK);
 	}
 	
 	

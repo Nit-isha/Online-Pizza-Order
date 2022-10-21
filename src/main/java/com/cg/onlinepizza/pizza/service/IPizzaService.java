@@ -18,5 +18,5 @@ public interface IPizzaService {
 
 	List<PizzaDto> viewPizzaList();
 
-	List<PizzaDto> viewPizzaList(double minCost, double maxCost) throws InvalidMinCostException;
+	List<PizzaDto> viewPizzaListByRange(double minCost, double maxCost) throws InvalidMinCostException;
 }

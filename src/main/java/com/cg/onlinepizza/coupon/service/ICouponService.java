@@ -18,5 +18,5 @@ public interface ICouponService {
 
 	List<CouponDto> viewCoupons() ;
 	
-	CouponDto viewCouponId(int couponId) throws CouponIdNotFoundException;
+	CouponDto viewCouponById(int couponId) throws CouponIdNotFoundException;
 }

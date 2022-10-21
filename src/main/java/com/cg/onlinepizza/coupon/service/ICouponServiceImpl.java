@@ -91,7 +91,7 @@ public class ICouponServiceImpl implements ICouponService {
 	}
 	/*Find Coupon By ID Method*/
 	@Override
-	public CouponDto viewCouponId(int couponId) throws CouponIdNotFoundException {
+	public CouponDto viewCouponById(int couponId) throws CouponIdNotFoundException {
 		Optional<Coupon> optional = iCouponRepository.findById(couponId);
 		if(optional.isPresent()) {
 			return entityToDto(optional.get());

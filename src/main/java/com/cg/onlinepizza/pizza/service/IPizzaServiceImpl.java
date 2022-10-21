@@ -86,7 +86,7 @@ public class IPizzaServiceImpl implements IPizzaService{
 
 	/*Filter Pizza by Cost Range Method*/
 	@Override
-	public List<PizzaDto> viewPizzaList(double minCost, double maxCost) throws InvalidMinCostException {
+	public List<PizzaDto> viewPizzaListByRange(double minCost, double maxCost) throws InvalidMinCostException {
 		if(minCost<0 || minCost>maxCost) {
 			throw new InvalidMinCostException();
 		}
