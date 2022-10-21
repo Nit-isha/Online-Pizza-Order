@@ -89,9 +89,8 @@ public class ICustomerServiceImpl implements ICustomerService{
     
     /*View customer own details*/
    	@Override
-   	public CustomerDto aboutCustomer(Principal currentCustomer) {
-   		String currUsername= currentCustomer.getName();
-    	Optional<Customer> optional = iCustomerRepository.findByUsername(currUsername);
+   	public CustomerDto aboutCustomer(String currentCustomer) {
+    	Optional<Customer> optional = iCustomerRepository.findByUsername(currentCustomer);
    		return entityToDto(optional.get());
    	}
     

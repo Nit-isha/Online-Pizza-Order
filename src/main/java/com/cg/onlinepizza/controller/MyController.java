@@ -131,7 +131,7 @@ public class MyController {
 	/*Get Customer Details [Only user can access]*/
 	@GetMapping(path = "/customer/about", produces = {"application/json","application/xml"})
 	public ResponseEntity<CustomerDto> aboutCustomer(Principal currentCustomer) {
-		return new ResponseEntity<CustomerDto>(customerService.aboutCustomer(currentCustomer), HttpStatus.OK);
+		return new ResponseEntity<CustomerDto>(customerService.aboutCustomer(currentCustomer.getName()), HttpStatus.OK);
 	}
 	
 	/*Delete Customer from DB [Only Admin can access]*/
