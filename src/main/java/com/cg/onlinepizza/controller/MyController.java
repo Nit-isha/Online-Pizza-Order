@@ -108,9 +108,9 @@ public class MyController {
 	
 	/*Update Customer [User can access]*/
    @PutMapping(path = "/customer/update",produces = {"application/json","application/xml"},consumes = {"application/json","application/xml"})
-   public ResponseEntity<CustomerDto> updateCustomer(Principal currentCustomer,@RequestBody CustomerDto customerDto) throws CustomerAlreadyExistException{
+   public ResponseEntity<CustomerDto> updateCustomer(Principal currentCustomer,@RequestBody CustomerDto customerDto) throws CustomerAlreadyExistException, CustomerIdNotFoundException{
       
-	   return new ResponseEntity<CustomerDto>(customerService.updateCustomer(currentCustomer.getName(), customerDto), HttpStatus.OK);
+	   return new ResponseEntity<CustomerDto> (customerService.updateCustomer(currentCustomer.getName(), customerDto), HttpStatus.OK);
     }
     
    /*View Customer list [Only admin can access]*/
