@@ -19,6 +19,7 @@ import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
 import com.cg.onlinepizza.exceptions.OrderUpdateDeclinedException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
+import com.cg.onlinepizza.exceptions.UsernameAlreadyExistException;
 
 import org.postgresql.util.PSQLException;
 
@@ -78,6 +79,13 @@ public class ExceptionsHandler {
     public ResponseEntity<APIError> customerIdNotFoundExceptionHandler(Exception e) {
         APIError error = new APIError("Customer Not Found", 404);
         return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
+    }
+    
+    /*User name already taken*/
+    @ExceptionHandler(UsernameAlreadyExistException.class)
+    public ResponseEntity<APIError> usernameAlreadyExistExceptionHandler(Exception e) {
+        APIError error = new APIError("The username is alreasy taken", 400);
+        return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
     }
     
     /*-----------------  Coupon Exceptions  -----------------*/

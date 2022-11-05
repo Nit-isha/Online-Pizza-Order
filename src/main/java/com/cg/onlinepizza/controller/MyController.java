@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,12 +38,14 @@ import com.cg.onlinepizza.exceptions.OrderIdNotFoundException;
 import com.cg.onlinepizza.exceptions.OrderUpdateDeclinedException;
 import com.cg.onlinepizza.exceptions.PizzaAlreadyExistException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
+import com.cg.onlinepizza.exceptions.UsernameAlreadyExistException;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
 import com.cg.onlinepizza.pizza.service.IPizzaService;
 import com.cg.onlinepizza.pizzaorder.dto.PizzaOrderDto;
 import com.cg.onlinepizza.pizzaorder.service.IPizzaOrderService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class MyController {
 	@Autowired
@@ -112,7 +115,28 @@ public class MyController {
       
 	   return new ResponseEntity<CustomerDto> (customerService.updateCustomer(currentCustomer.getName(), customerDto), HttpStatus.OK);
     }
+   
+   /*Update Customer Details [User can access]*/
+   @PutMapping(path = "/customer/updateDetails",produces = {"application/json","application/xml"},consumes = {"application/json","application/xml"})
+   public ResponseEntity<CustomerDto> updateCustomerDetails(Principal currentCustomer,@RequestBody CustomerDto customerDto){
+      
+       return new ResponseEntity<CustomerDto> (customerService.updateCustomerDetails(currentCustomer.getName(), customerDto), HttpStatus.OK);
+    }
+   
+   /*Update Customer Password [User can access]*/
+   @PutMapping(path = "/customer/update_pass",produces = {"application/json","application/xml"},consumes = {"application/json","application/xml"})
+   public ResponseEntity<CustomerDto> updateCustomerPassword(Principal currentCustomer,@RequestBody CustomerDto customer){
+       
+       return new ResponseEntity<CustomerDto> (customerService.updateCustomerPassword(currentCustomer.getName(), customer), HttpStatus.OK);
+   }
     
+   /*Update Customer User name [User can access]*/
+   @PutMapping(path = "/customer/update_uname",produces = {"application/json","application/xml"},consumes = {"application/json","application/xml"})
+   public ResponseEntity<CustomerDto> updateCustomerUsername(Principal currentCustomer,@RequestBody CustomerDto customer) throws UsernameAlreadyExistException{
+       
+       return new ResponseEntity<CustomerDto> (customerService.updateCustomerUsername(currentCustomer.getName(), customer), HttpStatus.OK);
+   }
+   
    /*View Customer list [Only admin can access]*/
    @GetMapping(path = "/customer", produces = {"application/json","application/xml"})
    @PreAuthorize("hasAuthority('admin')")

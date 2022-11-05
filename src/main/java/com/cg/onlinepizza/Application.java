@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.cg.onlinepizza.coupon.dto.CouponDto;
 import com.cg.onlinepizza.coupon.service.ICouponService;
@@ -65,6 +69,8 @@ public class Application implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
+
+	
 	/*PizzaDto to Pizza Entity Class Conversion*/
 	public Pizza dtoToEntity(PizzaDto pizza) {
 		Pizza p = new Pizza();

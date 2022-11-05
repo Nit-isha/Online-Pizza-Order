@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.entity.Customer;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
+import com.cg.onlinepizza.exceptions.UsernameAlreadyExistException;
 
 
 @Component
@@ -47,6 +49,46 @@ public class ICustomerServiceImpl implements ICustomerService{
 			return customer;
 			}
 		}
+	
+	public CustomerDto updateCustomerDetails(String currentCustomer, CustomerDto customer){
+        
+        Optional<Customer> customerOld = iCustomerRepository.findByUsername(currentCustomer);
+        
+        Customer updatedCustomer = dtoToEntity(customer);
+        updatedCustomer.setId(customerOld.get().getId());
+        updatedCustomer.setUsername(currentCustomer);
+//        updatedCustomer.setPassword(bcryptEncoder.encode(customerOld.get().getPassword()));
+        updatedCustomer.setPassword(customerOld.get().getPassword());
+        updatedCustomer.setRole("user");
+        iCustomerRepository.save(updatedCustomer);
+        return customer;
+     }
+	
+	public CustomerDto updateCustomerPassword(String currentCustomer, CustomerDto customer){
+	    
+	    Optional<Customer> cust = iCustomerRepository.findByUsername(currentCustomer);
+        cust.get().setPassword(bcryptEncoder.encode(customer.getPassword()));
+        System.out.println(customer.getPassword());
+	    iCustomerRepository.save(cust.get());
+	    return entityToDto(cust.get());
+	}
+	
+	public CustomerDto updateCustomerUsername(String currentCustomer, CustomerDto customer) throws UsernameAlreadyExistException{
+	    
+	    Optional<Customer> cust = iCustomerRepository.findByUsername(currentCustomer);
+	    
+	    List<CustomerDto> customerDatabase = viewCustomers();
+        List<String> usernameList = customerDatabase.stream().map(CustomerDto::getUsername).collect(Collectors.toList());
+        if(usernameList.contains(customer.getUsername())) {
+            throw new UsernameAlreadyExistException();
+        }
+        else {
+            System.out.println(customer.getUsername());
+            cust.get().setUsername(customer.getUsername());
+        }
+	    iCustomerRepository.save(cust.get());
+	    return entityToDto(cust.get());
+	}
 
 	/*Delete customer by ID*/
 	@Override
