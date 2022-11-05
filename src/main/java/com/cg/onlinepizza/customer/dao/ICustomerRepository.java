@@ -1,19 +1,20 @@
 package com.cg.onlinepizza.customer.dao;
 
-import java.util.List;
+import java.util.Optional;
 
-import com.cg.onlinepizza.customer.dto.CustomerDto;
-import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import com.cg.onlinepizza.entity.Customer;
 
-public interface ICustomerRepository {
-	CustomerDto addCustomer(CustomerDto customer);
+@Repository
+public interface ICustomerRepository extends CrudRepository<Customer, Integer>{
+	
+	@Query(value="select c from Customer c where c.username=:uname")
+	public Optional<Customer> findByUsername(@Param("uname") String userName);
+	
 
-	CustomerDto updateCustomer(CustomerDto customer);
-
-	CustomerDto deleteCustomer(int customerId) throws CustomerIdNotFoundException;
-
-	List<CustomerDto> viewCustomers();
-
-	CustomerDto viewCustomer(int customerId) throws CustomerIdNotFoundException;
-
+	@Query("select c from Customer c where c.id =:cid")
+	Customer getCustomerById(@Param("cid") int cid);
 }

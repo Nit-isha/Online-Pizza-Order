@@ -1,10 +1,21 @@
 package com.cg.onlinepizza.customer.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class CustomerDto {
-//	private int customerId;
+	@NotBlank
 	private String customerName;
-	private Long customerMobile;
+	/*Mobile Number length must be equal to 10.*/
+	@Pattern(regexp="^[6-9][0-9]{9}", message="length must be 10")
+	private String customerMobile;
+	/*Email Validation using regex*/
+	@Email(regexp = "[a-z0-9]+@[a-z0-9.-]+\\.[a-z]{2,3}")
 	private String customerEmail;
+	@NotBlank
 	private String customerAddress;
 	private String username;
 	private String password;
@@ -17,11 +28,11 @@ public class CustomerDto {
 		this.customerName = customerName;
 	}
 
-	public Long getCustomerMobile() {
+	public String getCustomerMobile() {
 		return customerMobile;
 	}
 
-	public void setCustomerMobile(Long customerMobile) {
+	public void setCustomerMobile(String customerMobile) {
 		this.customerMobile = customerMobile;
 	}
 

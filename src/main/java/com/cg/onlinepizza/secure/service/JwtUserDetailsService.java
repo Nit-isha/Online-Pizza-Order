@@ -1,6 +1,7 @@
 package com.cg.onlinepizza.secure.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,10 +11,7 @@ import org.springframework.stereotype.Service;
 import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.entity.Customer;
 import com.cg.onlinepizza.secure.model.User;
-import com.cg.onlinepizza.secure.model.UserDto;
 import com.cg.onlinepizza.secure.repository.UserRepository;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +38,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 			//	new ArrayList<>());
 	}
 	
-
 	public Customer save(CustomerDto customerDto) {
 		Customer newCust = new Customer();
 		newCust.setCustomerName(customerDto.getCustomerName());
@@ -52,5 +49,13 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newCust.setRole("user");
 
 		return userDao.save(newCust);
+	}
+    
+	public User save(User user) {
+	    User userObj = new User();
+	    userObj.setUsername(user.getUsername());
+	    userObj.setPassword(bcryptEncoder.encode(user.getPassword()));
+	    userObj.setRole(user.getRole());
+	    return userDao.save(userObj);
 	}
 }
