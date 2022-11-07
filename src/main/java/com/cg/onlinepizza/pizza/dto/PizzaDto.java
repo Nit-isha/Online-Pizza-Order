@@ -4,6 +4,7 @@ public class PizzaDto {
 	private int pizzaId;
 	private String pizzaType;
 	private String pizzaName;
+	private String pizzaSize;
 	private String pizzaDescription;
 	private double pizzaCost;
 	
@@ -25,7 +26,13 @@ public class PizzaDto {
 	public void setPizzaName(String pizzaName) {
 		this.pizzaName = pizzaName;
 	}
-	public String getPizzaDescription() {
+	public String getPizzaSize() {
+        return pizzaSize;
+    }
+    public void setPizzaSize(String pizzaSize) {
+        this.pizzaSize = pizzaSize;
+    }
+    public String getPizzaDescription() {
 		return pizzaDescription;
 	}
 	public void setPizzaDescription(String pizzaDescription) {

@@ -50,14 +50,25 @@ public class Application implements CommandLineRunner {
             User user = new User(adminusr, adminpwd, adminrole);
             userDetailsService.save(user);
             
-            Pizza pizza1 = new Pizza(101, "Veg", "Farm House", "Delightful combination of onion, capsicum, tomato & grilled mushroom", 369);
-            Pizza pizza2 = new Pizza(102, "Veg", "Peppy Paneer", "Flavorful trio of juicy paneer, crisp capsicum with spicy red paprika.", 469);
-            Pizza pizza3 = new Pizza(201, "Non-Veg", "Chicken Dominator", "Loaded with double pepper barbecue chicken, peri-peri chicken, chicken tikka & grilled chicken rashers ", 609);
-            Pizza pizza4 = new Pizza(202, "Non-Veg", "Spiced Double Chicken", "Delightful combination of our spicy duo- Pepper Barbecue Chicken and Peri Peri Chicken for Chicken Lovers. ", 569);
+            Pizza pizza1 = new Pizza("Veg", "Farm House", "Regular", "Delightful combination of onion, capsicum, tomato & grilled mushroom.", 265);
+            Pizza pizza2 = new Pizza("Veg", "Farm House", "Medium", "Delightful combination of onion, capsicum, tomato & grilled mushroom.", 469);
+            Pizza pizza3 = new Pizza("Veg", "Farm House", "Large", "Delightful combination of onion, capsicum, tomato & grilled mushroom.", 705);
+            Pizza pizza4 = new Pizza("Veg", "Peppy Paneer", "Regular", "Flavorful trio of juicy paneer, crisp capsicum with spicy red paprika.", 265);
+            Pizza pizza5 = new Pizza("Veg", "Peppy Paneer", "Medium", "Flavorful trio of juicy paneer, crisp capsicum with spicy red paprika.", 469);
+            Pizza pizza6 = new Pizza("Veg", "Peppy Paneer", "Large", "Flavorful trio of juicy paneer, crisp capsicum with spicy red paprika.", 705);
+            Pizza pizza7 = new Pizza("Non-Veg", "Chicken Dominator", "Regular", "Loaded with double pepper barbecue chicken, peri-peri chicken, chicken tikka & grilled chicken rashers.", 365);
+            Pizza pizza8 = new Pizza("Non-Veg", "Chicken Dominator", "Medium", "Loaded with double pepper barbecue chicken, peri-peri chicken, chicken tikka & grilled chicken rashers.", 609);
+            Pizza pizza9 = new Pizza("Non-Veg", "Chicken Dominator", "Large", "Loaded with double pepper barbecue chicken, peri-peri chicken, chicken tikka & grilled chicken rashers.", 935);
+            
             pizzaService.addPizza(entityToDto(pizza1));
             pizzaService.addPizza(entityToDto(pizza2));
             pizzaService.addPizza(entityToDto(pizza3));
             pizzaService.addPizza(entityToDto(pizza4));
+            pizzaService.addPizza(entityToDto(pizza5));
+            pizzaService.addPizza(entityToDto(pizza6));
+            pizzaService.addPizza(entityToDto(pizza7));
+            pizzaService.addPizza(entityToDto(pizza8));
+            pizzaService.addPizza(entityToDto(pizza9));
             
             Coupon coupon1= new Coupon("FLAT50M450","Rs. 50 OFF" , "Flat Rs. 50 off on a minimum order of Rs. 450");
             Coupon coupon2= new Coupon("PIZZA10M150", "10% OFF", "10% OFF upto Rs. 150 on your orders.");
@@ -77,6 +88,7 @@ public class Application implements CommandLineRunner {
 		p.setPizzaId(pizza.getPizzaId());
 		p.setPizzaName(pizza.getPizzaName());
 		p.setPizzaType(pizza.getPizzaType());
+		p.setPizzaSize(pizza.getPizzaSize());
 		p.setPizzaDescription(pizza.getPizzaDescription());
 		p.setPizzaCost(pizza.getPizzaCost());
 		return p;
@@ -88,6 +100,7 @@ public class Application implements CommandLineRunner {
 		p.setPizzaId(pizza.getPizzaId());
 		p.setPizzaName(pizza.getPizzaName());
 		p.setPizzaType(pizza.getPizzaType());
+		p.setPizzaSize(pizza.getPizzaSize());
 		p.setPizzaDescription(pizza.getPizzaDescription());
 		p.setPizzaCost(pizza.getPizzaCost());
 		return p;

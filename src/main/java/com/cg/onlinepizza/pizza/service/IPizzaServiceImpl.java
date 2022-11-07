@@ -103,6 +103,7 @@ public class IPizzaServiceImpl implements IPizzaService{
 		Pizza p = new Pizza();
 		p.setPizzaId(pizza.getPizzaId());
 		p.setPizzaName(pizza.getPizzaName());
+		p.setPizzaSize(pizza.getPizzaSize());
 		p.setPizzaType(pizza.getPizzaType());
 		p.setPizzaDescription(pizza.getPizzaDescription());
 		p.setPizzaCost(pizza.getPizzaCost());
@@ -114,6 +115,7 @@ public class IPizzaServiceImpl implements IPizzaService{
 		PizzaDto p = new PizzaDto();
 		p.setPizzaId(pizza.getPizzaId());
 		p.setPizzaName(pizza.getPizzaName());
+		p.setPizzaSize(pizza.getPizzaSize());
 		p.setPizzaType(pizza.getPizzaType());
 		p.setPizzaDescription(pizza.getPizzaDescription());
 		p.setPizzaCost(pizza.getPizzaCost());

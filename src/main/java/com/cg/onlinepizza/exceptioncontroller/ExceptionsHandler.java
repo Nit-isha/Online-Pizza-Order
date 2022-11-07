@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
@@ -84,7 +85,8 @@ public class ExceptionsHandler {
     /*User name already taken*/
     @ExceptionHandler(UsernameAlreadyExistException.class)
     public ResponseEntity<APIError> usernameAlreadyExistExceptionHandler(Exception e) {
-        APIError error = new APIError("The username is alreasy taken", 400);
+        APIError error = new APIError("The username is already taken", 404);
+        
         return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
     }
     

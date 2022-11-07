@@ -7,22 +7,24 @@ import javax.persistence.Id;
 @Entity
 public class Pizza {
 	@Id
+	@GeneratedValue
 	private int pizzaId;
 	private String pizzaType;
 	private String pizzaName;
+	private String pizzaSize;
 	private String pizzaDescription;
 	private double pizzaCost;
 
 	public Pizza() {
 		
 	}
-	public Pizza(int pizzaId, String pizzaType, String pizzaName, String pizzaDescription, double pizzaCost
-		) {
+	public Pizza(String pizzaType, String pizzaName, String pizzaSize, String pizzaDescription, double pizzaCost) {
 		super();
-		this.pizzaId = pizzaId;
+//		this.pizzaId = pizzaId;
 		this.pizzaType = pizzaType;
 		this.pizzaName = pizzaName;
-		this.setPizzaDescription(pizzaDescription);
+		this.pizzaSize = pizzaSize;
+		this.pizzaDescription = pizzaDescription;
 		this.pizzaCost = pizzaCost;
 	}
 	
@@ -49,6 +51,12 @@ public class Pizza {
     }
     public void setPizzaName(String pizzaName) {
         this.pizzaName = pizzaName;
+    }
+    public String getPizzaSize() {
+        return pizzaSize;
+    }
+    public void setPizzaSize(String pizzaSize) {
+        this.pizzaSize = pizzaSize;
     }
     public double getPizzaCost() {
         return pizzaCost;
