@@ -70,7 +70,9 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		orderEntity.setTransactionMode(order.getTransactionMode());
 		//orderEntity.setSize(order.getSize());
 		orderEntity.setOrderType(order.getOrderType());
-		orderEntity.setCoupon(iCouponRepository.getCouponByName(couponName));
+		try {
+		orderEntity.setCoupon(iCouponRepository.getCouponByName(couponName));}
+		catch(Exception ignored) {}
 		
 		orderEntity.setOrderDate(LocalDateTime.now());
 		orderEntity.setCustomer(iCustomerRepository.findByUsername(currentCustomer).get());
@@ -232,7 +234,9 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		
 		PizzaOrder p = new PizzaOrder();
 		p.setBookingOrderId(pizzaOrder.getBookingOrderId());
-		p.setCoupon(iCouponRepository.getCouponByName(pizzaOrder.getCouponName()));
+		try {
+		p.setCoupon(iCouponRepository.getCouponByName(pizzaOrder.getCouponName()));}
+		catch(Exception ignored) {}
 		p.setCustomer(iCustomerRepository.getCustomerById(pizzaOrder.getCustId()));
 		p.setOrderDate(pizzaOrder.getOrderDate());
 		p.setOrderType(pizzaOrder.getOrderType());
@@ -250,7 +254,9 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 		
 		PizzaOrderDto p = new PizzaOrderDto();
 		p.setBookingOrderId(pizzaOrder.getBookingOrderId());
-		p.setCouponName(pizzaOrder.getCoupon().getCouponName());
+		try {
+		p.setCouponName(pizzaOrder.getCoupon().getCouponName());}
+		catch(Exception ignored) {}
 		p.setCustId(pizzaOrder.getCustomer().getId());
 		p.setOrderDate(pizzaOrder.getOrderDate());
 		p.setOrderType(pizzaOrder.getOrderType());
@@ -269,6 +275,7 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 	public double calcTotal(Coupon coupon, List<Pizza> orderPizzas) { 
 		
 		double totalCost = orderPizzas.stream().mapToDouble(p->p.getPizzaCost()).sum();
+		try {
 		if(coupon.getCouponType().equals("FLAT")) {
 			if(totalCost >= coupon.getAmount()) {
 				totalCost -= coupon.getDiscount();
@@ -282,6 +289,10 @@ public class IPizzaOrderServiceImpl implements IPizzaOrderService {
 			}
 			totalCost -= discountAmt;
 		}	
+		}
+		catch(Exception igonred){
+			
+		}
 		return totalCost;
 	}
 	
