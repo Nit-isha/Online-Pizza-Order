@@ -22,7 +22,7 @@ public class PizzaOrder {
 	private LocalDateTime orderDate;
 	private String transactionMode;
 	private int quantity;
-	private String size;
+//	private String size;
 	private double totalCost;
 	private String orderType;
 	@ManyToOne
@@ -74,13 +74,13 @@ public class PizzaOrder {
         this.quantity = quantity;
     }
 
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
+//    public String getSize() {
+//        return size;
+//    }
+//
+//    public void setSize(String size) {
+//        this.size = size;
+//    }
 
     public double getTotalCost() {
         return totalCost;

@@ -36,8 +36,8 @@ public class IPizzaServiceImplTest {
     
     @BeforeAll
     static void setUp() {
-        Pizza obj1 = new Pizza(101, "Veg", "Farm House", "Delightful combination of onion, capsicum, tomato & grilled mushroom", 469);
-        Pizza obj2 = new Pizza(102, "Veg", "Peppy Paneer", "Flavorful trio of juicy paneer, crisp capsicum with spicy red paprika", 345);
+        Pizza obj1 = new Pizza("Veg", "Farm House","Medium", "Delightful combination of onion, capsicum, tomato & grilled mushroom", 469);
+        Pizza obj2 = new Pizza("Veg", "Peppy Paneer","Medium", "Flavorful trio of juicy paneer, crisp capsicum with spicy red paprika", 345);
         pizzaList.add(obj1);
         pizzaList.add(obj2);
     }

@@ -61,7 +61,6 @@ public class ICouponServiceImpl implements ICouponService {
 		}
 	}
 
-	
 	@Override
 	public CouponDto deleteCoupons(int couponId) throws CouponIdNotFoundException {
 		Optional<Coupon> optional = iCouponRepository.findById(couponId);
@@ -73,8 +72,6 @@ public class ICouponServiceImpl implements ICouponService {
 		}
 	}
 
-	
-	
 	@Override
 	public List<CouponDto> viewCoupons() {
 		List<Coupon> couponList=new ArrayList<>();

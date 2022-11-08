@@ -4,16 +4,22 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.lang.Nullable;
+
+import com.cg.onlinepizza.entity.Pizza;
+
 public class PizzaOrderDto {
 	private int bookingOrderId;
 	private LocalDateTime orderDate;
 	private String transactionMode;
 	private int quantity;
-	private String size;
+//	private String size;
 	private double totalCost;
+	@Nullable
 	private String couponName;
 	private String orderType;
-	private List<Integer> pizzaIdList;
+//	private List<Integer> pizzaIDList;
+	private List<Pizza> pizzaList;
 	private int custId;
     
 	public int getBookingOrderId() {
@@ -22,7 +28,6 @@ public class PizzaOrderDto {
     public void setBookingOrderId(int bookingOrderId) {
         this.bookingOrderId = bookingOrderId;
     }
-   
     public LocalDateTime getOrderDate() {
 		return orderDate;
 	}
@@ -41,12 +46,12 @@ public class PizzaOrderDto {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    public String getSize() {
-        return size;
-    }
-    public void setSize(String size) {
-        this.size = size;
-    }
+//    public String getSize() {
+//        return size;
+//    }
+//    public void setSize(String size) {
+//        this.size = size;
+//    }
     public double getTotalCost() {
         return totalCost;
     }
@@ -65,16 +70,23 @@ public class PizzaOrderDto {
     public void setOrderType(String orderType) {
         this.orderType = orderType;
     }
-	public List<Integer> getPizzaIdList() {
-		return pizzaIdList;
-	}
-	public void setPizzaIdList(List<Integer> pizzaIdList) {
-		this.pizzaIdList = pizzaIdList;
-	}
+//	public List<Integer> getPizzaIdList() {
+//		return pizzaIdList;
+//	}
+//	public void setPizzaIdList(List<Integer> pizzaIdList) {
+//		this.pizzaIdList = pizzaIdList;
+//	}
 	public int getCustId() { 
 		return custId;
 	}
 	public void setCustId(int custId) {
 		this.custId = custId;
 	}
+	public List<Pizza> getPizzaList() {
+		return pizzaList;
+	}
+	public void setPizzaList(List<Pizza> pizzaList) {
+		this.pizzaList = pizzaList;
+	}
+	
 }

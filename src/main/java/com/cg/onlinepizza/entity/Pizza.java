@@ -20,7 +20,7 @@ public class Pizza {
 	}
 	public Pizza(String pizzaType, String pizzaName, String pizzaSize, String pizzaDescription, double pizzaCost) {
 		super();
-//		this.pizzaId = pizzaId;
+		//this.pizzaId = pizzaId;
 		this.pizzaType = pizzaType;
 		this.pizzaName = pizzaName;
 		this.pizzaSize = pizzaSize;

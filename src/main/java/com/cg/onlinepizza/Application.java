@@ -70,8 +70,8 @@ public class Application implements CommandLineRunner {
             pizzaService.addPizza(entityToDto(pizza8));
             pizzaService.addPizza(entityToDto(pizza9));
             
-            Coupon coupon1= new Coupon("FLAT50M450","Rs. 50 OFF" , "Flat Rs. 50 off on a minimum order of Rs. 450");
-            Coupon coupon2= new Coupon("PIZZA10M150", "10% OFF", "10% OFF upto Rs. 150 on your orders.");
+            Coupon coupon1= new Coupon("PIZZA50","FLAT" ,50, 500, "Flat Rs. 50 off on a minimum order of Rs. 500");
+            Coupon coupon2= new Coupon("ICC20", "PERCENTAGE",20,100, "20% OFF upto Rs. 100 on your orders.");
             couponService.addCoupons(entityToDto(coupon1));
             couponService.addCoupons(entityToDto(coupon2));
         }
