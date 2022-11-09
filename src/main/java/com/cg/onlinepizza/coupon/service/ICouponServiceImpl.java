@@ -35,8 +35,6 @@ public class ICouponServiceImpl implements ICouponService {
 		if(couponMatchDto.isPresent()){
 			throw new CouponAlreadyExistException();
 		}
-		
-		
 		iCouponRepository.save(dtoToEntity(coupon));
 		return coupon;
 	}
@@ -74,7 +72,8 @@ public class ICouponServiceImpl implements ICouponService {
 
 	@Override
 	public List<CouponDto> viewCoupons() {
-		List<Coupon> couponList=new ArrayList<>();
+	    
+		List<Coupon> couponList = new ArrayList<>();
 		Iterable<Coupon> list =  iCouponRepository.findAll();
 		list.forEach(p -> couponList.add(p));
 		
@@ -82,6 +81,7 @@ public class ICouponServiceImpl implements ICouponService {
 		for(Coupon coupon: couponList) {
 			couponDtoList.add(entityToDto(coupon));
 		}
+	
 		return couponDtoList;
 		
 		
