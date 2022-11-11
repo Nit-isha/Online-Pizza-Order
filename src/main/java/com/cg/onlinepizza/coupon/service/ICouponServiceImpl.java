@@ -1,6 +1,7 @@
 package com.cg.onlinepizza.coupon.service;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -18,6 +19,8 @@ import com.cg.onlinepizza.entity.Coupon;
 import com.cg.onlinepizza.entity.Pizza;
 import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
+
+import com.cg.onlinepizza.exceptions.CouponTypeNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidCouponOperationException;
 import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
 import com.cg.onlinepizza.pizza.dto.PizzaDto;
@@ -86,6 +89,59 @@ public class ICouponServiceImpl implements ICouponService {
 		
 		
 	}
+	
+	public Double couponValidation(String couponName,double subTotal) throws CouponTypeNotFoundException {
+		double discount=0d;
+		Optional<Coupon> coupon=Optional.of(iCouponRepository.getCouponByName(couponName));
+		if(coupon.isPresent()) {
+			if(coupon.get().getCouponType().equals("FLAT")) {
+				if(subTotal>= coupon.get().getAmount()) {
+					discount=coupon.get().getDiscount();
+					return discount;	
+				}
+	
+			}else if (coupon.get().getCouponType().equals("PERCENTAGE")){
+				double cost=subTotal*(coupon.get().getDiscount())/100;
+				if(cost>coupon.get().getAmount()) {
+					discount=coupon.get().getAmount();
+					
+				}else {
+					discount=cost;
+					
+				}
+				return discount;
+			}
+		}
+		else {
+			throw new CouponTypeNotFoundException();
+		}
+		return discount;
+	}
+	
+	
+	/*@Override
+	public CouponDto GrandTotalByCoupon(CouponDto coupon,double totalCost) throws CouponTypeNotFoundException {		
+		List<CouponDto> couponsList= viewCoupons();
+		Optional<CouponDto> couponTypeMatchDto =  couponsList.stream().filter(c->c.getCouponType().equals(coupon.getCouponType())).findAny();
+		
+			if(couponTypeMatchDto.isPresent()){
+				if(coupon.getCouponType().equals("FLAT")) {
+					
+						totalCost -= coupon.getDiscount();
+					
+				}
+				else if(coupon.getCouponType().equals("PERCENTAGE")) {
+				
+					totalCost -= coupon.getDiscount();
+					
+				}
+				
+				return couponTypeMatchDto.get();
+			}
+			else {
+			throw new CouponTypeNotFoundException();
+			}
+	}*/
 	/*Find Coupon By ID Method*/
 	@Override
 	public CouponDto viewCouponById(int couponId) throws CouponIdNotFoundException {

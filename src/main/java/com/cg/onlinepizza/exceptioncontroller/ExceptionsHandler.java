@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.cg.onlinepizza.coupon.service.CouponTypeNotFoundException;
 import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
@@ -112,6 +113,13 @@ public class ExceptionsHandler {
         APIError error = new APIError("Coupon Not Found", 404);
         return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
 	}
+    
+    @ExceptionHandler(CouponTypeNotFoundException.class)
+    public ResponseEntity<APIError> couponTypeNotFoundExceptionHandler(Exception e) {
+        APIError error = new APIError("Coupon Not Found", 404);
+        return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
+	}
+    
     
     /*-----------------  PizzaOrder Exceptions  -----------------*/
     
