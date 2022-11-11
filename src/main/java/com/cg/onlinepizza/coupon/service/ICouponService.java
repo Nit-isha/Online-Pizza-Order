@@ -2,9 +2,12 @@ package com.cg.onlinepizza.coupon.service;
 
 import java.util.List;
 
+
 import com.cg.onlinepizza.coupon.dto.CouponDto;
 import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
+
+import com.cg.onlinepizza.exceptions.CouponTypeNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidCouponOperationException;
 
 
@@ -19,4 +22,6 @@ public interface ICouponService {
 	List<CouponDto> viewCoupons() ;
 	
 	CouponDto viewCouponById(int couponId) throws CouponIdNotFoundException;
+	
+	Double couponValidation(String couponName,double subTotal) throws CouponTypeNotFoundException;
 }

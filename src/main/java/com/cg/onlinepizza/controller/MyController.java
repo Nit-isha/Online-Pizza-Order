@@ -1,6 +1,7 @@
 package com.cg.onlinepizza.controller;
 
 import java.security.Principal;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cg.onlinepizza.coupon.dto.CouponDiscountDto;
 import com.cg.onlinepizza.coupon.dto.CouponDto;
+import com.cg.onlinepizza.exceptions.CouponTypeNotFoundException;
 import com.cg.onlinepizza.coupon.service.ICouponService;
 import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.customer.service.ICustomerService;
@@ -205,6 +208,10 @@ public class MyController {
 		return new ResponseEntity<CouponDto>(couponService.viewCouponById(couponId), HttpStatus.OK);
 	}
 	
+	@PostMapping(path = "/coupon/validation", produces = {"application/json","application/xml"})
+	public ResponseEntity<Double>couponValidation(@RequestBody CouponDiscountDto coupon) throws CouponTypeNotFoundException{
+		return new ResponseEntity<Double>(couponService.couponValidation(coupon.getCouponName(),coupon.getSubTotal()), HttpStatus.OK);
+	}
 	
 	/*-----------------  Pizza Order Service Controllers  -----------------*/
 	
