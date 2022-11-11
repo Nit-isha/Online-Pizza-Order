@@ -173,7 +173,7 @@ public class MyController {
 	
 	/*Add Coupon to DB [Only Admin can access]*/
 	
-	@PostMapping(path = "/add_coupon",produces = {"application/json","application/xml"},
+	@PostMapping(path = "/addcoupon",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<CouponDto> addCoupon(@Valid @RequestBody CouponDto couponDto) throws CouponAlreadyExistException {
