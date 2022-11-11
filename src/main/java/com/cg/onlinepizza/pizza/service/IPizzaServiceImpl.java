@@ -19,24 +19,24 @@ public class IPizzaServiceImpl implements IPizzaService{
 
 	/*Add Pizza Method*/
 	@Override
-	public PizzaDto addPizza(PizzaDto pizza) throws PizzaAlreadyExistException {
+	public PizzaDto addPizza(PizzaDto pizza) /*throws PizzaAlreadyExistException*/ {
 		Optional<Pizza> optional = iPizzaRepository.findById(pizza.getPizzaId());
-		if(optional.isPresent()) {
+		/*if(optional.isPresent()) {
 			throw new PizzaAlreadyExistException();
-		}
+		}*/
 		iPizzaRepository.save(dtoToEntity(pizza));
 		return pizza;
 	}
 
 	/*Update Pizza Method*/
 	@Override
-	public PizzaDto updatePizza(int pizzaId,PizzaDto pizza) throws PizzaIdNotFoundException, PizzaAlreadyExistException {
+	public PizzaDto updatePizza(int pizzaId,PizzaDto pizza) throws PizzaIdNotFoundException/*, PizzaAlreadyExistException*/ {
 		Optional<Pizza> optional = iPizzaRepository.findById(pizzaId);
 		List<String> allPizzaNames = iPizzaRepository.getPizzaNameList();
 		if(optional.isPresent()) {
-			if(allPizzaNames.contains(pizza.getPizzaName())) {
+			/*if(allPizzaNames.contains(pizza.getPizzaName())) {
 				throw new PizzaAlreadyExistException();
-			}
+			}*/
 			Pizza pizzaEntity = dtoToEntity(pizza);
 			pizzaEntity.setPizzaId(optional.get().getPizzaId());
 			iPizzaRepository.save(pizzaEntity);

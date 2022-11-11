@@ -71,7 +71,7 @@ public class MyController {
 	@PostMapping(path = "/addpizza",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	@PreAuthorize("hasAuthority('admin')")
-	public ResponseEntity<PizzaDto> addPizza(@RequestBody PizzaDto pizzaDto) throws PizzaAlreadyExistException{
+	public ResponseEntity<PizzaDto> addPizza(@RequestBody PizzaDto pizzaDto)/* throws PizzaAlreadyExistException*/{
 		return new ResponseEntity<PizzaDto>(pizzaService.addPizza(pizzaDto), HttpStatus.OK);
 	}
 
@@ -92,7 +92,7 @@ public class MyController {
 	@PutMapping(path = "/menu/{pizzaId}",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	@PreAuthorize("hasAuthority('admin')")
-	public ResponseEntity<PizzaDto> updatePizza(@PathVariable int pizzaId,@RequestBody PizzaDto pizzaDto) throws PizzaIdNotFoundException, PizzaAlreadyExistException{
+	public ResponseEntity<PizzaDto> updatePizza(@PathVariable int pizzaId,@RequestBody PizzaDto pizzaDto) throws PizzaIdNotFoundException/*, PizzaAlreadyExistException*/{
 		return new ResponseEntity<PizzaDto>(pizzaService.updatePizza(pizzaId,pizzaDto), HttpStatus.OK);
 	}
 	
@@ -170,7 +170,7 @@ public class MyController {
 	
 	/*Add Coupon to DB [Only Admin can access]*/
 	
-	@PostMapping(path = "/add_coupon",produces = {"application/json","application/xml"},
+	@PostMapping(path = "/addcoupon",produces = {"application/json","application/xml"},
 			consumes = {"application/json","application/xml"})
 	@PreAuthorize("hasAuthority('admin')")
 	public ResponseEntity<CouponDto> addCoupon(@Valid @RequestBody CouponDto couponDto) throws CouponAlreadyExistException {
