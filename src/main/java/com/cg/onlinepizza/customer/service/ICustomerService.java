@@ -29,5 +29,5 @@ public interface ICustomerService {
 	
 	CustomerDto aboutCustomer(String currentCustomer);
 	
-	CustomerDto getCustomerByName(String name)throws CustomerNotFoundException;
+	CustomerDto getCustomerByUserName(String name)throws CustomerNotFoundException;
 }

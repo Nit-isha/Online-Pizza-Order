@@ -172,9 +172,9 @@ public class MyController {
 	/*Get Customer Details [Only user can access]*/
 	@GetMapping(path = "/customer/search", produces = {"application/json","application/xml"})
 	@PreAuthorize("hasAuthority('admin')")
-	public ResponseEntity<CustomerDto> getCustomerByName(@RequestParam("name") 
-	String name) throws CustomerNotFoundException {
-		return new ResponseEntity<CustomerDto>(customerService.getCustomerByName(name), HttpStatus.OK);
+	public ResponseEntity<CustomerDto> getCustomerByUserName(@RequestParam("uname") 
+	String uname) throws CustomerNotFoundException {
+		return new ResponseEntity<CustomerDto>(customerService.getCustomerByUserName(uname), HttpStatus.OK);
 	}
 	/*-----------------  Coupon Service Controllers  -----------------*/
 	

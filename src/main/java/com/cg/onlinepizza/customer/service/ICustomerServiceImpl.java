@@ -138,8 +138,8 @@ public class ICustomerServiceImpl implements ICustomerService{
    	}
     
    	// view customer by name
-   	public CustomerDto getCustomerByName(String name) throws CustomerNotFoundException {
-   		Optional<Customer> optional =  iCustomerRepository.findCustomerByName(name);
+   	public CustomerDto getCustomerByUserName(String name) throws CustomerNotFoundException {
+   		Optional<Customer> optional =  iCustomerRepository.findByUsername(name);
    		if(optional.isPresent()) {
         	return entityToDto(optional.get());
         }else {
