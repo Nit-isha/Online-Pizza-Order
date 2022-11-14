@@ -21,6 +21,8 @@ public interface ICouponService {
 
 	List<CouponDto> viewCoupons() ;
 	
+	CouponDto viewCouponByName(String couponName);
+	
 	CouponDto viewCouponById(int couponId) throws CouponIdNotFoundException;
 	
 	Double couponValidation(String couponName,double subTotal) throws CouponTypeNotFoundException;

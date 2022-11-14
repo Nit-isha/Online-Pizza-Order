@@ -153,6 +153,17 @@ public class ICouponServiceImpl implements ICouponService {
 		}
 	}
 	
+	@Override
+	public CouponDto viewCouponByName(String couponName){
+		if(couponName.equals(null)) {
+			return null;
+		}
+		else {
+		Coupon optional = iCouponRepository.getCouponByName(couponName);
+		
+		return entityToDto(optional);}
+	}
+	
 	
 	//Coupon Entity to CouponDto Class Conversion//
 	public CouponDto entityToDto(Coupon coupon) {

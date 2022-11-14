@@ -213,6 +213,11 @@ public class MyController {
 		return new ResponseEntity<Double>(couponService.couponValidation(coupon.getCouponName(),coupon.getSubTotal()), HttpStatus.OK);
 	}
 	
+	@GetMapping(path = "/coupons/{couponName}", produces = {"application/json","application/xml"})
+	public ResponseEntity<CouponDto> viewCouponId(@PathVariable String couponName){
+		return new ResponseEntity<CouponDto>(couponService.viewCouponByName(couponName), HttpStatus.OK);
+	}
+	
 	/*-----------------  Pizza Order Service Controllers  -----------------*/
 	
 	
