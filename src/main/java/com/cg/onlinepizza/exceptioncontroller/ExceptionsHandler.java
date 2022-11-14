@@ -13,6 +13,7 @@ import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
+import com.cg.onlinepizza.exceptions.CustomerNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.NoOrdersFoundException;
 import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
@@ -88,6 +89,12 @@ public class ExceptionsHandler {
         APIError error = new APIError("The username is already taken", 404);
         
         return new ResponseEntity<APIError>(error, HttpStatus.BAD_REQUEST);
+    }
+    // customer not in db
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<APIError> CustomerNotFoundExceptionHandler(Throwable e) {
+        APIError error = new APIError("Customer is not in database", 404);
+        return new ResponseEntity<APIError>(error, HttpStatus.NOT_FOUND);
     }
     
     /*-----------------  Coupon Exceptions  -----------------*/

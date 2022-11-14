@@ -17,4 +17,7 @@ public interface ICustomerRepository extends CrudRepository<Customer, Integer>{
 
 	@Query("select c from Customer c where c.id =:cid")
 	Customer getCustomerById(@Param("cid") int cid);
+	
+	@Query(value="select c from Customer c where c.customerName=:name")
+	public Optional<Customer> findCustomerByName(@Param("name") String name);
 }

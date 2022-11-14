@@ -14,6 +14,7 @@ import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.entity.Customer;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
+import com.cg.onlinepizza.exceptions.CustomerNotFoundException;
 import com.cg.onlinepizza.exceptions.UsernameAlreadyExistException;
 
 
@@ -136,6 +137,15 @@ public class ICustomerServiceImpl implements ICustomerService{
    		return entityToDto(optional.get());
    	}
     
+   	// view customer by name
+   	public CustomerDto getCustomerByName(String name) throws CustomerNotFoundException {
+   		Optional<Customer> optional =  iCustomerRepository.findCustomerByName(name);
+   		if(optional.isPresent()) {
+        	return entityToDto(optional.get());
+        }else {
+            throw new CustomerNotFoundException();
+        }
+   	}
    	
     /*CustomerDto to Customer Entity Class Conversion*/
     public Customer dtoToEntity(CustomerDto customer) {

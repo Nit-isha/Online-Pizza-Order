@@ -8,6 +8,7 @@ import org.postgresql.util.PSQLException;
 import com.cg.onlinepizza.customer.dto.CustomerDto;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
+import com.cg.onlinepizza.exceptions.CustomerNotFoundException;
 import com.cg.onlinepizza.exceptions.UsernameAlreadyExistException;
 
 public interface ICustomerService {
@@ -27,4 +28,6 @@ public interface ICustomerService {
 	CustomerDto viewCustomer(int customerId) throws CustomerIdNotFoundException;
 	
 	CustomerDto aboutCustomer(String currentCustomer);
+	
+	CustomerDto getCustomerByName(String name)throws CustomerNotFoundException;
 }

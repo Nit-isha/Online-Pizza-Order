@@ -34,6 +34,7 @@ import com.cg.onlinepizza.exceptions.CouponAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CouponIdNotFoundException;
 import com.cg.onlinepizza.exceptions.CustomerAlreadyExistException;
 import com.cg.onlinepizza.exceptions.CustomerIdNotFoundException;
+import com.cg.onlinepizza.exceptions.CustomerNotFoundException;
 import com.cg.onlinepizza.exceptions.InvalidMinCostException;
 import com.cg.onlinepizza.exceptions.NoOrdersFoundException;
 import com.cg.onlinepizza.exceptions.OrderCancelDeclinedException;
@@ -168,6 +169,13 @@ public class MyController {
 		return new ResponseEntity<CustomerDto>(customerService.deleteCustomer(custId), HttpStatus.OK);
 	}
 	
+	/*Get Customer Details [Only user can access]*/
+	@GetMapping(path = "/customer/search", produces = {"application/json","application/xml"})
+	@PreAuthorize("hasAuthority('admin')")
+	public ResponseEntity<CustomerDto> getCustomerByName(@RequestParam("name") 
+	String name) throws CustomerNotFoundException {
+		return new ResponseEntity<CustomerDto>(customerService.getCustomerByName(name), HttpStatus.OK);
+	}
 	/*-----------------  Coupon Service Controllers  -----------------*/
 	
 	
