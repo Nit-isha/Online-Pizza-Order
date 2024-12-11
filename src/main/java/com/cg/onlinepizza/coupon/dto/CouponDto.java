@@ -1,13 +1,9 @@
-package com.cg.onlinepizza.entity;
+package com.cg.onlinepizza.coupon.dto;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
-@Entity
-public class Coupon {
-	@Id
+public class CouponDto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int couponId;
 	private String couponName;
@@ -15,22 +11,6 @@ public class Coupon {
 	private int discount;
 	private int amount;
 	private String couponDescription;
-	
-    
-
-	public Coupon() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public Coupon(String couponName, String couponType, int discount, int amount,
-			String couponDescription) {
-		super();
-		this.couponName = couponName;
-		this.couponType = couponType;
-		this.discount = discount;
-		this.amount = amount;
-		this.couponDescription = couponDescription;
-	}
 
 	public int getCouponId() {
         return couponId;

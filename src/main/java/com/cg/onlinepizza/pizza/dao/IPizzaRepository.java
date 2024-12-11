@@ -2,21 +2,25 @@ package com.cg.onlinepizza.pizza.dao;
 
 import java.util.List;
 
-import com.cg.onlinepizza.exceptions.InvalidMinCostException;
-import com.cg.onlinepizza.exceptions.PizzaIdNotFoundException;
-import com.cg.onlinepizza.pizza.dto.Pizza;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import com.cg.onlinepizza.entity.Pizza;
+import com.cg.onlinepizza.entity.PizzaOrder;
 
-public interface IPizzaRepository {
-	Pizza addPizza(Pizza pizza);
-
-	Pizza updatePizza(Pizza pizza);
-
-	Pizza deletePizza(int pizzaId) throws PizzaIdNotFoundException;
-
-	Pizza viewPizza(int pizzaId) throws PizzaIdNotFoundException;
-
-	List<Pizza> viewPizzaList();
-
-	List<Pizza> viewPizzaList(double minCost, double maxCost)throws InvalidMinCostException;
-
+@Repository
+public interface IPizzaRepository extends CrudRepository<Pizza, Integer>{
+	
+		@Query("select p from Pizza p where p.pizzaCost > :min and p.pizzaCost < :max")
+		List<Pizza> filterPizzaByPrice(@Param("min") double minCost, @Param("max") double maxCost);
+	
+		@Query("select p from Pizza p where p.pizzaId in :pList")
+		List<Pizza> getPizzaListById(@Param("pList") List<Integer> pizzaIdList );
+		
+		@Query(value = "select pizza_id from pizza", nativeQuery = true)
+		List<Integer> getPizzaIdList();
+		
+		@Query(value = "select pizza_name from pizza", nativeQuery = true)
+		List<String> getPizzaNameList();
 }
